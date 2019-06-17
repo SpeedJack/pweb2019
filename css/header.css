@@ -1,0 +1,74 @@
+header {
+	background-color: #F1F1F1;
+	padding: 30px;
+	text-align: center;
+}
+
+header h1 {
+	display: block;
+	font-size: 2.5em;
+	font-weight: bold;
+	margin-top: 0.1em;
+	margin-bottom: 0.5em;
+}
+
+header p {
+	display: block;
+	margin-top: 0.5em;
+	margin-bottom: 2.3em;
+}
+
+nav {
+	background-color: #2A3239;
+	overflow: hidden;
+}
+
+nav.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+nav.sticky + main {
+	margin-top: 60px;
+}
+
+nav * {
+	margin: 0;
+	padding: 14px 16px;
+}
+
+nav a {
+	float: left;
+	display: block;
+	color: #BFC2C4;
+	text-align: center;
+	text-decoration: none;
+	font-size: 17px;
+	font-weight: bold;
+}
+
+nav a:hover {
+	color: white;
+}
+
+nav a.active {
+	background-color: #2084D1;
+	color: white;
+}
+
+nav .right {
+	float: right;
+}
+
+nav p {
+	color: #F2F2F2;
+	font-size: 17px;
+	font-style: italic;
+}
+
+nav span.username {
+	font-weight: bold;
+	color: #2084D1;
+	padding: 0;
+}

@@ -1,0 +1,41 @@
+form.register-login input[type=text], form.register-login input[type=password],
+form.register-login input[type=email] {
+	width: 100%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #CCC;
+	box-sizing: border-box;
+}
+
+form.register-login button {
+	background-color: #2084D1;
+	color: white;
+	padding: 14px 20px;
+	margin: 8px 0;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+}
+
+form.register-login button:hover {
+	opacity: 0.8;
+}
+
+form.register-login label {
+	font-weight: bold;
+}
+
+form.register-login label.nobold {
+	font-weight: normal;
+}
+
+main div.formfooter {
+	position: relative;
+	left: -16px;
+	bottom: -16px;
+	padding: 16px;
+	width: 100%;
+	background-color: #F1F1F1;
+	text-align: center;
+}

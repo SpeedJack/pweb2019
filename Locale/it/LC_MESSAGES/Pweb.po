@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Pweb\n"
+"POT-Creation-Date: 2019-05-08 00:49+0200\n"
+"PO-Revision-Date: 2019-05-08 00:53+0200\n"
+"Last-Translator: \n"
+"Language-Team: Niccolò Scatena <speedjack95@gmail.com>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: ;__:1\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: App.php:147
+msgid "No database extension loaded: PDO or MySQLi is required."
+msgstr "Il sito ha bisogno di PDO o MySQLi installati per funzionare."
+
+#: App.php:161
+#, php-format
+msgid "Unhandled Exception: %s\n"
+msgstr "Eccezione non Gestita: %s\n"
+
+#: Db/Exception.php:14
+#, php-format
+msgid ""
+"\n"
+"SQL State Code: %s\n"
+"Query: %s"
+msgstr ""
+"\n"
+"Codice di Stato SQL: %s\n"
+"Query: %s"
+
+#: Entity/EntityManager.php:14
+#, php-format
+msgid "Invalid Entity %s."
+msgstr "%s non è un'entità valida."
+
+#: InvalidRouteException.php:13
+#, php-format
+msgid "Invalid route: the action '%s'::'%s' does not exists."
+msgstr "L'azione '%s'::'%s' non esiste."
+
+#: Pages/AbstractPage.php:31
+msgid "Header template not found."
+msgstr "Template dell'header non trovato."
+
+#: Pages/AbstractPage.php:39
+#, php-format
+msgid "The template %s does not exists."
+msgstr "Il template %s non esiste."
+
+#: Pages/AbstractPage.php:47
+msgid "Footer template not found."
+msgstr "Template del footer non trovato."
+
+#: error-pages/400.php:8
+msgid "Invalid page."
+msgstr "Pagina non valida."
+
+#: error-pages/404.php:8
+msgid "The requested page could not be found."
+msgstr "La pagina richiesta non è stata trovata."
+
+#: error-pages/500.php:8
+msgid ""
+"The server encountered an internal error and was unable to process the "
+"request."
+msgstr ""
+"Si è verificato un errore interno del server che non è in grado di "
+"processare la richiesta."
+
+#: error-pages/500.php:10
+#, php-format
+msgid "Error Message: %s"
+msgstr "Messaggio di Errore: %s"
+
+#: error-pages/501.php:8
+msgid "The requested page exists but it's not fully implemented."
+msgstr ""
+"La pagina richiesta esiste ma non è stata completamente implementata."
+
+#: include/error-functions.php:8
+#, php-format
+msgid ""
+"Panic!!!\n"
+"Error Code: %d.\n"
+"Error Message: %s\n"
+"Backtrace:\n"
+"%s"
+msgstr ""
+"Panic!!!\n"
+"Codice Errore: %d.\n"
+"Messaggio di Errore: %s\n"
+"Backtrace:\n"
+"%s"

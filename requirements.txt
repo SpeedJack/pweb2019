@@ -1,0 +1,36 @@
+Supported Browsers:
+	* Firefox >= 4.0
+	* Chromium/Chrome >= 11.0
+	* Internet Explorer >= 9.0
+	* Edge >=
+	* Opera >= 11.5
+
+Required Client Support:
+	* HTTP >= 1.1
+	* HTML >= 5.0
+	* CSS >= 3
+	* JavaScript >= 1.6
+	* DOM Level >= 3
+
+Required Server Software:
+	* PHP >= 5.6.0
+	* MySQL with InnoDB and MEMORY storage engines >= 5.2.0 (not tested
+	  with previous versions; may work)
+	* An HTTP Web Server (eg. Apache or nginx) with support for HTTP/1.1
+
+Required PHP Extensions:
+	* pdo with pdo_mysql OR mysqli (latter enabled in PHP >= 5.3.0)
+	* json >= 1.2.0 (enabled in PHP >= 5.2.0)
+	* hash >= 1.1 (enabled in PHP >= 5.1.2)
+
+Optional PHP Extensions:
+	* random_compat >= 0.9.0 or openssl >= 0.9.8 or mcrypt >= 1.0.0 - for
+	  generate secure random tokens in PHP < 7.0.0
+	* gettext - for internationalization (bundled in PHP, not enabled by
+	  default)
+	* intl >= 1.0.0 - for better client language recognition (enabled in
+	  PHP >= 5.3.0)
+	* xdebug >= 2.2 - for debugging
+
+Optional Softwares:
+	* doxygen - for code documentation.
