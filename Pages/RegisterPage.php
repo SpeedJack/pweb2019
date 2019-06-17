@@ -18,6 +18,8 @@ class RegisterPage extends AbstractPage
 			$this->_app->redirectHome();
 		$this->_setTitle(__('Register an account'));
 		$this->_addCss('login-register-form');
+		$this->_addJs('form');
+		$this->_addJs('form-validation');
 		$this->_show('register-form');
 	}
 

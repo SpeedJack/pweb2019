@@ -18,6 +18,7 @@ class LoginPage extends AbstractPage
 			$this->_app->redirectHome();
 		$this->_setTitle(__('Login Page'));
 		$this->_addCss('login-register-form');
+		$this->_addJs('form');
 		$this->_show('login-form');
 	}
 
@@ -67,7 +68,7 @@ class LoginPage extends AbstractPage
 		}
 
 		$this->_visitor->setSessionUser($user);
-		$this->_app->redirectHome();
+		$this->_redirectAjax();
 	}
 
 	/**
