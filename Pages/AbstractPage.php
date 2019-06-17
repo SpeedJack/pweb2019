@@ -349,6 +349,7 @@ abstract class AbstractPage
 
 		if ($loadSkel) {
 			$this->_addCss('main');
+			$this->_addJs('main');
 			$this->_addCss('modal');
 			$this->_addJs('modal');
 			if (!isset($this->_meta['charset']))
@@ -393,7 +394,7 @@ abstract class AbstractPage
 	{
 		$params['bodyTemplate'] = $bodyTemplate;
 		$params['modalRedirect'] = $redirect;
-		$this->_reply('modal', $params);
+		$this->_show('modal', $params, false, false, false);
 	}
 
 	/**
@@ -413,7 +414,7 @@ abstract class AbstractPage
 		$this->_showModal('message', $redirect, $params);
 	}
 
-	/**
+	/*
 	 * @internal
 	 * @brief Sends a simple reply to the visitor (useful for AJAX
 	 * responses).
@@ -422,10 +423,46 @@ abstract class AbstractPage
 	 * 					load.
 	 * @param[in] array $params		Associative array of parameters
 	 * 					to pass to the template.
-	 */
+	 *
 	protected function _reply($templateName, array $params = [])
 	{
 		$this->_show($templateName, $params, false, false, false);
+	}*/
+
+	/**
+	 * @internal
+	 * @brief Redirects the user as a response of an AJAX request.
+	 *
+	 * @param[in] string $page	The page where the user should be
+	 * 				redirected. If NULL, defaults to the
+	 * 				home page.
+	 * @param[in] string $action	The action where the user should be
+	 * 				redirected. If NULL, defaults to
+	 * 				actionIndex.
+	 * @param[in] array $params	Associative array of key-value pairs of
+	 * 				GET parameters.
+	 */
+	protected function _redirectAjax($page = null, $action = null, array $params = [])
+	{
+		$data = [
+			'redirect' => true,
+			'location' => $this->_app->buildLink($page, $action, $params)
+		];
+		$this->_replyJson($data);
+	}
+
+	/**
+	 * @internal
+	 * @brief Sends a json encoded reply to the visitor (useful for AJAX
+	 * responses).
+	 *
+	 * @param[in] array $data	Associative array that will be json
+	 * 				encoded and sent to the client.
+	 */
+	protected function _replyJson(array $data)
+	{
+		echo json_encode($data);
+		flush();
 	}
 // }}}
 

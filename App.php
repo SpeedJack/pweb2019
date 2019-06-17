@@ -263,14 +263,18 @@ class App extends AbstractSingleton
 	/**
 	 * @brief Generates a relative link to a page.
 	 *
-	 * @param[in] string $page		The page name.
-	 * @param[in] string|null $action	The action name.
+	 * @param[in] string|null $page		The page name. If NULL, returns
+	 * 					a link to index.php.
+	 * @param[in] string|null $action	The action name. If NULL,
+	 * 					defaults to actionIndex.
 	 * @param[in] array $params		Associative array of key-value
 	 * 					pairs of parameters.
 	 * @retval string			The generated link.
 	 */
-	public function buildLink($page, $action = null, $params = [])
+	public function buildLink($page = null, $action = null, $params = [])
 	{
+		if (empty($page))
+			return 'index.php';
 		$rawAction = '';
 		$rawPage = "?page=$page";
 		if ($this->config['use_url_rewrite'])
@@ -407,6 +411,10 @@ class App extends AbstractSingleton
 			'auth_token_length' => 20,
 			'auth_token_duration' => 60*60*24*30,
 			'session_canary_lifetime' => 60*5,
+			'form_validation' => [
+				'username_regex' => '^[a-zA-Z0-9._-]{5,32}$',
+				'username_maxlength' => 32,
+			],
 			'locales' => [
 				'/^en/i' => 'en_US.UTF-8',
 				'/^it/i' => 'it_IT.UTF-8'
@@ -447,7 +455,7 @@ class App extends AbstractSingleton
 	}
 // }}}
 
-// Private Methods {{{
+//Private Methods {{{
 	/**
 	 * @internal
 	 * @brief Returns the canonical IETF BCP 47 locale string.

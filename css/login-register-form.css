@@ -39,3 +39,26 @@ main div.formfooter {
 	background-color: #F1F1F1;
 	text-align: center;
 }
+
+#register-form span[id^=validatorfor-] {
+	display: none;
+	background-color: #C22;
+	color: white;
+	font-weight: bold;
+	padding: 10px 25px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	opacity: 0.8;
+	-webkit-animation: animatescale 0.8s
+	animation: animatescale 0.8s;
+}
+
+@-webkit-keyframes animatescale {
+	from {-webkit-transform: scaleY(0)}
+	to {-webkit-transform: scaleY(1)}
+}
+
+@keyframes animatescale {
+	from {transform: scaleY(0)}
+	to {transform: scaleY(1)}
+}

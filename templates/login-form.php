@@ -6,9 +6,9 @@
  */
 ?>
 <main>
-	<form id="login-form" class="register-login" data-actionurl="<?php echo $application->buildLink('login', 'login'); ?>" onsubmit="return false;">
+	<form id="login-form" class="register-login" autocomplete="on" data-actionurl="<?php echo $application->buildLink('login', 'login'); ?>" onsubmit="return false;">
 		<label for="loginname"><?php echo __('Username or Email'); ?></label>
-		<input type="text" placeholder="<?php echo __('Enter Username or Email'); ?>" name="loginname" required>
+		<input type="text" placeholder="<?php echo __('Enter Username or Email'); ?>" name="loginname" maxlength="255" autofocus="on" required>
 		<label for="password"><?php echo __('Password'); ?></label>
 		<input type="password" placeholder="<?php echo __('Enter Password'); ?>" name="password" required>
 		<label class="nobold">
