@@ -22,6 +22,53 @@ class RegisterPage extends AbstractPage
 	}
 
 	/**
+	 * @brief Registers a new user with the data provided by the
+	 * registration form.
+	 */
+	public function actionRegister()
+	{
+		if ($this->_visitor->isLoggedIn())
+			$this->_app->redirectHome();
+
+		$username = $this->_visitor->param('username', 'POST');
+		$email = $this->_visitor->param('email', 'POST');
+		$password = $this->_visitor->param('password', 'POST');
+		$passwordAgain = $this->_visitor->param('password-again', 'POST');
+
+		if (empty($username) || empty($email)
+			|| empty($password) || empty($passwordAgain)) {
+			$this->_showMessage(__('Error'),
+				__('Please, fill out all fields.'));
+			return;
+		}
+		if ($password !== $passwordAgain) {
+			$this->_showMessage(__('Wrong password'),
+				__('Passwords do not match.'));
+			return;
+		}
+
+		$user = $this->_em->createNew('User');
+
+		if (!$this->_userSetUsername($user, $username)
+			|| !$this->_userSetEmail($user, $email))
+			return;
+		if (!$user->setPassword($password)) {
+			$this->_showMessage(__('Password too short'),
+				__('Password must be at least %s characters long.',
+					$this->_app->config['min_password_length']));
+			return;
+		}
+
+		$user->save();
+
+		$this->_showMessage(__('Account Created!'),
+			__('Account created. <a href="%s">Log In!</a>',
+				$this->_app->buildLink('login')),
+			$this->_app->buildAbsoluteLink('login'));
+	}
+
+// Private Methods {{{
+	/**
 	 * @internal
 	 * @brief Sets the new user's username with the one provided. Shows the
 	 * user a message in case of failure.
@@ -69,50 +116,5 @@ class RegisterPage extends AbstractPage
 		}
 		return true;
 	}
-
-	/**
-	 * @brief Registers a new user with the data provided by the
-	 * registration form.
-	 */
-	public function actionRegister()
-	{
-		if ($this->_visitor->isLoggedIn())
-			$this->_app->redirectHome();
-
-		$username = $this->_visitor->param('username', 'POST');
-		$email = $this->_visitor->param('email', 'POST');
-		$password = $this->_visitor->param('password', 'POST');
-		$passwordAgain = $this->_visitor->param('password-again', 'POST');
-
-		if (empty($username) || empty($email)
-			|| empty($password) || empty($passwordAgain)) {
-			$this->_showMessage(__('Error'),
-				__('Please, fill out all fields.'));
-			return;
-		}
-		if ($password !== $passwordAgain) {
-			$this->_showMessage(__('Wrong password'),
-				__('Passwords do not match.'));
-			return;
-		}
-
-		$user = $this->_em->createNew('User');
-
-		if (!$this->_userSetUsername($user, $username)
-			|| !$this->_userSetEmail($user, $email))
-			return;
-		if (!$user->setPassword($password)) {
-			$this->_showMessage(__('Password too short'),
-				__('Password must be at least %s characters long.',
-					$this->_app->config['min_password_length']));
-			return;
-		}
-
-		$user->save();
-
-		$this->_showMessage(__('Account Created!'),
-			__('Account created. <a href="%s">Log In!</a>',
-				$this->_app->buildLink('login')),
-			$this->_app->buildAbsoluteLink('login'));
-	}
+// }}}
 }

@@ -10,6 +10,8 @@ namespace Pweb\Db;
  */
 abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 {
+
+// Protected Properties {{{
 	/**
 	 * @internal
 	 * @var object $connection
@@ -28,22 +30,7 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 	 * The database configuration.
 	 */
 	protected $config;
-
-	/** @brief Connect to the database. */
-	abstract protected function connect();
-
-	/** @brief Close the connection to the database. */
-	abstract public function closeConnection();
-
-	/**
-	 * @brief Check if connected to the database.
-	 *
-	 * @retval bool		TRUE, if connected; FALSE, otherwise.
-	 */
-	public function isConnected()
-	{
-		return $this->connection !== null;
-	}
+// }}}
 
 	/**
 	 * @brief Creates a new database adapter.
@@ -61,6 +48,17 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 		$this->connect();
 	}
 
+// Public Methods {{{
+	/**
+	 * @brief Check if connected to the database.
+	 *
+	 * @retval bool		TRUE, if connected; FALSE, otherwise.
+	 */
+	public function isConnected()
+	{
+		return $this->connection !== null;
+	}
+
 	/**
 	 * @brief Returns the detabase connection.
 	 *
@@ -71,26 +69,6 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 		if (!$this->connection)
 			$this->connect();
 		return $this->connection;
-	}
-
-	/**
-	 * @internal
-	 * @brief Sends a query to the database.
-	 *
-	 * @param[in] string $query	The query to send.
-	 * @param[in] array $params	The parameters to bind to the query.
-	 * @retval AbstractStatement	The statement executed.
-	 */
-	private function _query($query, $params = [])
-	{
-		$this->connect();
-
-		$class = $this->statementClass;
-
-		$statement = new $class($this, $query, $params);
-		$statement->execute();
-
-		return $statement;
 	}
 
 	/**
@@ -178,4 +156,36 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 	{
 		return $this->_query($query, $params)->fetchAllKeyed($key);
 	}
+// }}}
+
+// Private Methods {{{
+	/**
+	 * @internal
+	 * @brief Sends a query to the database.
+	 *
+	 * @param[in] string $query	The query to send.
+	 * @param[in] array $params	The parameters to bind to the query.
+	 * @retval AbstractStatement	The statement executed.
+	 */
+	private function _query($query, $params = [])
+	{
+		$this->connect();
+
+		$class = $this->statementClass;
+
+		$statement = new $class($this, $query, $params);
+		$statement->execute();
+
+		return $statement;
+	}
+// }}}
+
+// Abstract Methods {{{
+	/** @brief Connect to the database. */
+	abstract protected function connect();
+
+	/** @brief Close the connection to the database. */
+	abstract public function closeConnection();
+// }}}
+
 }

@@ -10,6 +10,18 @@ namespace Pweb\Db;
  */
 class MysqliAdapter extends AbstractAdapter
 {
+
+// Public Methods {{{
+	/** @brief Closes the connection to the database. */
+	public function closeConnection()
+	{
+		if ($this->isConnected())
+			$this->connection->close();
+		$this->connecttion = null;
+	}
+// }}}
+
+// Protected Methods {{{
 	/**
 	 * @internal
 	 * @brief Returns the fully qualified name of the associated statement
@@ -21,15 +33,6 @@ class MysqliAdapter extends AbstractAdapter
 	{
 		return __NAMESPACE__ . '\MysqliStatement';
 	}
-
-	/** @brief Closes the connection to the database. */
-	public function closeConnection()
-	{
-		if ($this->isConnected())
-			$this->connection->close();
-		$this->connecttion = null;
-	}
-
 
 	/**
 	 * @brief Connects to the database.
@@ -52,4 +55,6 @@ class MysqliAdapter extends AbstractAdapter
 
 		$this->connection->set_charset($this->config['charset']);
 	}
+// }}}
+
 }

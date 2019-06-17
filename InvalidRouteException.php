@@ -9,6 +9,8 @@ namespace Pweb;
  */
 class InvalidRouteException extends \Exception
 {
+
+// Public Properties {{{
 	/**
 	 * @var string $pageName
 	 * Name of the page of the invalid route.
@@ -19,6 +21,7 @@ class InvalidRouteException extends \Exception
 	 * Name of the action of the invalid route.
 	 */
 	public $actionName;
+// }}}
 
 	/**
 	 * @brief Creates a new InvalidRouteException.

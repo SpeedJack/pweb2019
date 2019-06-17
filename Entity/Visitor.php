@@ -11,6 +11,8 @@ require_once 'string-functions.php';
  */
 class Visitor extends AbstractEntity
 {
+
+// Public Properties {{{
 	/**
 	 * @var User $user
 	 * The User entity when the vistor is logged in.
@@ -23,6 +25,19 @@ class Visitor extends AbstractEntity
 	 */
 	public $authToken;
 	/**
+	 * @var string $page
+	 * The name of the page requested by the visitor.
+	 */
+	public $page = 'ChallengesPage';
+	/**
+	 * @var string $action
+	 * The name of the action requested by the visitor.
+	 */
+	public $action = 'actionIndex';
+// }}}
+
+// Protected Properties {{{
+	/**
 	 * @internal
 	 * @var array $_postParams
 	 * Array of strings containing the POST parameters.
@@ -34,16 +49,7 @@ class Visitor extends AbstractEntity
 	 * Array of strings containing the GET parameters.
 	 */
 	protected $_getParams = [];
-	/**
-	 * @var string $page
-	 * The name of the page requested by the visitor.
-	 */
-	public $page = 'ChallengesPage';
-	/**
-	 * @var string $action
-	 * The name of the action requested by the visitor.
-	 */
-	public $action = 'actionIndex';
+// }}}
 
 	/**
 	 * @brief Creates a Visitor.
@@ -60,61 +66,7 @@ class Visitor extends AbstractEntity
 		$this->_login();
 	}
 
-	/**
-	 * @internal
-	 * @brief Destroys the PHP session and its cookie.
-	 */
-	private function _destroySession()
-	{
-		if (session_status() !== PHP_SESSION_ACTIVE)
-			return;
-		$this->unsetCookie(session_name());
-		session_destroy();
-	}
-
-	/**
-	 * @internal
-	 * @brief Mantains the user logged in using the AuthToken or the PHP
-	 * session.
-	 */
-	private function _login()
-	{
-		if (php_sapi_name() === 'cli') {
-			$this->authToken = null;
-			$uid = intval(readline('[Login] Insert user id (0 for no login): '));
-			if ($uid)
-				$this->user = $this->_em->getFromDb('User', $uid);
-			else
-				$this->user = null;
-			return;
-		}
-		$user = false;
-		$authToken = false;
-		$userid = $this->session('userid');
-		$clientToken = $this->cookie('authToken');
-		if (!empty($clientToken) && !empty($clientToken['id'])) {
-			$authToken = $this->_em->getFromDb('AuthToken',
-				$clientToken['id']);
-			if ($authToken !== false && !empty($clientToken['validator']))
-				$user = $authToken->authenticate($clientToken['validator']);
-			if ($user === false
-				|| (!empty($userid) && $user->getId() !== $userid)) {
-				$authToken = false;
-				$user = false;
-				$this->_destroySession();
-				$this->unsetCookie('authToken');
-			} else {
-				$_SESSION['userid'] = $user->getId();
-			}
-		} else if (!empty($userid)) {
-			$user = $this->_em->getFromDb('User', $userid);
-		}
-		$this->user = $user ?: null;
-		$this->authToken = $authToken ?: null;
-		if (!$this->isLoggedIn())
-			$this->logout();
-	}
-
+// Public Methods {{{
 	/**
 	 * @brief Sets the AuthToken of the current Visitor.
 	 *
@@ -158,44 +110,6 @@ class Visitor extends AbstractEntity
 		$this->unsetCookie('authToken');
 	}
 
-	/**
-	 * @internal
-	 * @brief Initializes the PHP session.
-	 */
-	private function _initSession()
-	{
-		if (php_sapi_name() === 'cli')
-			return;
-		if (session_status() === PHP_SESSION_NONE)
-			session_start();
-		if (!isset($_SESSION['canary']) || $_SESSION['canary'] <
-			time() - $this->_app->config['session_canary_lifetime']) {
-			session_regenerate_id(true);
-			$_SESSION['canary'] = time();
-			$_COOKIE[session_name()] = session_id();
-		}
-	}
-
-	/**
-	 * @internal
-	 * @brief Sanitizes GET and POST parameters.
-	 *
-	 * @param[in] string $value		The string to sanitize.
-	 * @param[in] bool $removeSlashes	TRUE to remove any slash from
-	 * 					the string (useful to avoid
-	 * 					LFI vulnerabilities).
-	 * @param[in] bool $ucfirst		TRUE to make the first letter
-	 * 					upper case.
-	 * @retval string			The sanitized string.
-	 */
-	private function _sanitizeParam($value, $removeSlashes = false, $ucfirst = false)
-	{
-		if (empty($value))
-			return '';
-		$value = $removeSlashes ? str_replace('\\', '', $value) : $value;
-		$value = trim($value);
-		return $ucfirst ? ucfirst($value) : $value;
-	}
 
 	/**
 	 * @brief Clears all GET and POST parameters.
@@ -270,30 +184,6 @@ class Visitor extends AbstractEntity
 		$this->setAction($action);
 	}
 
-	/**
-	 * @internal
-	 * @brief Reads GET and POST parameters from the Visitor's request.
-	 */
-	private function _readParams()
-	{
-		if (php_sapi_name() === 'cli')
-			return;
-
-		foreach ($_GET as $key => $value) {
-			$key = strtolower($key);
-			switch ($key) {
-			case 'page':
-				$this->setPage($value);
-				break;
-			case 'action':
-				$this->setAction($value);
-				break;
-			default:
-				$this->setGetParams([$key => $value]);
-			}
-		}
-		$this->setPostParams($_POST);
-	}
 
 	/**
 	 * @brief Checks if the Visitor is visiting the specified page.
@@ -434,4 +324,127 @@ class Visitor extends AbstractEntity
 		$this->setCookie($key, '', time() - 60*60*24);
 		unset($_COOKIE[$key]);
 	}
+// }}}
+
+// Private Methods {{{
+	/**
+	 * @internal
+	 * @brief Initializes the PHP session.
+	 */
+	private function _initSession()
+	{
+		if (php_sapi_name() === 'cli')
+			return;
+		if (session_status() === PHP_SESSION_NONE)
+			session_start();
+		if (!isset($_SESSION['canary']) || $_SESSION['canary'] <
+			time() - $this->_app->config['session_canary_lifetime']) {
+			session_regenerate_id(true);
+			$_SESSION['canary'] = time();
+			$_COOKIE[session_name()] = session_id();
+		}
+	}
+
+	/**
+	 * @internal
+	 * @brief Destroys the PHP session and its cookie.
+	 */
+	private function _destroySession()
+	{
+		if (session_status() !== PHP_SESSION_ACTIVE)
+			return;
+		$this->unsetCookie(session_name());
+		session_destroy();
+	}
+
+	/**
+	 * @internal
+	 * @brief Mantains the user logged in using the AuthToken or the PHP
+	 * session.
+	 */
+	private function _login()
+	{
+		if (php_sapi_name() === 'cli') {
+			$this->authToken = null;
+			$uid = intval(readline('[Login] Insert user id (0 for no login): '));
+			if ($uid)
+				$this->user = $this->_em->getFromDb('User', $uid);
+			else
+				$this->user = null;
+			return;
+		}
+		$user = false;
+		$authToken = false;
+		$userid = $this->session('userid');
+		$clientToken = $this->cookie('authToken');
+		if (!empty($clientToken) && !empty($clientToken['id'])) {
+			$authToken = $this->_em->getFromDb('AuthToken',
+				$clientToken['id']);
+			if ($authToken !== false && !empty($clientToken['validator']))
+				$user = $authToken->authenticate($clientToken['validator']);
+			if ($user === false
+				|| (!empty($userid) && $user->getId() !== $userid)) {
+				$authToken = false;
+				$user = false;
+				$this->_destroySession();
+				$this->unsetCookie('authToken');
+			} else {
+				$_SESSION['userid'] = $user->getId();
+			}
+		} else if (!empty($userid)) {
+			$user = $this->_em->getFromDb('User', $userid);
+		}
+		$this->user = $user ?: null;
+		$this->authToken = $authToken ?: null;
+		if (!$this->isLoggedIn())
+			$this->logout();
+	}
+
+	/**
+	 * @internal
+	 * @brief Sanitizes GET and POST parameters.
+	 *
+	 * @param[in] string $value		The string to sanitize.
+	 * @param[in] bool $removeSlashes	TRUE to remove any slash from
+	 * 					the string (useful to avoid
+	 * 					LFI vulnerabilities).
+	 * @param[in] bool $ucfirst		TRUE to make the first letter
+	 * 					upper case.
+	 * @retval string			The sanitized string.
+	 */
+	private function _sanitizeParam($value, $removeSlashes = false, $ucfirst = false)
+	{
+		if (empty($value))
+			return '';
+		$value = $removeSlashes ? str_replace('\\', '', $value) : $value;
+		$value = trim($value);
+		return $ucfirst ? ucfirst($value) : $value;
+	}
+
+	/**
+	 * @internal
+	 * @brief Reads GET and POST parameters from the Visitor's request.
+	 */
+	private function _readParams()
+	{
+		if (php_sapi_name() === 'cli')
+			return;
+
+		foreach ($_GET as $key => $value) {
+			$key = strtolower($key);
+			switch ($key) {
+			case 'page':
+				$this->setPage($value);
+				break;
+			case 'action':
+				$this->setAction($value);
+				break;
+			default:
+				$this->setGetParams([$key => $value]);
+			}
+		}
+		$this->setPostParams($_POST);
+	}
+// }}}
+
 }

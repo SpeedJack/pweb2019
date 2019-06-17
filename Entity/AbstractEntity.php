@@ -10,6 +10,8 @@ namespace Pweb\Entity;
  */
 abstract class AbstractEntity
 {
+
+// Protected Properties {{{
 	/**
 	 * @internal
 	 * @var int $_entityId
@@ -73,6 +75,7 @@ abstract class AbstractEntity
 	 * An array of getter functions for each property/column.
 	 */
 	protected $_getters = [];
+// }}}
 
 	/**
 	 * @var string|null TABLE_NAME
@@ -94,6 +97,7 @@ abstract class AbstractEntity
 		$this->_em = EntityManager::getInstance();
 	}
 
+// Getters {{{
 	/**
 	 * @brief Returns the fully qualified name of the entity.
 	 *
@@ -115,16 +119,6 @@ abstract class AbstractEntity
 	}
 
 	/**
-	 * @brief Sets the entity's id.
-	 *
-	 * @param[in] int $entityId	The new id of this entity.
-	 */
-	public function setEntityId($entityId)
-	{
-		$this->_entityId = $entityId;
-	}
-
-	/**
 	 * @brief Returns the id of this entity on the database.
 	 *
 	 * @retval int		The id of this entity on the database.
@@ -133,7 +127,9 @@ abstract class AbstractEntity
 	{
 		return $this->_id;
 	}
+// }}}
 
+// Setters {{{
 	/**
 	 * @internal
 	 * @brief Sets a property which corresponds to a column in the database.
@@ -167,6 +163,18 @@ abstract class AbstractEntity
 		$this->$realName = $value;
 	}
 
+	/**
+	 * @brief Sets the entity's id.
+	 *
+	 * @param[in] int $entityId	The new id of this entity.
+	 */
+	public function setEntityId($entityId)
+	{
+		$this->_entityId = $entityId;
+	}
+// }}}
+
+// Entity Methods {{{
 	/**
 	 * @brief Retrives an instance of this entity from the database with the
 	 * specified id.
@@ -213,13 +221,48 @@ abstract class AbstractEntity
 	}
 
 	/**
+	 * @brief Creates a new entity from the data passed as array.
+	 *
+	 * @param[in] array $data	Associative array of key-value pairs
+	 * 				where the key is the property/column's
+	 * 				name.
+	 * @retval self|false		The entity created or FALSE if no data
+	 * 				is provided.
+	 */
+	public static function createFromData(array $data)
+	{
+		if (empty($data))
+			return false;
+		$instance = new static(0);
+		$instance->_fillData($data);
+		return $instance;
+	}
+
+	/**
+	 * @brief Marks this entity for deletion from the database.
+	 */
+	public function delete()
+	{
+		$this->_toDelete = true;
+	}
+
+	/**
+	 * @brief Marks this entity for insertion on the database.
+	 */
+	public function insert()
+	{
+		$this->_toInsert = true;
+	}
+// }}}
+
+// Entity Life-cycle {{{
+	/**
 	 * @internal
 	 * @brief This function is executed before the entity is inserted on the
 	 * database.
 	 */
 	protected function _preInsert() {}
-	
-	
+
 	/**
 	 * @internal
 	 * @brief Inserts the entity on the database.
@@ -315,7 +358,7 @@ abstract class AbstractEntity
 
 	/**
 	 * @internal
-	 * @brief This function is executed before the entity is saved (i.e. 
+	 * @brief This function is executed before the entity is saved (i.e.
 	 * inserted, updated or deleted) on the database.
 	 */
 	protected function _preSave() {}
@@ -356,11 +399,13 @@ abstract class AbstractEntity
 
 	/**
 	 * @internal
-	 * @brief This function is executed after the entity is saved (i.e. 
+	 * @brief This function is executed after the entity is saved (i.e.
 	 * inserted, updated or deleted) on the database.
 	 */
 	protected function _postSave() {}
+// }}}
 
+// Protected Entity Methods {{{
 	/**
 	 * @internal
 	 * @brief Fills the properties/columns of this entity with the values
@@ -379,38 +424,6 @@ abstract class AbstractEntity
 		}
 		$this->_entityId = $this->_id;
 	}
+// }}}
 
-	/**
-	 * @brief Creates a new entity from the data passed as array.
-	 *
-	 * @param[in] array $data	Associative array of key-value pairs
-	 * 				where the key is the property/column's
-	 * 				name.
-	 * @retval self|false		The entity created or FALSE if no data
-	 * 				is provided.
-	 */
-	public static function createFromData(array $data)
-	{
-		if (empty($data))
-			return false;
-		$instance = new static(0);
-		$instance->_fillData($data);
-		return $instance;
-	}
-
-	/**
-	 * @brief Marks this entity for deletion from the database.
-	 */
-	public function delete()
-	{
-		$this->_toDelete = true;
-	}
-
-	/**
-	 * @brief Marks this entity for insertion on the database.
-	 */
-	public function insert()
-	{
-		$this->_toInsert = true;
-	}
 }

@@ -9,6 +9,8 @@ namespace Pweb\Db;
  */
 abstract class AbstractStatement
 {
+
+// Public Properties {{{
 	/**
 	 * @var AbstractAdapter $adapter
 	 * The database connector adapter.
@@ -34,6 +36,7 @@ abstract class AbstractStatement
 	 * The values returned by the query.
 	 */
 	public $values = [];
+// }}}
 
 	/**
 	 * @brief Creates a new statement.
@@ -51,32 +54,7 @@ abstract class AbstractStatement
 		$this->params = is_array($params) ? $params : [$params];
 	}
 
-	/**
-	 * @brief Prepares the statement for execution and binds the parameters.
-	 */
-	abstract public function prepare();
-
-	/**
-	 * @brief Executes the statement.
-	 *
-	 * @retval bool		TRUE if execution succeded; FALSE otherwise.
-	 */
-	abstract public function execute();
-
-	/**
-	 * @brief Fetches the values from the executed query.
-	 *
-	 * @retval array	An array containing the values fetched.
-	 */
-	abstract public function fetchValues();
-
-	/**
-	 * @brief Returns the number of rows affected by the query.
-	 *
-	 * @retval int		The number of rows affected.
-	 */
-	abstract public function rowsAffected();
-
+// Public Methods {{{
 	/**
 	 * @brief Fetches one row from the executed query and returns the
 	 * result.
@@ -166,7 +144,9 @@ abstract class AbstractStatement
 		}
 		return $output;
 	}
+// }}}
 
+// Protected Methods {{{
 	/**
 	 * @brief Returns the proper exception to trigger when an error occurs.
 	 *
@@ -190,4 +170,34 @@ abstract class AbstractStatement
 		return new Exception($message, $code, $sqlStateCode, $this);
 
 	}
+// }}}
+
+// Abstract Methods {{{
+	/**
+	 * @brief Prepares the statement for execution and binds the parameters.
+	 */
+	abstract public function prepare();
+
+	/**
+	 * @brief Executes the statement.
+	 *
+	 * @retval bool		TRUE if execution succeded; FALSE otherwise.
+	 */
+	abstract public function execute();
+
+	/**
+	 * @brief Fetches the values from the executed query.
+	 *
+	 * @retval array	An array containing the values fetched.
+	 */
+	abstract public function fetchValues();
+
+	/**
+	 * @brief Returns the number of rows affected by the query.
+	 *
+	 * @retval int		The number of rows affected.
+	 */
+	abstract public function rowsAffected();
+// }}}
+
 }

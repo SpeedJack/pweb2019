@@ -10,6 +10,8 @@ namespace Pweb\Entity;
  */
 class AuthToken extends AbstractEntity
 {
+
+// Entity Properties {{{
 	/**
 	 * @internal
 	 * @var int $_userId
@@ -34,7 +36,9 @@ class AuthToken extends AbstractEntity
 	 * The user associated to this token.
 	 */
 	protected $_user;
+// }}}
 
+// Other Properties {{{
 	/**
 	 * @internal
 	 * @var array $_getters
@@ -51,7 +55,9 @@ class AuthToken extends AbstractEntity
 	 * The name of the database's table associated with the entity.
 	 */
 	public const TABLE_NAME = 'authTokens';
+// }}}
 
+// Getters {{{
 	/**
 	 * @brief Returns the user id.
 	 *
@@ -93,7 +99,9 @@ class AuthToken extends AbstractEntity
 			$this->_user = $this->_em->getFromDb('User', $this->_userId);
 		return $this->_user;
 	}
+// }}}
 
+// Setters {{{
 	/**
 	 * @brief Sets the user associated with this token.
 	 *
@@ -113,81 +121,9 @@ class AuthToken extends AbstractEntity
 		}
 		return true;
 	}
+// }}}
 
-	/**
-	 * @brief Checks if the token is expired.
-	 *
-	 * @retval bool		TRUE if the token is expired; FALSE otherwise.
-	 */
-	public function isExpired()
-	{
-		return $this->_expireTime <= time();
-	}
-
-	/** @brief Resets the expiration time. */
-	public function resetExpireTime()
-	{
-		$this->_set('expireTime', time() + $this->_app->config['auth_token_duration']);
-	}
-
-	/**
-	 * @brief Checks if the provided token equals to this token.
-	 *
-	 * @param[in] string $token	The token to check.
-	 * @retval bool			TRUE if the token is valid; FALSE
-	 * 				otherwise.
-	 */
-	public function verifyToken($token)
-	{
-		return password_verify($token, $this->_authToken);
-	}
-
-	/**
-	 * @internal
-	 * @brief Generates a token using mt_rand().
-	 *
-	 * This does not generate a cryptographically secure token. It is used
-	 * only if the PHP version running this application does not support
-	 * cryptographically secure random generators.
-	 *
-	 * @retval string	The generated token.
-	 */
-	private function _generateInsecureToken()
-	{
-		error_log(__('Generating insecure auth token. You should update PHP to a newer version or install random_compat/OpenSSL extension.'));
-		$token = '';
-		for ($i = 0; $i < $this->_app->config['auth_token_length']; ++$i)
-			$token .= chr(mt_rand(0, 255));
-		return $token;
-	}
-
-	/**
-	 * @brief Generates a new token and saves his hash in this entity.
-	 *
-	 * @retval string	The generated token.
-	 */
-	public function generateToken()
-	{
-		$raw_token = false;
-		if (function_exists('random_bytes'))
-			try {
-				$raw_token = random_bytes($this->_app->config['auth_token_length']);
-			} catch (\Exception $e) {
-				/* insufficient entropy */
-				$raw_token = false;
-			}
-		if ($raw_token === false && function_exists('openssl_random_pseudo_bytes'))
-			$raw_token = openssl_random_pseudo_bytes($this->_app->config['auth_token_length']);
-		if ($raw_token === false && function_exists('mcrypt_create_iv'))
-			$raw_token = mcrypt_create_iv($this->_app->config['auth_token_length'], MCRYPT_DEV_URANDOM);
-		if ($raw_token === false)
-			$raw_token = $this->_generateInsecureToken();
-		$token = bin2hex($raw_token);
-		$this->_set('authToken', password_hash($token, PASSWORD_DEFAULT));
-		$this->resetExpireTime();
-		return $token;
-	}
-
+// Entity Methods {{{
 	/**
 	 * @brief Retrives an AuthToken entity from the database with the
 	 * specified id.
@@ -255,6 +191,75 @@ class AuthToken extends AbstractEntity
 		$em = EntityManager::getInstance();
 		$db->query('DELETE FROM `' . self::TABLE_NAME . '` WHERE userId = ?;', $userid);
 	}
+// }}}
+
+// Entity Life-cycle {{{
+	/**
+	 * @internal
+	 * @brief Deletes this AuthToken if it's expired.
+	 */
+	protected function _preSave()
+	{
+		if ($this->isExpired())
+			$this->delete();
+	}
+// }}}
+
+// Public Methods {{{
+	/**
+	 * @brief Checks if the token is expired.
+	 *
+	 * @retval bool		TRUE if the token is expired; FALSE otherwise.
+	 */
+	public function isExpired()
+	{
+		return $this->_expireTime <= time();
+	}
+
+	/** @brief Resets the expiration time. */
+	public function resetExpireTime()
+	{
+		$this->_set('expireTime', time() + $this->_app->config['auth_token_duration']);
+	}
+
+	/**
+	 * @brief Checks if the provided token equals to this token.
+	 *
+	 * @param[in] string $token	The token to check.
+	 * @retval bool			TRUE if the token is valid; FALSE
+	 * 				otherwise.
+	 */
+	public function verifyToken($token)
+	{
+		return password_verify($token, $this->_authToken);
+	}
+
+	/**
+	 * @brief Generates a new token and saves his hash in this entity.
+	 *
+	 * @retval string	The generated token.
+	 */
+	public function generateToken()
+	{
+		$raw_token = false;
+		if (function_exists('random_bytes'))
+			try {
+				$raw_token = random_bytes($this->_app->config['auth_token_length']);
+			} catch (\Exception $e) {
+				/* insufficient entropy */
+				$raw_token = false;
+			}
+		if ($raw_token === false && function_exists('openssl_random_pseudo_bytes'))
+			$raw_token = openssl_random_pseudo_bytes($this->_app->config['auth_token_length']);
+		if ($raw_token === false && function_exists('mcrypt_create_iv'))
+			$raw_token = mcrypt_create_iv($this->_app->config['auth_token_length'], MCRYPT_DEV_URANDOM);
+		if ($raw_token === false)
+			$raw_token = $this->_generateInsecureToken();
+		$token = bin2hex($raw_token);
+		$this->_set('authToken', password_hash($token, PASSWORD_DEFAULT));
+		$this->resetExpireTime();
+		return $token;
+	}
 
 	/**
 	 * @brief Authenticates a visitor by checking the provided validator
@@ -271,14 +276,27 @@ class AuthToken extends AbstractEntity
 		$this->resetExpireTime();
 		return $this->_user;
 	}
+// }}}
 
+// Private Methods {{{
 	/**
 	 * @internal
-	 * @brief Deletes this AuthToken if it's expired.
+	 * @brief Generates a token using mt_rand().
+	 *
+	 * This does not generate a cryptographically secure token. It is used
+	 * only if the PHP version running this application does not support
+	 * cryptographically secure random generators.
+	 *
+	 * @retval string	The generated token.
 	 */
-	protected function _preSave()
+	private function _generateInsecureToken()
 	{
-		if ($this->isExpired())
-			$this->delete();
+		error_log(__('Generating insecure auth token. You should update PHP to a newer version or install random_compat/OpenSSL extension.'));
+		$token = '';
+		for ($i = 0; $i < $this->_app->config['auth_token_length']; ++$i)
+			$token .= chr(mt_rand(0, 255));
+		return $token;
 	}
+// }}}
+
 }

@@ -12,6 +12,8 @@ require_once 'array-functions.php';
  */
 class EntityManager extends \Pweb\AbstractSingleton
 {
+
+// Protected Properties {{{
 	/**
 	 * @internal
 	 * @var	array $_savedEntities
@@ -26,6 +28,7 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * intended to be deleted when the application exits.
 	 */
 	protected $_cachedEntities = [];
+// }}}
 
 	/**
 	 * @internal
@@ -34,63 +37,15 @@ class EntityManager extends \Pweb\AbstractSingleton
 	protected function __construct() { }
 
 	/**
-	 * @internal
-	 * @brief Asserts that the specified entity is a valid entity.
-	 *
-	 * @throws InvalidArgumentException	If $entity is not a valid
-	 * 					entity.
-	 *
-	 * @param[in] object|string $entity	The entity or entity's name to
-	 * 					check.
+	 * @brief Flushes all the saved entities to the database and destroys
+	 * the EntityManager.
 	 */
-	private function _assertValidEntity($entity)
+	public function __destruct()
 	{
-		if (is_string($entity) && !startsWith($entity, __NAMESPACE__))
-			$entity = __NAMESPACE__ . "\\$entity";
-		$parentName = __NAMESPACE__ . "\\AbstractEntity";
-		if (!is_subclass_of($entity, $parentName))
-			throw new \InvalidArgumentException(
-				__('Invalid Entity %s.', $entity)
-			);
+		$this->flush();
 	}
 
-	/**
-	 * @internal
-	 * @brief Returns the entity's fully qualified name.
-	 *
-	 * @param[in] object|string $entity	The entity or entity's name.
-	 * @retval string			The entity's fully qualified
-	 * 					name.
-	 */
-	private function _getEntityFullName($entity)
-	{
-		$this->_assertValidEntity($entity);
-		if (is_object($entity))
-			$entityName = $entity->getClassName();
-		else if (!startsWith($entity, __NAMESPACE__))
-			$entityName = __NAMESPACE__ . "\\$entity";
-		else
-			$entityName = $entity;
-		return $entityName;
-	}
-
-	/**
-	 * @internal
-	 * @brief Returns the entity's short name (i.e. the name of the class).
-	 *
-	 * @param[in] object|string $entity	The entity or entity's name.
-	 * @retval string			The entity's short name.
-	 */
-	private function _getEntityShortName($entity)
-	{
-		$this->_assertValidEntity($entity);
-		if (is_object($entity))
-			$entityName = $entity->getClassName();
-		else
-			$entityName = $entity;
-		return trimPrefix($entityName, __NAMESPACE__ . '\\');
-	}
-
+// Public Methods {{{
 	/**
 	 * @brief Creates the specified entity, or returns it from the cache if
 	 * it was already created.
@@ -313,13 +268,66 @@ class EntityManager extends \Pweb\AbstractSingleton
 			foreach ($entities as $entity)
 				$entity->save();
 	}
+// }}}
+
+// Private Methods {{{
+	/**
+	 * @internal
+	 * @brief Asserts that the specified entity is a valid entity.
+	 *
+	 * @throws InvalidArgumentException	If $entity is not a valid
+	 * 					entity.
+	 *
+	 * @param[in] object|string $entity	The entity or entity's name to
+	 * 					check.
+	 */
+	private function _assertValidEntity($entity)
+	{
+		if (is_string($entity) && !startsWith($entity, __NAMESPACE__))
+			$entity = __NAMESPACE__ . "\\$entity";
+		$parentName = __NAMESPACE__ . "\\AbstractEntity";
+		if (!is_subclass_of($entity, $parentName))
+			throw new \InvalidArgumentException(
+				__('Invalid Entity %s.', $entity)
+			);
+	}
 
 	/**
-	 * @brief Flushes all the saved entities to the database and destroys
-	 * the EntityManager.
+	 * @internal
+	 * @brief Returns the entity's fully qualified name.
+	 *
+	 * @param[in] object|string $entity	The entity or entity's name.
+	 * @retval string			The entity's fully qualified
+	 * 					name.
 	 */
-	public function __destruct()
+	private function _getEntityFullName($entity)
 	{
-		$this->flush();
+		$this->_assertValidEntity($entity);
+		if (is_object($entity))
+			$entityName = $entity->getClassName();
+		else if (!startsWith($entity, __NAMESPACE__))
+			$entityName = __NAMESPACE__ . "\\$entity";
+		else
+			$entityName = $entity;
+		return $entityName;
 	}
+
+	/**
+	 * @internal
+	 * @brief Returns the entity's short name (i.e. the name of the class).
+	 *
+	 * @param[in] object|string $entity	The entity or entity's name.
+	 * @retval string			The entity's short name.
+	 */
+	private function _getEntityShortName($entity)
+	{
+		$this->_assertValidEntity($entity);
+		if (is_object($entity))
+			$entityName = $entity->getClassName();
+		else
+			$entityName = $entity;
+		return trimPrefix($entityName, __NAMESPACE__ . '\\');
+	}
+// }}}
+
 }

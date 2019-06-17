@@ -15,7 +15,6 @@ $config['db'] = [
 $config['fallback_server_name'] = 'xps';
 $config['fallback_server_port'] = 8080;
 
-//$config['error_log'] = '/tmp/error.log';
 $config['debug'] = true;
 
 // For windows:

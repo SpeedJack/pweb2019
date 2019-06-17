@@ -9,6 +9,8 @@ namespace Pweb\Db;
  */
 class MysqliStatement extends AbstractStatement
 {
+
+// Public Properties {{{
 	/**
 	 * @var array $metaFields
 	 * Array of objects representing the fields in a result set.
@@ -19,7 +21,9 @@ class MysqliStatement extends AbstractStatement
 	 * The mysqli statement, prepared for execution.
 	 */
 	public $statement;
+// }}}
 
+// Public Methods {{{
 	/**
 	 * @brief Returns the number of rows affected by this statement.
 	 *
@@ -161,4 +165,6 @@ class MysqliStatement extends AbstractStatement
 			$values[] = $v;
 		return $values;
 	}
+// }}}
+
 }

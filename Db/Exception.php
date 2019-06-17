@@ -9,6 +9,8 @@ namespace Pweb\Db;
  */
 class Exception extends \Exception
 {
+
+// Public Properties {{{
 	/**
 	 * @var string $sqlStateCode
 	 * The SQL State Code.
@@ -19,6 +21,7 @@ class Exception extends \Exception
 	 * The statement that triggered this exception.
 	 */
 	public $statement;
+// }}}
 
 	/**
 	 * @brief Creates a new database exception.

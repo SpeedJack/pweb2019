@@ -33,4 +33,4 @@ Optional PHP Extensions:
 	* xdebug >= 2.2 - for debugging
 
 Optional Softwares:
-	* doxygen - for code documentation.
+	* doxygen - for code documentation

@@ -11,6 +11,8 @@ require_once 'string-functions.php';
  */
 class User extends AbstractEntity
 {
+
+// Entity Properties {{{
 	/**
 	 * @internal
 	 * @var string $_username
@@ -29,6 +31,9 @@ class User extends AbstractEntity
 	 * The user's hashed password.
 	 */
 	protected $_passwordHash;
+// }}}
+
+// Other Properties {{{
 	/**
 	 * @internal
 	 * @var array $_getters
@@ -63,7 +68,139 @@ class User extends AbstractEntity
 	 * valid.
 	 */
 	public const VALID = 2;
+// }}}
 
+// Getters {{{
+	/**
+	 * @brief Returns the user's username.
+	 *
+	 * @retval string	The user's username.
+	 */
+	public function getUsername()
+	{
+		return $this->_username;
+	}
+
+	/**
+	 * @brief Returns the user's email.
+	 *
+	 * @retval string	The user's email.
+	 */
+	public function getEmail()
+	{
+		return $this->_email;
+	}
+
+	/**
+	 * @brief Returns the user's hashed password.
+	 *
+	 * @retval string	The user's hashed password.
+	 */
+	public function getPasswordHash()
+	{
+		return $this->_passwordHash;
+	}
+// }}}
+
+// Setters {{{
+	/**
+	 * @brief Sets the user's username.
+	 *
+	 * @param[in] string $username	The username.
+	 * @retval int			Returns VALID if username is valid;
+	 * 				INVALID if invalid; ALREADY_IN_USE if
+	 * 				already in use by another user.
+	 */
+	public function setUsername($username)
+	{
+		$validity = self::isValidUsername($username, true, $this->getId());
+		if ($validity !== self::VALID)
+			return $validity;
+		$this->_set('username', $username);
+		return self::VALID;
+	}
+
+	/**
+	 * @brief Sets the user's email.
+	 *
+	 * @param[in] string $email	The email.
+	 * @retval int			Returns VALID if email is valid;
+	 * 				INVALID if invalid; ALREADY_IN_USE if
+	 * 				already in use by another user.
+	 */
+	public function setEmail($email)
+	{
+		$validity = self::isValidEmail($email, true, $this->getId());
+		if ($validity !== self::VALID)
+			return $validity;
+		$this->_set('email', $email);
+		return self::VALID;
+	}
+
+	/**
+	 * @brief Sets the user's password.
+	 *
+	 * @param[in] string $password	The password.
+	 * @retval bool			TRUE if the password is valid; FALSE if
+	 * 				the password is too short.
+	 */
+	public function setPassword($password)
+	{
+		if (strlen($password) < $this->_app->config['min_password_length'])
+			return false;
+		$this->_set('passwordHash',
+			password_hash($password, PASSWORD_DEFAULT));
+		return true;
+	}
+// }}}
+
+// Entity Methods {{{
+	/**
+	 * @brief Retrives the user with the specified username from the
+	 * database.
+	 *
+	 * @param[in] string $username	The username of the user to retrive.
+	 * @retval self|false		The retrived user or FALSE if no user
+	 * 				was found.
+	 */
+	public static function getByUsername($username)
+	{
+		if (self::isValidUsername($username) !== self::VALID)
+			return false;
+		$db = \Pweb\App::getInstance()->getDb();
+		$data = $db->fetchRow('SELECT * FROM `' . self::TABLE_NAME . '` WHERE username=?;', $username);
+		return self::createFromData($data);
+	}
+
+	/**
+	 * @brief Retrives the user with the specified email from the database.
+	 *
+	 * @param[in] string $email	The email of the user to retrive.
+	 * @retval self|false		The retrived user or FALSE if no user
+	 * 				was found.
+	 */
+	public static function getByEmail($email)
+	{
+		if (self::isValidEmail($email) !== self::VALID)
+			return false;
+		$db = \Pweb\App::getInstance()->getDb();
+		$data = $db->fetchRow('SELECT * FROM `' . self::TABLE_NAME . '` WHERE email=?;', $email);
+		return self::createFromData($data);
+	}
+// }}}
+
+// Entity Life-cycle {{{
+	/**
+	 * @internal
+	 * @brief Deletes every auth tokens associated with this user.
+	 */
+	protected function _preDelete()
+	{
+		AuthToken::deleteByUserId($this->getId());
+	}
+// }}}
+
+// Public Methods {{{
 	/**
 	 * @brief Checks if the provided username is valid.
 	 *
@@ -129,86 +266,6 @@ class User extends AbstractEntity
 	}
 
 	/**
-	 * @brief Returns the user's username.
-	 *
-	 * @retval string	The user's username.
-	 */
-	public function getUsername()
-	{
-		return $this->_username;
-	}
-
-	/**
-	 * @brief Returns the user's email.
-	 *
-	 * @retval string	The user's email.
-	 */
-	public function getEmail()
-	{
-		return $this->_email;
-	}
-
-	/**
-	 * @brief Returns the user's hashed password.
-	 *
-	 * @retval string	The user's hashed password.
-	 */
-	public function getPasswordHash()
-	{
-		return $this->_passwordHash;
-	}
-
-	/**
-	 * @brief Sets the user's username.
-	 *
-	 * @param[in] string $username	The username.
-	 * @retval int			Returns VALID if username is valid;
-	 * 				INVALID if invalid; ALREADY_IN_USE if
-	 * 				already in use by another user.
-	 */
-	public function setUsername($username)
-	{
-		$validity = self::isValidUsername($username, true, $this->getId());
-		if ($validity !== self::VALID)
-			return $validity;
-		$this->_set('username', $username);
-		return self::VALID;
-	}
-
-	/**
-	 * @brief Sets the user's email.
-	 *
-	 * @param[in] string $email	The email.
-	 * @retval int			Returns VALID if email is valid;
-	 * 				INVALID if invalid; ALREADY_IN_USE if
-	 * 				already in use by another user.
-	 */
-	public function setEmail($email)
-	{
-		$validity = self::isValidEmail($email, true, $this->getId());
-		if ($validity !== self::VALID)
-			return $validity;
-		$this->_set('email', $email);
-		return self::VALID;
-	}
-
-	/**
-	 * @brief Sets the user's password.
-	 *
-	 * @param[in] string $password	The password.
-	 * @retval bool			TRUE if the password is valid; FALSE if
-	 * 				the password is too short.
-	 */
-	public function setPassword($password)
-	{
-		if (strlen($password) < $this->_app->config['min_password_length'])
-			return false;
-		$this->_set('passwordHash',
-			password_hash($password, PASSWORD_DEFAULT));
-		return true;
-	}
-
-	/**
 	 * @brief Verifies that the provided password equals with this user's
 	 * password.
 	 *
@@ -220,46 +277,6 @@ class User extends AbstractEntity
 	{
 		return password_verify($password, $this->_passwordHash);
 	}
+// }}}
 
-	/**
-	 * @brief Retrives the user with the specified username from the
-	 * database.
-	 *
-	 * @param[in] string $username	The username of the user to retrive.
-	 * @retval self|false		The retrived user or FALSE if no user
-	 * 				was found.
-	 */
-	public static function getByUsername($username)
-	{
-		if (self::isValidUsername($username) !== self::VALID)
-			return false;
-		$db = \Pweb\App::getInstance()->getDb();
-		$data = $db->fetchRow('SELECT * FROM `' . self::TABLE_NAME . '` WHERE username=?;', $username);
-		return self::createFromData($data);
-	}
-
-	/**
-	 * @brief Retrives the user with the specified email from the database.
-	 *
-	 * @param[in] string $email	The email of the user to retrive.
-	 * @retval self|false		The retrived user or FALSE if no user
-	 * 				was found.
-	 */
-	public static function getByEmail($email)
-	{
-		if (self::isValidEmail($email) !== self::VALID)
-			return false;
-		$db = \Pweb\App::getInstance()->getDb();
-		$data = $db->fetchRow('SELECT * FROM `' . self::TABLE_NAME . '` WHERE email=?;', $email);
-		return self::createFromData($data);
-	}
-
-	/**
-	 * @internal
-	 * @brief Deletes every auth tokens associated with this user.
-	 */
-	protected function _preDelete()
-	{
-		AuthToken::deleteByUserId($this->getId());
-	}
 }

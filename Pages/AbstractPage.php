@@ -9,6 +9,8 @@ namespace Pweb\Pages;
  */
 abstract class AbstractPage
 {
+
+// Protected Properties {{{
 	/**
 	 * @internal
 	 * @var Pweb::App $_app
@@ -53,6 +55,7 @@ abstract class AbstractPage
 	 * \<head\> seciont of the page.
 	 */
 	protected $_meta = [];
+// }}}
 
 	/**
 	 * @brief Creates a new page.
@@ -66,6 +69,7 @@ abstract class AbstractPage
 		$this->_visitor = $this->_em->create('Visitor');
 	}
 
+// Protected Methods {{{
 	/**
 	 * @internal
 	 * @brief Sets the title of the page.
@@ -257,7 +261,7 @@ abstract class AbstractPage
 	 * @retval bool				TRUE if the template was found;
 	 * 					FALSE otherwise.
 	 */
-	private function _loadTemplate($templateName, array $params = [])
+	protected function _loadTemplate($templateName, array $params = [])
 	{
 		$templateDir = \Pweb\App::APP_ROOT . '/templates';
 		$templateName = "$templateDir/$templateName.php";
@@ -423,7 +427,11 @@ abstract class AbstractPage
 	{
 		$this->_show($templateName, $params, false, false, false);
 	}
+// }}}
 
+// Abstract Methods {{{
 	/** @brief The default action of the page. */
 	abstract public function actionIndex();
+// }}}
+
 }
