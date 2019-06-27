@@ -8,30 +8,30 @@
 <footer>
 <div class="container">
 	<section id="about-us" class="column">
-		<h3><?php echo __('About Us'); ?></h3>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. <a href="<?php echo $application->buildLink('about'); ?>"><?php echo __('More...'); ?></a></p>
+		<h3><?= __('About Us') ?></h3>
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. <a href="<?= $application->buildLink('about') ?>"><?= __('More...') ?></a></p>
 	</section>
 	<section id="social-links" class="column">
-		<h3><?php echo __('Follow Us'); ?></h3>
+		<h3><?= __('Follow Us') ?></h3>
 		<?php foreach ($application->config['social_names'] as $social => $pageName):
 			if (empty($pageName)) continue; ?>
-			<a href="<?php echo $application->buildExternalLink("www.$social.com/$pageName"); ?>" target="_blank" rel="external">
+			<a href="<?= $application->buildExternalLink("www.$social.com/$pageName") ?>" target="_blank" rel="external">
 				<svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid meet">
-					<use xlink:href="#social-def-<?php echo $social; ?>"></use>
+					<use xlink:href="#social-def-<?= $social ?>"></use>
 				</svg>
 			</a>
 		<?php endforeach; ?>
 	</section>
 	<section id="language-selector" class="column">
-		<h3><?php echo __('Language'); ?></h3>
+		<h3><?= __('Language') ?></h3>
 		<?php foreach ($application->config['selector_languages'] as $lang): ?>
-			<svg id="flag-<?php echo $lang; ?>" width="20" height="15" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin">
-				<use xlink:href="#flag-def-<?php echo $lang; ?>"></use>
+			<svg id="flag-<?= $lang ?>" width="20" height="15" viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin">
+				<use xlink:href="#flag-def-<?= $lang ?>"></use>
 			</svg>
 		<?php endforeach; ?>
 	</section>
 </div>
-	<p id="copyright"><?php echo __('&copy; Copyright 2019 - Niccolò Scatena (University of Pisa) - All Rights Reserved.'); ?></p>
+	<p id="copyright"><?= __('&copy; Copyright 2019 - Niccolò Scatena (University of Pisa) - All Rights Reserved.') ?></p>
 	<svg display="none">
 		<defs>
 			<g id="social-def-facebook" xmlns="http://www.w3.org/2000/svg">

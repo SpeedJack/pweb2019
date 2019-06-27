@@ -5,4 +5,4 @@
  * @copyright GNU General Public License, version 3
  */
 ?>
-<p><?php echo $message; ?></p>
+<p><?= $message ?></p>

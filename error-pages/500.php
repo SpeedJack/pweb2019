@@ -12,9 +12,9 @@
 	</head>
 	<body>
 		<h1>Error 500 - Internal Server Error</h1>
-		<p><?=__('The server encountered an internal error and was unable to process the request.')?></p>
+		<p><?= __('The server encountered an internal error and was unable to process the request.') ?></p>
 		<?php if (!empty($errorMsg)): ?>
-			<p><?=__('Error Message: %s', htmlspecialchars($errorMsg))?>.</p>
+			<p><?= __('Error Message: %s', htmlspecialchars($errorMsg)) ?>.</p>
 		<?php endif; ?>
 	</body>
 </html>

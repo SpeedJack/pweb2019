@@ -12,6 +12,6 @@
 	</head>
 	<body>
 		<h1>Error 400 - Bad Request</h1>
-		<p><?=__('Invalid page.')?></p>
+		<p><?= __('Invalid page.') ?></p>
 	</body>
 </html>

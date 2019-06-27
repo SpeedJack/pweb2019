@@ -12,6 +12,6 @@
 	</head>
 	<body>
 		<h1>Error 404 - Not Found</h1>
-		<p><?=__('The requested page could not be found.')?></p>
+		<p><?= __('The requested page could not be found.') ?></p>
 	</body>
 </html>

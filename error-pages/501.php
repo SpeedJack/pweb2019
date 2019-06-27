@@ -12,6 +12,6 @@
 	</head>
 	<body>
 		<h1>Error 501 - Not Implemented</h1>
-		<p><?=__('The requested page exists but it\'s not fully implemented.')?></p>
+		<p><?= __('The requested page exists but it\'s not fully implemented.') ?></p>
 	</body>
 </html>

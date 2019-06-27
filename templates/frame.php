@@ -6,5 +6,5 @@
  */
 ?>
 <main>
-	<iframe src="<?php echo $frameSrc; ?>"></iframe>
+	<iframe src="<?=$frameSrc?>"></iframe>
 </main>

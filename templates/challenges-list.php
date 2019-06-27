@@ -17,7 +17,7 @@
 			if (!empty($currentCat)): ?>
 				</div>
 			<?php endif; ?>
-			<button class="accordion"><?php echo $challCat; ?></button>
+			<button class="accordion"><?= $challCat ?></button>
 			<div class="chall-container">
 		<?php endif;
 		$classStr = ' ';
@@ -26,7 +26,7 @@
 		else
 			$classStr .= getClassesString(['chall']);
 		?>
-			<div<?php echo $classStr; ?> id="chall-<?php echo $chall->getId(); ?>"><span><?php
+			<div<?= $classStr ?> id="chall-<?= $chall->getId() ?>"><span><?php
 				echo $chall->getName();
 				if ($solved)
 					echo '<br>(' . __('solved') . ')';
