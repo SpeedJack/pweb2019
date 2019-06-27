@@ -31,7 +31,6 @@ class LoginPage extends AbstractPage
 		if ($this->_visitor->isLoggedIn())
 			$this->_app->redirectHome();
 
-		$user = false;
 		$loginname = $this->_visitor->param('loginname', 'POST');
 		$password = $this->_visitor->param('password', 'POST');
 		$rememberme = $this->_visitor->param('rememberme');
