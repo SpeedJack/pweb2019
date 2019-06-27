@@ -69,6 +69,7 @@ main div.chall-container div.chall span {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
+	line-height: 1.5;
 }
 
 main div.chall-container div.chall:hover {
@@ -81,6 +82,12 @@ main div.chall-container div.solved-chall {
 	background-color: white;
 	color: #2ECC40;
 	cursor: default;
+}
+
+main div.chall-container div.solved-chall span:before {
+	content: "\002714\00A0"; /* check-mark sign and nbsp */
+	font-size: 1.5em;
+	line-height: 1;
 }
 
 main div.chall-container div.solved-chall:hover {

@@ -10,9 +10,6 @@
 	$currentCat = "";
 	foreach ($challenges as $chall) {
 		$challCat = $chall->getCategoryName();
-		$solved = false;
-		if ($this->_visitor->user->hasSolvedChallenge($chall))
-			$solved = true;
 		if ($currentCat !== $challCat):
 			if (!empty($currentCat)): ?>
 				</div>
@@ -21,15 +18,13 @@
 			<div class="chall-container">
 		<?php endif;
 		$classStr = ' ';
-		if ($solved)
+		if ($this->_visitor->user->hasSolvedChallenge($chall))
 			$classStr .= getClassesString(['chall', 'solved-chall']);
 		else
 			$classStr .= getClassesString(['chall']);
 		?>
 			<div<?= $classStr ?> id="chall-<?= $chall->getId() ?>"><span><?php
-				echo $chall->getName();
-				if ($solved)
-					echo '<br>(' . __('solved') . ')';
+				echo $chall->getName() . '<br>' . __('(%s points)', $chall->getPoints());
 				?></span></div>
 		<?php
 		$currentCat = $challCat;
