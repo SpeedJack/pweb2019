@@ -17,7 +17,7 @@
 }
 
 #modal-content {
-	margin: 30px auto;
+	margin: 8% auto;
 	width: 60%;
 	min-width: 120px;
 	-webkit-animation: animatezoom 0.6s;
@@ -61,7 +61,7 @@
 #modal-closebtn {
 	position: absolute;
 	right: 25px;
-	top 0;
+	top: 0;
 }
 
 #modal-closebtn:hover, #modal-closebtn:focus {

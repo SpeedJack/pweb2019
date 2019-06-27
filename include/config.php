@@ -17,6 +17,13 @@ $config['fallback_server_port'] = 8080;
 
 $config['debug'] = true;
 
+$config['social_names'] = [
+	'facebook' => '#',
+	'instagram' => '#',
+	'twitter' => '#',
+	'youtube' => 'user/#'
+];
+
 // For windows:
 //$config['locales'] = [
 //	'en' => 'english',

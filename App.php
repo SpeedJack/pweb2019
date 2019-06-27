@@ -114,7 +114,8 @@ class App extends AbstractSingleton
 		if (isset($this->_db))
 			return $this->_db;
 
-		if (extension_loaded('pdo') && extension_loaded('pdo_mysql'))
+		if (!$this->config['db']['prefer_mysqli_over_pdo'] &&
+			extension_loaded('pdo') && extension_loaded('pdo_mysql'))
 			$this->_db = Db\PdoAdapter::getInstance($this->config['db']);
 		else if (extension_loaded('mysqli'))
 			$this->_db = Db\MysqliAdapter::getInstance($this->config['db']);
@@ -123,6 +124,7 @@ class App extends AbstractSingleton
 				__("No database extension loaded: PDO or MySQLi is required."),
 				500
 			);
+
 		return $this->_db;
 	}
 
@@ -264,26 +266,36 @@ class App extends AbstractSingleton
 	 * @brief Generates a relative link to a page.
 	 *
 	 * @param[in] string|null $page		The page name. If NULL, returns
-	 * 					a link to index.php.
+	 * 					a link to index.php. The special
+	 * 					value '__current' can be used to
+	 * 					refer to the current page.
 	 * @param[in] string|null $action	The action name. If NULL,
-	 * 					defaults to actionIndex.
+	 * 					defaults to actionIndex. The
+	 * 					special value '__current' can be
+	 * 					used to refer to the current
+	 * 					action.
 	 * @param[in] array $params		Associative array of key-value
 	 * 					pairs of parameters.
 	 * @retval string			The generated link.
 	 */
-	public function buildLink($page = null, $action = null, $params = [])
+	public function buildLink($page = null, $action = null, array $params = [])
 	{
 		if (empty($page))
 			return 'index.php';
 		$rawAction = '';
+		$page = $page === '__current' ?
+			trimSuffix($this->_visitor->page, 'Page') : $page;
 		$rawPage = "?page=$page";
 		if ($this->config['use_url_rewrite'])
 			$rawPage = "/$page";
-		if (isset($action))
+		if (!empty($action)) {
+			$action = $action === '__current' ?
+				trimPrefix($this->_visitor->action, 'action') : $action;
 			if ($this->config['use_url_rewrite'])
 				$rawAction = "/$action";
 			else
 				$rawAction = "&action=$action";
+		}
 		$rawParams = $this->_getRawParams($params, true);
 		return "index.php$rawPage$rawAction$rawParams";
 	}
@@ -299,7 +311,7 @@ class App extends AbstractSingleton
 	 * @param[in] int $port		The port to append to the domain name.
 	 * @retval string		The generated link.
 	 */
-	public function buildExternalLink($link, $https = true, $params = [],
+	public function buildExternalLink($link, $https = true, array $params = [],
 		$port = 80)
 	{
 		$link = trim($link);
@@ -333,7 +345,7 @@ class App extends AbstractSingleton
 	 * 					pairs of parameters.
 	 * @retval string			The generated link.
 	 */
-	public function buildAbsoluteLink($page = null, $action = null, $params = [])
+	public function buildAbsoluteLink($page = null, $action = null, array $params = [])
 	{
 		$link = $this->serverName;
 		if ($this->config['use_url_rewrite']) {
@@ -398,6 +410,7 @@ class App extends AbstractSingleton
 			'app_name' => 'Pweb',
 			'header_motd' => 'Message of the day',
 			'db' => [
+				'prefer_mysqli_over_pdo' => false,
 				'host' => 'localhost',
 				'username' => 'root',
 				'password' => '',
@@ -420,6 +433,13 @@ class App extends AbstractSingleton
 				'/^it/i' => 'it_IT.UTF-8'
 			],
 			'default_locale' => 'en',
+			'selector_languages' => [ 'en', 'it' ],
+			'social_names' => [
+				'facebook' => '',
+				'instagram' => '',
+				'twitter' => '',
+				'youtube' => ''
+			],
 			'fallback_server_name' => 'localhost',
 			'fallback_server_port' => 80,
 			'use_fallback_server_infos' => false,
@@ -431,18 +451,17 @@ class App extends AbstractSingleton
 	 * @internal
 	 * @brief Creates a string of parameters that can be appended to a URL.
 	 *
-	 * @param[in] array|string $params	The parameter(s).
+	 * @param[in] array $params		The parameter(s).
 	 * @param[in] bool $append		Set to TRUE to generate a string
 	 * 					that starts with & instead of ?.
 	 * @retval string			The generated urlencoded string.
 	 */
-	protected function _getRawParams($params, $append = false)
+	protected function _getRawParams(array $params, $append = false)
 	{
 		$rawParams = '';
 		$i = 0;
 		if (empty($params))
 			return '';
-		$params = is_array($params) ? $params : [ $params ];
 		foreach ($params as $name => $value) {
 			if ($i == 0 && !$append)
 				$rawParams .= '?';

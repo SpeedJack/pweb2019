@@ -43,5 +43,5 @@ function closeModal(event)
 
 	modal.style.display = "none";
 	if (redirecturl !== undefined)
-		window.location.replace(redirecturl);
+		location.assign(redirecturl);
 }

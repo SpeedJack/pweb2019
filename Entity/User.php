@@ -31,6 +31,12 @@ class User extends AbstractEntity
 	 * The user's hashed password.
 	 */
 	protected $_passwordHash;
+	/**
+	 * @internal
+	 * @var array $_solvedChalls
+	 * Array of challenges solved by the user.
+	 */
+	protected $_solvedChalls;
 // }}}
 
 // Other Properties {{{
@@ -50,6 +56,7 @@ class User extends AbstractEntity
 	 * The name of the database's table associated with the entity.
 	 */
 	public const TABLE_NAME = 'users';
+	public const CHALLENGE_JOIN_TABLE = 'solvedChallenges';
 	/**
 	 * @var int INVALID
 	 * Returned by isValid* and set* functions when the username/email is
@@ -99,6 +106,17 @@ class User extends AbstractEntity
 	public function getPasswordHash()
 	{
 		return $this->_passwordHash;
+	}
+
+	public function getSolvedChallenges()
+	{
+		if (!isset($this->_solvedChalls)) {
+			$challs = $this->_em->getFromDbBy('Challenge',
+				'getAllSolvedBy', $this);
+			foreach ($challs as $chall)
+				$this->addSolvedChallenge($chall);
+		}
+		return $this->_solvedChalls;
 	}
 // }}}
 
@@ -152,6 +170,13 @@ class User extends AbstractEntity
 			password_hash($password, PASSWORD_DEFAULT));
 		return true;
 	}
+
+	public function addSolvedChallenge($chall)
+	{
+		if (is_int($chall))
+			$chall = $this->_em->getFromDb('Challenge', $chall);
+		$this->_solvedChalls[$chall->getId()] = $chall;
+	}
 // }}}
 
 // Entity Methods {{{
@@ -186,6 +211,26 @@ class User extends AbstractEntity
 		$db = \Pweb\App::getInstance()->getDb();
 		$data = $db->fetchRow('SELECT * FROM `' . self::TABLE_NAME . '` WHERE email=?;', $email);
 		return self::createFromData($data);
+	}
+
+	public function solveChallenge($chall)
+	{
+		if (is_int($chall))
+			$chall = $this->_em->getFromDb('Challenge', $chall);
+
+		try {
+			$this->_db->query('INSERT INTO `' . self::CHALLENGE_JOIN_TABLE . '`(challengeId, userId) VALUES(?, ?);',
+				$chall->getId(), $this->getId());
+		} catch (\Pweb\Db\DuplicateKeyException $e) {
+		}
+
+		$this->addSolvedChallenge($chall);
+	}
+
+	public function refreshSolvedChallenges()
+	{
+		unset($this->_solvedChalls);
+		return $this->getSolvedChallenges();
 	}
 // }}}
 
@@ -276,6 +321,18 @@ class User extends AbstractEntity
 	public function verifyPassword($password)
 	{
 		return password_verify($password, $this->_passwordHash);
+	}
+
+	public function hasSolvedChallenge($chall)
+	{
+		if (!is_int($chall))
+			$chall = $chall->getId();
+		if (!isset($this->_solvedChalls))
+			$this->refreshSolvedChallenges();
+
+		if (isset($this->_solvedChalls[$chall]))
+			return true;
+		return false;
 	}
 // }}}
 

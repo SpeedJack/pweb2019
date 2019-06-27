@@ -55,18 +55,20 @@ $topnavMenus = [
 					: [ $menuMeta['classes'] ]
 			);
 		$classStr = getClassesString($classes);
+		$classStr = empty($classStr) ? '' : " $classStr";
 		$menuAction = isset($menuMeta['action'])
 			? $menuMeta['action'] : null;
 		$menuParams = isset($menuMeta['params'])
-			? $menuMeta['params'] : null;
+			? $menuMeta['params'] : [];
 		$menuHref = 'href="' . $application->buildLink(
 			$menuMeta['page'], $menuAction, $menuParams) . '"';
 	?>
-		<a <?php echo "$classStr $menuHref"; ?>>
+		<a<?php echo "$classStr $menuHref"; ?>>
 			<?php echo $menuName; ?>
 		</a>
 	<?php endforeach; ?>
 	<?php if ($visitor->isLoggedIn()): ?>
 		<p class="right"><?php echo __('Logged in as <span class="username">%s</span>.', $visitor->user->getUsername()); ?></p>
 	<?php endif; ?>
+		<canvas id="menu-bars" width="25" height="20"></canvas>
 </nav>

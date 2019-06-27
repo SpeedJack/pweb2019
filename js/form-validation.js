@@ -1,8 +1,8 @@
-document.querySelector("#register-form input[name=username]").addEventListener("change", validateField);
-document.querySelector("#register-form input[name=email]").addEventListener("change", validateField);
-document.querySelector("#register-form input[name=password]").addEventListener("change", validatePassword);
-document.querySelector("#register-form input[name=password]").addEventListener("keyup", validatePasswordMatch);
-document.querySelector("#register-form input[name=password-again]").addEventListener("keyup", validatePasswordMatch);
+document.getElementById("username").addEventListener("change", validateField);
+document.getElementById("email").addEventListener("change", validateField);
+document.getElementById("password").addEventListener("change", validatePassword);
+document.getElementById("password").addEventListener("keyup", validatePasswordMatch);
+document.getElementById("password-again").addEventListener("keyup", validatePasswordMatch);
 
 const ucfirst = (str) => {
 	if (typeof str !== "string") return "";
@@ -26,7 +26,7 @@ function handleValidationResponse(response)
 	} catch (e) {
 		return;
 	}
-	var field = document.querySelector("#register-form input[name=" + data.fieldName + "]");
+	var field = document.getElementById(data.fieldName);
 	var validator = document.getElementById("validatorfor-" + data.fieldName);
 	if (field === null || validator === null || field.value !== data.value)
 		return;
@@ -53,8 +53,8 @@ function validatePassword()
 
 function validatePasswordMatch()
 {
-	var passField = document.querySelector("#register-form input[name=password]");
-	var againField = document.querySelector("#register-form input[name=password-again]");
+	var passField = document.getElementById("password");
+	var againField = document.getElementById("password-again");
 	var validator = document.getElementById("validatorfor-password-again");
 	if (passField === null || againField === null || validator === null
 		|| passField.value === "" || againField.value === "")

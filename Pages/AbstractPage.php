@@ -202,8 +202,8 @@ abstract class AbstractPage
 	{
 		$output = '';
 		foreach ($this->_js as $jsFile) {
-			$defer = $jsFile['defer'] ? 'defer="true" ' : '';
-			$output .= "<script ${defer}src=\"${jsFile['file']}\"></script>";
+			$defer = $jsFile['defer'] ? 'defer' : '';
+			$output .= "<script src=\"${jsFile['file']}\" $defer></script>";
 		}
 		return $output;
 	}
@@ -352,6 +352,8 @@ abstract class AbstractPage
 			$this->_addJs('main');
 			$this->_addCss('modal');
 			$this->_addJs('modal');
+			$this->_addJs('language');
+			$this->_addJs('responsive');
 			if (!isset($this->_meta['charset']))
 				$this->_setCharset('UTF-8');
 			if (!isset($this->_meta['viewport']))

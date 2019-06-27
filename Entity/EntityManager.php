@@ -128,29 +128,33 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 *
 	 * @param[in] string $entityName	The name of the entity to fetch.
 	 * @param[in] int $entityId		The id of the entity to fetch.
+	 * @param[in] mixed $params		Additional parameters to pass to
+	 * 					the getById() method.
 	 * @retval AbstractEntity|false		The entity fetched or false if
 	 * 					the entity was not found.
 	 */
-	public function getFromDb($entityName, $entityId)
+	public function getFromDb($entityName, $entityId, ...$params)
 	{
 		$entityName = $this->_getEntityFullName($entityName);
 		$found = $this->findSaved($entityName, $entityId);
 		if ($found !== false)
 			return $found;
-		return $this->getFromDbBy($entityName, 'getById', $entityId);
+		return $this->getFromDbBy($entityName, 'getById', $entityId, ...$params);
 	}
 
 	/**
 	 * @brief Fetches all entities of the specified type from the database.
 	 *
 	 * @param[in] string $entityName	The name of the entity to fetch.
+	 * @param[in] mixed $params		The parameters to pass to the
+	 * 					getAll() method.
 	 * @retval array|false			The entities fetched or FALSE if
 	 * 					no entity was found.
 	 */
-	public function getAllFromDb($entityName)
+	public function getAllFromDb($entityName, ...$params)
 	{
 		$entityName = $this->_getEntityFullName($entityName);
-		return $this->getFromDbBy($entityName, 'getAll');
+		return $this->getFromDbBy($entityName, 'getAll', ...$params);
 	}
 
 	/**

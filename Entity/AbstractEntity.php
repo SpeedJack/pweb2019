@@ -281,7 +281,7 @@ abstract class AbstractEntity
 		$query = trimSuffix($query, ', ') . ") VALUES($placeholders);";
 		try {
 			$this->_db->query($query, ...$values);
-		} catch (Pweb\Db\DuplicateKeyException $e) {
+		} catch (\Pweb\Db\DuplicateKeyException $e) {
 			if (!empty($this->_changedValues)) {
 				$this->_preUpdate();
 				$this->_update();

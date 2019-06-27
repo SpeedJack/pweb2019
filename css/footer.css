@@ -4,9 +4,84 @@ footer {
 	box-shadow: 0 50vh 0 50vh #2A3239;
 	min-height: 60px;
 	width: 100%;
-	padding-top: 20px;
+	padding: 0;
 	background-color: #2A3239;
 	color: #BFC2C4;
 	font-size: 17px;
 	text-align: center;
+}
+
+footer a {
+	text-decoration: none;
+	color: #2084D1;
+}
+
+footer a:hover {
+	color: #40A4F1;
+}
+
+footer div.container {
+	display: flex;
+	width: 100%;
+	margin: auto;
+	overflow: hidden;
+}
+
+footer section.column {
+	flex: 1;
+	width: 90%;
+	margin: 0 auto;
+	padding: 3% 2%;
+}
+
+#about-us p {
+	text-align: justify;
+}
+
+#social-links a {
+	display: inline-block;
+	padding: 20px;
+	width: 16px;
+	height: 16px;
+	background-color: #1C2028;
+	border-radius: 50%;
+}
+
+#social-links a svg {
+	fill: #BFC2C4;
+	transition: fill 0.3s ease-out;
+}
+
+#social-links a:hover svg {
+	fill: #2084D1;
+}
+
+#language-selector svg {
+	cursor: pointer;
+	transition: box-shadow 0.3s ease-in-out;
+}
+
+#language-selector svg.active {
+	box-shadow: 0 0 5px rgba(255, 215, 0, 1);
+}
+
+#language-selector svg:hover {
+	box-shadow: 0 0 5px rgba(255, 215, 0, 1);
+}
+
+#copyright {
+	margin: 0 auto;
+	padding: 3% 0;
+	width: 90%;
+}
+
+@media only screen and (max-width: 650px) {
+	footer div.container {
+		display: block;
+		padding-top: 1em;
+	}
+	footer section.column {
+		display: block;
+		flex: 0 1 auto;
+	}
 }

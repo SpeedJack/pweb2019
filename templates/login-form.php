@@ -8,9 +8,9 @@
 <main>
 	<form id="login-form" class="register-login" autocomplete="on" data-actionurl="<?php echo $application->buildLink('login', 'login'); ?>" onsubmit="return false;">
 		<label for="loginname"><?php echo __('Username or Email'); ?></label>
-		<input type="text" placeholder="<?php echo __('Enter Username or Email'); ?>" name="loginname" maxlength="255" autofocus="on" required>
+		<input type="text" placeholder="<?php echo __('Enter Username or Email'); ?>" id="loginname" name="loginname" maxlength="255" autofocus required>
 		<label for="password"><?php echo __('Password'); ?></label>
-		<input type="password" placeholder="<?php echo __('Enter Password'); ?>" name="password" required>
+		<input type="password" placeholder="<?php echo __('Enter Password'); ?>" id="password" name="password" required>
 		<label class="nobold">
 			<input type="checkbox" checked="checked" name="rememberme" value="yes"> <?php echo __('Remember Me'); ?>
 		</label>

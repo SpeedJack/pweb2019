@@ -1,9 +1,10 @@
 Supported Browsers:
-	* Firefox >= 4.0
-	* Chromium/Chrome >= 11.0
-	* Internet Explorer >= 9.0
-	* Edge >=
-	* Opera >= 11.5
+	* Firefox >= 22.0
+	* Chromium/Chrome >= 29.0
+	* Internet Explorer >= 11.0
+	* Edge >= 12
+	* Safari >= 10
+	* Opera >= 48
 
 Required Client Support:
 	* HTTP >= 1.1

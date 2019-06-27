@@ -1,0 +1,89 @@
+main button.accordion {
+	background-color: #EEE;
+	color: #444;
+	cursor: pointer;
+	padding: 20px;
+	width: 100%;
+	text-align: left;
+	font-weight: bold;
+	font-size: 1.5em;
+	border: none;
+	outline: none;
+	transition: 0.4s;
+}
+
+main button.accordion:after {
+	content: '\02795'; /* plus sign (+) */
+	font-size: 13px;
+	color: #777;
+	float: right;
+	margin-left: 5px;
+}
+
+main button.open:after {
+	content: '\02796'; /* minus sign (-) */
+}
+
+main button.open, main button.accordion:hover {
+	background-color: #CCC;
+}
+
+main div.chall-container {
+	display: flex;
+	flex-wrap: wrap;
+	background-color: white;
+	overflow: hidden;
+	max-height: 0;
+	min-height: 0;
+	padding: 0 10px 0 10px;
+	opacity: 0;
+	transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+}
+
+main div.chall-container div.chall {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	flex: auto;
+	margin: 0 15px 10px 15px;
+	min-width: 100px;
+	max-width: 200px;
+	min-height: 60px;
+	max-height: 120px;
+	padding: 10px;
+	border: 3px solid #FF4136;
+	background-color: white;
+	color: #FF4136;
+	font-weight: bold;
+	border-radius: 10px;
+	opacity: 0.8;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+main div.chall-container div.chall span {
+	display: block;
+	padding: 5px;
+	min-width: 0;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+main div.chall-container div.chall:hover {
+	background-color: #FF4136;
+	color: white;
+}
+
+main div.chall-container div.solved-chall {
+	border: 3px solid #2ECC40;
+	background-color: white;
+	color: #2ECC40;
+	cursor: default;
+}
+
+main div.chall-container div.solved-chall:hover {
+	background-color: #2ECC40;
+	color: white;
+}

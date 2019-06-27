@@ -23,6 +23,7 @@ class Challenge extends AbstractEntity
 	];
 
 	public const TABLE_NAME = 'challenges';
+	public const USER_JOIN_TABLE = 'solvedChallenges';
 
 	public function getName()
 	{
@@ -87,5 +88,45 @@ class Challenge extends AbstractEntity
 
 	public function setAttachment($attachment)
 	{
+	}
+
+	public static function getAll($user = null)
+	{
+		if (!isset($user))
+			return parent::getAll();
+
+		$em = EntityManager::getInstance();
+		if (is_int($user))
+			$user = $em->getFromDb('User', $user);
+		$userid = $user->getId();
+
+		$db = \Pweb\App::getInstance()->getDb();
+		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` AS c LEFT OUTER JOIN (SELECT * FROM `' . self::USER_JOIN_TABLE . '` WHERE userId = ?) AS s ON c.id = s.challengeId ORDER BY c.categoryName, c.id;', $userid);
+
+		$challs = [];
+		foreach ($data as $row) {
+			$chall = self::createFromData($row);
+			if (isset($row['userId']) && $row['userId'] === $userid)
+				$user->addSolvedChallenge($chall);
+			$challs[] = $chall;
+		}
+
+		return $challs;
+	}
+
+	public static function getAllSolvedBy($user)
+	{
+		$em = EntityManager::getInstance();
+		if (is_int($user))
+			$user = $em->getFromDb('User', $user);
+		$userid = $user->getId();
+
+		$db = \Pweb\App::getInstance()->getDb();
+		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` AS c INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON c.id = s.challengeId WHERE s.userId = ? ORDER BY c.categoryName, c.id;', $userid);
+
+		$challs = [];
+		foreach ($data as $row)
+			$challs[] = self::createFromData($row);
+		return $challs;
 	}
 }

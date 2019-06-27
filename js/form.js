@@ -11,7 +11,7 @@ function handleFormResponse(response)
 			throw "No JSON data";
 
 		if (data.redirect === true)
-			window.location.replace(data.location);
+			location.replace(data.location);
 		return;
 	} catch (e) {
 		var modal = document.getElementById("modal");

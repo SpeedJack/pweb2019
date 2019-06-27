@@ -1,15 +1,18 @@
-window.addEventListener("scroll", stickyNavbar);
+window.addEventListener("load", getNavbarOffsetTop);
 
-var navbarOffsetTop = document.getElementsByTagName("nav")[0].offsetTop;
+var navbarOffsetTop;
 
 function stickyNavbar()
 {
 	var navbar = document.getElementsByTagName("nav")[0];
-	var offset = navbar.offsetTop;
-	if (offset > navbarOffsetTop)
-		navbarOffsetTop = offset;
 	if (window.pageYOffset >= navbarOffsetTop)
 		navbar.classList.add("sticky");
 	else
 		navbar.classList.remove("sticky");
+}
+
+function getNavbarOffsetTop()
+{
+	navbarOffsetTop = document.getElementsByTagName("nav")[0].offsetTop;
+	window.addEventListener("scroll", stickyNavbar);
 }
