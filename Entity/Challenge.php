@@ -117,12 +117,11 @@ class Challenge extends AbstractEntity
 		return $challs;
 	}
 
-	public static function getAllSolvedBy($user)
+	public static function getAllSolvedBy($userid)
 	{
 		$em = EntityManager::getInstance();
-		if (is_int($user))
-			$user = $em->getFromDb('User', $user);
-		$userid = $user->getId();
+		if (!is_int($userid))
+			$userid = $userid->getId();
 
 		$db = \Pweb\App::getInstance()->getDb();
 		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` AS c INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON c.id = s.challengeId WHERE s.userId = ? ORDER BY c.categoryName, c.id;', $userid);
@@ -131,5 +130,22 @@ class Challenge extends AbstractEntity
 		foreach ($data as $row)
 			$challs[] = self::createFromData($row);
 		return $challs;
+	}
+
+	protected function _preDelete()
+	{
+		$challid = $this->getId();
+		$this->_db->query('UPDATE `' . User::TABLE_NAME . '` AS u INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON u.id = s.userId INNER JOIN `' . self::TABLE_NAME . '` AS c ON s.challengeId = c.id SET u.points = u.points - c.points WHERE c.id = ?;',
+			$challid);
+		$this->_db->query('DELETE FROM `' . self::USER_JOIN_TABLE . '` WHERE challengeId=?;',
+			$challid);
+	}
+
+	protected function _postUpdate()
+	{
+		if (!isset($this->_changedValues['points']))
+			return;
+		$this->_db->query('UPDATE `' . User::TABLE_NAME . '` AS u INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON u.id = s.userId SET u.points = u.points + ? WHERE s.challengeId = ?;',
+			$this->getPoints() - $this->_changedValues['points'], $this->getId());
 	}
 }

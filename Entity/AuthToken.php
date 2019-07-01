@@ -143,7 +143,8 @@ class AuthToken extends AbstractEntity
 			'id' => $data['userId'],
 			'username' => $data['username'],
 			'email'  => $data['email'],
-			'passwordHash' => $data['passwordHash']
+			'passwordHash' => $data['passwordHash'],
+			'points' => $data['points']
 		];
 		$user = User::createFromData($userData);
 		$em->addToSaved($user);

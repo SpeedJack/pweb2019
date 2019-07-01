@@ -10,6 +10,7 @@ CREATE TABLE users (
 	username VARCHAR(32) NOT NULL,
 	email VARCHAR(255) NOT NULL,
 	passwordHash VARCHAR(255) NOT NULL,
+	points INT UNSIGNED NOT NULL DEFAULT 0,
 	PRIMARY KEY (id),
 	UNIQUE KEY (username)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;

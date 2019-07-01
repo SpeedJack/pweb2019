@@ -37,6 +37,8 @@ class User extends AbstractEntity
 	 * Array of challenges solved by the user.
 	 */
 	protected $_solvedChalls;
+
+	protected $_points;
 // }}}
 
 // Other Properties {{{
@@ -48,7 +50,8 @@ class User extends AbstractEntity
 	protected $_getters = [
 		'username' => 'getUsername',
 		'email' => 'getEmail',
-		'passwordHash' => 'getPasswordHash'
+		'passwordHash' => 'getPasswordHash',
+		'points' => 'getPoints'
 	];
 
 	/**
@@ -110,6 +113,11 @@ class User extends AbstractEntity
 	public function getPasswordHash()
 	{
 		return $this->_passwordHash;
+	}
+
+	public function getPoints()
+	{
+		return $this->_points;
 	}
 
 	public function getSolvedChallenges()
@@ -225,6 +233,22 @@ class User extends AbstractEntity
 		return self::createFromData($data);
 	}
 
+	public static function getBySolvedChallenge($challid)
+	{
+		$em = EntityManager::getInstance();
+		if (!is_int($challid))
+			$challid = $challid->getId();
+
+		$db = \Pweb\App::getInstance()->getDb();
+		$data = $db->fetchAll('SELECT u.* FROM `' . self::TABLE_NAME . '` AS u INNER JOIN `' . self::CHALLENGE_JOIN_TABLE . '` AS s ON u.id = s.userId WHERE s.challengeId = ?;',
+			$challid);
+
+		$users = [];
+		foreach ($data as $row)
+			$users[] = self::createFromData($row);
+		return $users;
+	}
+
 	public function solveChallenge($chall, $flag)
 	{
 		if (is_int($chall))
@@ -244,6 +268,7 @@ class User extends AbstractEntity
 			return self::ALREADY_SOLVED;
 		}
 
+		$this->_set('points', $this->getPoints() + $chall->getPoints());
 		return self::CORRECT_FLAG;
 	}
 
@@ -257,11 +282,15 @@ class User extends AbstractEntity
 // Entity Life-cycle {{{
 	/**
 	 * @internal
-	 * @brief Deletes every auth tokens associated with this user.
+	 * @brief Deletes every auth tokens and solved challenge associated with
+	 * this user.
 	 */
 	protected function _preDelete()
 	{
-		AuthToken::deleteByUserId($this->getId());
+		$userid = $this->getId();
+		AuthToken::deleteByUserId($userid);
+		$this->_db->query('DELETE FROM `' . self::CHALLENGE_JOIN_TABLE . '` WHERE userId=?;',
+			$userid);
 	}
 // }}}
 
