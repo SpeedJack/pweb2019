@@ -142,10 +142,6 @@ nav div.dropdown button.dropdown {
 	transition: color 0.3s ease-out;
 }
 
-nav div.dropdown button.dropdown:after {
-	content: "\0000A0\002BC6"; /* nbsp and down arrow sign */
-}
-
 nav div.dropdown button.dropdown:hover {
 	color: white;
 }
