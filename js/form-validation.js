@@ -14,11 +14,11 @@ function validateField()
 	if (this.value === "")
 		return;
 	ajaxQuery("index.php?page=AjaxQuery&action=Validate" + ucfirst(this.name),
-		this.name + "=" + encodeURIComponent(this.value),
+		this.name + "=" + encodeURIComponent(this.value), false,
 		handleValidationResponse);
 }
 
-function handleValidationResponse(response)
+function handleValidationResponse(response, allowResponseContainer)
 {
 	var data;
 	try {

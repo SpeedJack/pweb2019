@@ -22,8 +22,11 @@ function sendForm()
 {
 	var data = "";
 	var elements = this.getElementsByTagName("input");
+	var allowResponseContainer = false;
+	if (this.classList.contains("modal-form"))
+		allowResponseContainer = true;
 	for (var i = 0; i < elements.length; i++)
 		data += elements[i].name + "=" + encodeURIComponent(elements[i].value) + "&";
 	data = data.slice(0, -1);
-	ajaxQuery(this.getAttribute("data-actionurl"), data);
+	ajaxQuery(this.getAttribute("data-actionurl"), data, allowResponseContainer);
 }

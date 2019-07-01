@@ -19,21 +19,21 @@ function getCookie(name)
 	return "";
 }
 
-function ajaxQuery(url, data, handler)
+function ajaxQuery(url, data, allowResponseContainer, handler)
 {
 	var xhttp = new XMLHttpRequest();
 	if (handler === undefined)
 		handler = handleAjaxResponse;
 	xhttp.onreadystatechange = function() {
 		if (this.readyState === 4 && this.status === 200)
-			handler(this);
+			handler(this, (allowResponseContainer === true));
 	}
 	xhttp.open("POST", url, true);
 	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhttp.send(data);
 }
 
-function handleAjaxResponse(response)
+function handleAjaxResponse(response, allowResponseContainer)
 {
 	var data;
 	var usingResponseContainer = false;
@@ -47,7 +47,7 @@ function handleAjaxResponse(response)
 		return;
 	} catch (e) {
 		var modal = document.getElementById("modal");
-		if (modal !== null
+		if (allowResponseContainer && modal !== null
 			&& window.getComputedStyle(modal, null).display !== "none") {
 			modal = document.getElementById("response-container");
 			usingResponseContainer = true;
