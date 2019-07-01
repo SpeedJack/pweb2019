@@ -1,0 +1,1 @@
+<p><?= $chall->getBody() ?></p>

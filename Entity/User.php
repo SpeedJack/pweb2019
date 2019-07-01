@@ -75,6 +75,10 @@ class User extends AbstractEntity
 	 * valid.
 	 */
 	public const VALID = 2;
+
+	public const WRONG_FLAG = 0;
+	public const ALREADY_SOLVED = 1;
+	public const CORRECT_FLAG = 2;
 // }}}
 
 // Getters {{{
@@ -113,8 +117,12 @@ class User extends AbstractEntity
 		if (!isset($this->_solvedChalls)) {
 			$challs = $this->_em->getFromDbBy('Challenge',
 				'getAllSolvedBy', $this);
-			foreach ($challs as $chall)
-				$this->addSolvedChallenge($chall);
+			$this->addSolvedChallenge();
+			if ($challs !== false) {
+				$challs = is_array($challs) ? $challs : [ $challs ];
+				foreach ($challs as $chall)
+					$this->addSolvedChallenge($chall);
+			}
 		}
 		return $this->_solvedChalls;
 	}
@@ -171,8 +179,12 @@ class User extends AbstractEntity
 		return true;
 	}
 
-	public function addSolvedChallenge($chall)
+	public function addSolvedChallenge($chall = null)
 	{
+		if (!isset($chall)) {
+			$this->_solvedChalls = [];
+			return;
+		}
 		if (is_int($chall))
 			$chall = $this->_em->getFromDb('Challenge', $chall);
 		$this->_solvedChalls[$chall->getId()] = $chall;
@@ -213,18 +225,26 @@ class User extends AbstractEntity
 		return self::createFromData($data);
 	}
 
-	public function solveChallenge($chall)
+	public function solveChallenge($chall, $flag)
 	{
 		if (is_int($chall))
 			$chall = $this->_em->getFromDb('Challenge', $chall);
 
+		if ($this->hasSolvedChallenge($chall))
+			return self::ALREADY_SOLVED;
+
+		if (!$chall->checkFlag($flag))
+			return self::WRONG_FLAG;
+
+		$this->addSolvedChallenge($chall);
 		try {
 			$this->_db->query('INSERT INTO `' . self::CHALLENGE_JOIN_TABLE . '`(challengeId, userId) VALUES(?, ?);',
 				$chall->getId(), $this->getId());
 		} catch (\Pweb\Db\DuplicateKeyException $e) {
+			return self::ALREADY_SOLVED;
 		}
 
-		$this->addSolvedChallenge($chall);
+		return self::CORRECT_FLAG;
 	}
 
 	public function refreshSolvedChallenges()

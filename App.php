@@ -427,6 +427,8 @@ class App extends AbstractSingleton
 			'form_validation' => [
 				'username_regex' => '^[a-zA-Z0-9._-]{5,32}$',
 				'username_maxlength' => 32,
+				'flag_regex' => '^(?:f|F)(?:l|L)(?:a|A)(?:g|G)\{[ -z|~]+\}$',
+				'flag_maxlength' => 255
 			],
 			'locales' => [
 				'/^en/i' => 'en_US.UTF-8',

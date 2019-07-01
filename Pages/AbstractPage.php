@@ -392,11 +392,17 @@ abstract class AbstractPage
 	 * @param[in] array $params		Associative array of parameters
 	 * 					to pass to the template.
 	 */
-	protected function _showModal($bodyTemplate, $redirect = null, array $params = [])
+	protected function _showModal($bodyTemplate, $redirect = null, array $params = [], $footerTemplate = null)
 	{
 		$params['bodyTemplate'] = $bodyTemplate;
 		$params['modalRedirect'] = $redirect;
+		$params['footerTemplate'] = $footerTemplate;
 		$this->_show('modal', $params, false, false, false);
+	}
+
+	protected function _showModalWithFooter($bodyTemplate, $footerTemplate, $redirect = null, array $params = [])
+	{
+		$this->_showModal($bodyTemplate, $redirect, $params, $footerTemplate);
 	}
 
 	/**
@@ -416,7 +422,7 @@ abstract class AbstractPage
 		$this->_showModal('message', $redirect, $params);
 	}
 
-	/*
+	/**
 	 * @internal
 	 * @brief Sends a simple reply to the visitor (useful for AJAX
 	 * responses).
@@ -425,11 +431,11 @@ abstract class AbstractPage
 	 * 					load.
 	 * @param[in] array $params		Associative array of parameters
 	 * 					to pass to the template.
-	 *
+	 */
 	protected function _reply($templateName, array $params = [])
 	{
 		$this->_show($templateName, $params, false, false, false);
-	}*/
+	}
 
 	/**
 	 * @internal

@@ -366,7 +366,7 @@ class Visitor extends AbstractEntity
 	{
 		if (php_sapi_name() === 'cli') {
 			$this->authToken = null;
-			$uid = intval(readline('[Login] Insert user id (0 for no login): '));
+			$uid = intval(readline('[Login] Insert user id (leave empty for no login): '));
 			if ($uid)
 				$this->user = $this->_em->getFromDb('User', $uid);
 			else

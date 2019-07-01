@@ -45,3 +45,8 @@ function closeModal(event)
 	if (redirecturl !== undefined)
 		location.assign(redirecturl);
 }
+
+function setModalRedirect(url)
+{
+	document.getElementById("modal-content").setAttribute("data-closeredirect", url);
+}
