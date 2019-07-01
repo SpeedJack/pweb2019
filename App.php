@@ -150,7 +150,7 @@ class App extends AbstractSingleton
 		$this->_visitor->setGetParams($getParams);
 		$this->_visitor->setPostParams($postParams);
 
-		$page = $this->_visitor->page;
+		$page = str_replace('_', '\\', $this->_visitor->page);
 		$action = $this->_visitor->action;
 		$page = "Pweb\\Pages\\$page";
 

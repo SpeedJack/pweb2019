@@ -8,6 +8,13 @@
 $topnavMenus = [
 	__('Challenges') => ['page' => 'challenges'],
 	__('Ranking') => ['page' => 'ranking'],
+	__('Admin') => [
+		'showCondition' => 'isAdmin',
+		'menus' => [
+			__('Edit Challenges') => ['page' => 'admin_challenges'],
+			__('Edit Users') => ['page' => 'admin_users']
+		]
+	],
 	__('About') => ['page' => 'about'],
 	__('Sign Up') => [
 		'page' => 'register',
@@ -26,14 +33,10 @@ $topnavMenus = [
 		'classes' => 'right'
 	]
 ];
-?>
-<header>
-<h1><?= $application->config['app_name'] ?></h1>
-<p><?= $application->config['header_motd'] ?></p>
-</header>
-<nav>
-	<?php
-	foreach ($topnavMenus as $menuName => $menuMeta):
+
+function showMenus($menus, $visitor, $application)
+{
+	foreach ($menus as $menuName => $menuMeta):
 		if (isset($menuMeta['showCondition']))
 			switch ($menuMeta['showCondition']) {
 			case 'loggedIn':
@@ -44,30 +47,53 @@ $topnavMenus = [
 				if ($visitor->isLoggedIn())
 					continue 2;
 				break;
+			case 'isAdmin':
+				if (!$visitor->isAdmin())
+					continue 2;
+				break;
 			}
 		$classes = [];
-		if ($visitor->isActivePage($menuMeta['page']))
-			$classes[] = 'active';
 		if (isset($menuMeta['classes']))
 			$classes = array_merge($classes,
 				is_array($menuMeta['classes'])
 					? $menuMeta['classes']
 					: [ $menuMeta['classes'] ]
 			);
-		$classStr = getClassesString($classes);
-		$classStr = empty($classStr) ? '' : " $classStr";
+		if (isset($menuMeta['menus'])):
+			$classes[] = 'dropdown';
+			$classStr = getClassesString($classes);
+			$classStr = empty($classStr) ? '' : " $classStr"; ?>
+			<div<?= $classStr ?>><button<?= $classStr ?>><?= $menuName ?></button>
+			<div class="dropdown-content">
+			<?php showMenus($menuMeta['menus'], $visitor, $application); ?>
+			</div>
+			</div>
+		<?php continue; endif;
+		if ($visitor->isActivePage($menuMeta['page']))
+			$classes[] = 'active';
 		$menuAction = isset($menuMeta['action'])
 			? $menuMeta['action'] : null;
 		$menuParams = isset($menuMeta['params'])
 			? $menuMeta['params'] : [];
 		$menuHref = 'href="' . $application->buildLink(
 			$menuMeta['page'], $menuAction, $menuParams) . '"';
-	?>
+		$classStr = getClassesString($classes);
+		$classStr = empty($classStr) ? '' : " $classStr";
+		?>
 		<a<?= "$classStr $menuHref" ?>>
 			<?= $menuName ?>
 		</a>
-	<?php endforeach; ?>
-	<?php if ($visitor->isLoggedIn()): ?>
+	<?php endforeach;
+}
+?>
+<header>
+<h1><?= $application->config['app_name'] ?></h1>
+<p><?= $application->config['header_motd'] ?></p>
+</header>
+<nav>
+	<?php
+	showMenus($topnavMenus, $visitor, $application);
+	if ($visitor->isLoggedIn()): ?>
 		<p class="right"><?= __('Logged in as <span class="username">%s</span>.', $visitor->user->getUsername()) ?></p>
 	<?php endif; ?>
 		<canvas id="menu-bars" width="25" height="20"></canvas>

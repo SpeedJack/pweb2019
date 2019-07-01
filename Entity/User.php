@@ -38,6 +38,7 @@ class User extends AbstractEntity
 	 */
 	protected $_solvedChalls;
 
+	protected $_isAdmin;
 	protected $_points;
 // }}}
 
@@ -51,6 +52,7 @@ class User extends AbstractEntity
 		'username' => 'getUsername',
 		'email' => 'getEmail',
 		'passwordHash' => 'getPasswordHash',
+		'isAdmin' => 'isAdmin',
 		'points' => 'getPoints'
 	];
 
@@ -113,6 +115,11 @@ class User extends AbstractEntity
 	public function getPasswordHash()
 	{
 		return $this->_passwordHash;
+	}
+
+	public function isAdmin()
+	{
+		return $this->_isAdmin;
 	}
 
 	public function getPoints()
@@ -185,6 +192,11 @@ class User extends AbstractEntity
 		$this->_set('passwordHash',
 			password_hash($password, PASSWORD_DEFAULT));
 		return true;
+	}
+
+	public function promoteAdmin()
+	{
+		$this->_set('isAdmin', true);
 	}
 
 	public function addSolvedChallenge($chall = null)
@@ -276,6 +288,13 @@ class User extends AbstractEntity
 	{
 		unset($this->_solvedChalls);
 		return $this->getSolvedChallenges();
+	}
+
+	public static function createFromData(array $data)
+	{
+		if (isset($data['isAdmin']))
+			$data['isAdmin'] = $data['isAdmin'] ? true : false;
+		return parent::createFromData($data);
 	}
 // }}}
 

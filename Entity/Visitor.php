@@ -226,6 +226,11 @@ class Visitor extends AbstractEntity
 		return isset($this->user);
 	}
 
+	public function isAdmin()
+	{
+		return $this->isLoggedIn() && $this->user->isAdmin();
+	}
+
 	/**
 	 * @brief Returns a PHP session variable.
 	 *
@@ -408,17 +413,17 @@ class Visitor extends AbstractEntity
 	 * @param[in] bool $removeSlashes	TRUE to remove any slash from
 	 * 					the string (useful to avoid
 	 * 					LFI vulnerabilities).
-	 * @param[in] bool $ucfirst		TRUE to make the first letter
-	 * 					upper case.
+	 * @param[in] bool $ucwords		TRUE to make the first letter of
+	 * 					each word upper case.
 	 * @retval string			The sanitized string.
 	 */
-	private function _sanitizeParam($value, $removeSlashes = false, $ucfirst = false)
+	private function _sanitizeParam($value, $removeSlashes = false, $ucwords = false)
 	{
 		if (empty($value))
 			return '';
 		$value = $removeSlashes ? str_replace('\\', '', $value) : $value;
 		$value = trim($value);
-		return $ucfirst ? ucfirst($value) : $value;
+		return $ucwords ? ucwords($value, " \t\r\n\f\v_-.") : $value;
 	}
 
 	/**
