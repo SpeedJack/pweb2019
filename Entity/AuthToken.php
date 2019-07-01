@@ -54,7 +54,7 @@ class AuthToken extends AbstractEntity
 	 * @var string TABLE_NAME
 	 * The name of the database's table associated with the entity.
 	 */
-	public const TABLE_NAME = 'authTokens';
+	const TABLE_NAME = 'authTokens';
 // }}}
 
 // Getters {{{

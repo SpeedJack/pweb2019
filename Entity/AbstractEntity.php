@@ -81,7 +81,7 @@ abstract class AbstractEntity
 	 * @var string|null TABLE_NAME
 	 * The name of the database's table associated with the entity.
 	 */
-	public const TABLE_NAME = null;
+	const TABLE_NAME = null;
 
 	/**
 	 * @brief Creates the entity.

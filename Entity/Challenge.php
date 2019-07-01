@@ -20,8 +20,8 @@ class Challenge extends AbstractEntity
 		'attachmentHash' => 'getAttachmentHash'
 	];
 
-	public const TABLE_NAME = 'challenges';
-	public const USER_JOIN_TABLE = 'solvedChallenges';
+	const TABLE_NAME = 'challenges';
+	const USER_JOIN_TABLE = 'solvedChallenges';
 
 	public function getName()
 	{

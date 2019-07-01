@@ -60,30 +60,30 @@ class User extends AbstractEntity
 	 * @var string TABLE_NAME
 	 * The name of the database's table associated with the entity.
 	 */
-	public const TABLE_NAME = 'users';
-	public const CHALLENGE_JOIN_TABLE = 'solvedChallenges';
+	const TABLE_NAME = 'users';
+	const CHALLENGE_JOIN_TABLE = 'solvedChallenges';
 	/**
 	 * @var int INVALID
 	 * Returned by isValid* and set* functions when the username/email is
 	 * invalid.
 	 */
-	public const INVALID = 0;
+	const INVALID = 0;
 	/**
 	 * @var int ALREADY_IN_USE
 	 * Returned by isValid* and set* functions when the username/email is
 	 * already in use by another user.
 	 */
-	public const ALREADY_IN_USE = 1;
+	const ALREADY_IN_USE = 1;
 	/**
 	 * @var int VALID
 	 * Returned by isValid* and set* functions when the username/email is
 	 * valid.
 	 */
-	public const VALID = 2;
+	const VALID = 2;
 
-	public const WRONG_FLAG = 0;
-	public const ALREADY_SOLVED = 1;
-	public const CORRECT_FLAG = 2;
+	const WRONG_FLAG = 0;
+	const ALREADY_SOLVED = 1;
+	const CORRECT_FLAG = 2;
 // }}}
 
 // Getters {{{

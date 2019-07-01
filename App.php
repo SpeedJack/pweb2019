@@ -18,7 +18,7 @@ class App extends AbstractSingleton
 	 * @var string APP_ROOT
 	 * The application root directory.
 	 */
-	public const APP_ROOT = __DIR__;
+	const APP_ROOT = __DIR__;
 	/**
 	 * @var string $serverName
 	 * The name of the server host under which this application is running.
