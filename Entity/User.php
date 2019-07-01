@@ -38,8 +38,8 @@ class User extends AbstractEntity
 	 */
 	protected $_solvedChalls;
 
-	protected $_isAdmin;
-	protected $_points;
+	protected $_isAdmin = false;
+	protected $_points = 0;
 // }}}
 
 // Other Properties {{{
