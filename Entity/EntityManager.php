@@ -153,8 +153,12 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 */
 	public function getAllFromDb($entityName, ...$params)
 	{
-		$entityName = $this->_getEntityFullName($entityName);
 		return $this->getFromDbBy($entityName, 'getAll', ...$params);
+	}
+
+	public function getAllPagedFromDb($entityName, $orderBy, $page, $ascending = true, $perPage = null, ...$params)
+	{
+		return $this->getFromDbBy($entityName, 'getAllPaged', $orderBy, $page, $ascending, $perPage, ...$params);
 	}
 
 	/**
@@ -196,6 +200,12 @@ class EntityManager extends \Pweb\AbstractSingleton
 			}
 		}
 		return count($entities) > 1 ? $entities : array_pop($entities);
+	}
+
+	public function countDbEntities($entityName)
+	{
+		$entityName = $this->_getEntityFullName($entityName);
+		return $entityName::count();
 	}
 
 	/**

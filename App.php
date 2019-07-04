@@ -419,6 +419,7 @@ class App extends AbstractSingleton
 				'charset' => 'utf8'
 			],
 			'use_url_rewrite' => false,
+			'default_per_page' => 4,
 			'username_regex' => '/^[a-zA-Z0-9._-]{5,32}$/',
 			'min_password_length' => 8,
 			'auth_token_length' => 20,

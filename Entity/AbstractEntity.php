@@ -206,6 +206,23 @@ abstract class AbstractEntity
 		return $entities;
 	}
 
+	public static function getAllPaged($orderBy, $page, $ascending = true, $perPage = null)
+	{
+		$perPage = isset($perPage) ? $perPage : $this->_app->config['default_per_page'];
+		$db = \Pweb\App::getInstance()->getDb();
+		$data = $db->fetchAll('SELECT * FROM `' . static::TABLE_NAME . "` ORDER BY $orderBy " . ($ascending ? 'ASC' : 'DESC') . " LIMIT $perPage OFFSET " . ($page - 1)*$perPage . ';');
+		$entities = [];
+		foreach ($data as $row)
+			$entities[] = static::createFromData($row);
+		return $entities;
+	}
+
+	public static function count()
+	{
+		$db = \Pweb\App::getInstance()->getDb();
+		return $db->fetchColumn('SELECT COUNT(*) FROM `' . static::TABLE_NAME . '`;');
+	}
+
 	/**
 	 * @brief Merges this entity with another entity of the same type.
 	 *
