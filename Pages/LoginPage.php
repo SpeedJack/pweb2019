@@ -17,7 +17,7 @@ class LoginPage extends AbstractPage
 		if ($this->_visitor->isLoggedIn())
 			$this->_app->redirectHome();
 		$this->_setTitle(__('Login Page'));
-		$this->_addCss('login-register-form');
+		$this->_addCss('form');
 		$this->_addJs('form');
 		$this->_show('login-form');
 	}
