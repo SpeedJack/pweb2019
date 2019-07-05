@@ -5,8 +5,10 @@ abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 {
 	protected function _loadTemplate($templateName, array $params = [])
 	{
-		if (!parent::_loadTemplate("admin/$templateName", $params))
-			parent::_loadTemplate($templateName, $params);
+		$success = parent::_loadTemplate("admin/$templateName", $params);
+		if (!$success)
+			return parent::_loadTemplate($templateName, $params);
+		return $success;
 	}
 
 	protected function _addCss($cssName)
@@ -23,7 +25,7 @@ abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 		try {
 			parent::_addJs("admin/$scriptName", $defer);
 		} catch (\InvalidArgumentException $e) {
-			parent::_addCss($scriptName, $defer);
+			parent::_addJs($scriptName, $defer);
 		}
 	}
 }

@@ -29,19 +29,20 @@
 		<tfoot>
 			<tr>
 				<td colspan="3">
-					<?= __('Showing <strong>%s</strong> users of <strong>%s</strong>.', $perPage, $totalUsers) ?><br>
-					<?= __('Page <strong>%s</strong> of <strong>%s</strong>.', $page, $totalPages) ?>
+					<?= __('Showing <strong>%s</strong> users of <strong>%s</strong>.', min($perPage, $totalUsers), $totalUsers) ?><br><br>
+					<div class="table-navbar">
+						<?php if ($page > 4): ?>
+						<a href="<?= $application->buildLink('__current', '__current', ['pp' => $perPage, 'p' => 1]) ?>">&laquo;</a>
+						<?php endif; ?>
+						<?php for ($curPage = max($page - 3, 1); $curPage <= min($totalPages, $page + 3); $curPage++): ?>
+							<a<?php if ($curPage === $page) echo " class=\"active\""; ?> href="<?= $application->buildLink('__current', '__current', ['pp' => $perPage, 'p' => $curPage]) ?>"><?= $curPage ?></a>
+						<?php endfor; ?>
+						<?php if ($page < $totalPages - 3): ?>
+							<a href="<?= $application->buildLink('__current', '__current', ['pp' => $perPage, 'p' => $totalPages]) ?>">&raquo;</a>
+						<?php endif; ?>
+					</div>
 				</td>
 			</tr>
 		</tfoot>
 	</table>
-	<ul class="table-navbar">
-		<?php if ($page > 1): ?>
-			<li id="tablectrl-first"><a href="<?= $application->buildLink('ranking', null, ['pp' => $perPage]) ?>">&lt;&lt; <?= __('First') ?></a></li>
-			<li id="tablectrl-prev"><a href="<?= $application->buildLink('ranking', null, ['p' => $page - 1, 'pp' => $perPage]) ?>">&lt; <?= __('Prev.') ?></a></li>
-		<?php endif; if ($page < $totalPages): ?>
-			<li id="tablectrl-last"><a href="<?= $application->buildLink('ranking', null, ['p' => $totalPages, 'pp' => $perPage]) ?>"><?= __('Last') ?> &gt;&gt;</a></li>
-			<li id="tablectrl-next"><a href="<?= $application->buildLink('ranking', null, ['p' => $page + 1, 'pp' => $perPage]) ?>"><?= __('Next') ?> &gt;</a></li>
-		<?php endif; ?>
-	</ul>
 </main>

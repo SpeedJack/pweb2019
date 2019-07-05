@@ -17,11 +17,6 @@ spl_autoload_register(function ($class)
 		return;
 
 	$classFullName = substr($class, $prefixLen);
-	$index = strrpos($classFullName, '\\') ?: -1;
-	$className = substr($classFullName, $index + 1);
-	$classRegex = '/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/';
-	if (!preg_match($classRegex, $className))
-		panic(400);
 
 	$classFile = $baseDir . str_replace('\\', '/', $classFullName) . '.php';
 	if (!is_file($classFile))

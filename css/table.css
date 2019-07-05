@@ -3,10 +3,11 @@ main > table {
 }
 
 table {
-	border-collapse: collapse;
+	border-spacing: 0;
 	width: 100%;
 	max-width: 1300px;
 	border: 1px solid #0074D9;
+	border-radius: 0 0 20px 20px;
 	border-top: 0;
 }
 
@@ -16,7 +17,6 @@ table caption {
 	font-style: bold;
 	color: white;
 	background-color: #0074D9;
-	border-bottom: 0;
 	border-radius: 20px 20px 0 0;
 }
 
@@ -30,10 +30,6 @@ table td, table th {
 	padding: 8px;
 }
 
-table th {
-	border-top: 0;
-}
-
 table thead {
 	background-color: #2A3239;
 	color: white;
@@ -43,32 +39,28 @@ table tfoot {
 	font-style: italic;
 }
 
-ul.table-navbar {
-	list-style: none;
-	display: table;
-	padding: 10px 0;
-	margin: auto;
-	width: 100%;
-	max-width: 1300px;
-	background-color: #DDD;
-	border-radius: 0 0 20px 20px;
+table tfoot tr:last-child td:first-child {
+	border-bottom-left-radius: 20px;
 }
 
-ul.table-navbar li {
+table tfoot tr:last-child td:last-child {
+	border-bottom-right-radius: 20px;
+}
+
+div.table-navbar a {
 	display: inline-block;
-	padding: 0 20px;
-	font-size: 1.5em;
-}
-
-ul.table-navbar li a {
+	color: black;
+	padding: 8px 16px;
 	text-decoration: none;
-	color: #40A4F1;
+	transition: background-color 0.3s;
 }
 
-ul.table-navbar li a:hover {
-	color: #0074D9;
+div.table-navbar a.active {
+	background-color: #0074D9;
+	cursor: default;
+	color: white;
 }
 
-#tablectrl-last, #tablectrl-next {
-	float: right;
+div.table-navbar a:hover:not(.active) {
+	background-color: #DDD;
 }

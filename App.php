@@ -62,7 +62,7 @@ class App extends AbstractSingleton
 	/**
 	 * @internal
 	 * @var Db::AbstractAdapter $_db
-	 * The database adapter interface.
+	 * The database adapter.
 	 */
 	protected $_db;
 	/**
@@ -132,6 +132,8 @@ class App extends AbstractSingleton
 	/**
 	 * @brief Route the user to the selected page and action.
 	 *
+	 * This method does not return.
+	 *
 	 * @throws InvalidRouteException	If the selected page or action
 	 * 					can not be found.
 	 *
@@ -169,6 +171,11 @@ class App extends AbstractSingleton
 	/**
 	 * @brief Reroute the user to a new page and action.
 	 *
+	 * This method does not return.
+	 * 
+	 * @throws InvalidRouteException	If the selected page or action
+	 * 					can not be found.
+	 *
 	 * @param[in] string $page		The page where the user should
 	 * 					be routed.
 	 * @param[in] string|null $action	The action where the user should
@@ -200,7 +207,7 @@ class App extends AbstractSingleton
 	 * NOTE: according to [1], 301 redirects are aggressively cached. If
 	 * that's a problem, pages that trigger 301 redirects should always
 	 * has a new url (eg. by setting a dummy GET parameter to a random
-	 * value).
+	 * value). (TODO)
 	 * [1] https://blog.dubbelboer.com/2012/11/25/302-cookie.html
 	 */
 	/**
@@ -221,9 +228,10 @@ class App extends AbstractSingleton
 	 * @brief Redirect the user to the specified page and action.
 	 *
 	 * @param[in] string $page		The page where the user should
-	 * 					be redirected.
+	 * 					be redirected. If NULL,
+	 * 					redirects to index.php.
 	 * @param[in] string|null $action	The action where the user should
-	 * 					be redirected. If null, it
+	 * 					be redirected. If NULL, it
 	 * 					defaults to actionIndex.
 	 * @param[in] array $params		Associative array of key-value
 	 * 					pairs of GET parameters.
@@ -275,7 +283,7 @@ class App extends AbstractSingleton
 	 * 					used to refer to the current
 	 * 					action.
 	 * @param[in] array $params		Associative array of key-value
-	 * 					pairs of parameters.
+	 * 					pairs of GET parameters.
 	 * @retval string			The generated link.
 	 */
 	public function buildLink($page = null, $action = null, array $params = [])
@@ -307,7 +315,7 @@ class App extends AbstractSingleton
 	 * @param[in] bool $https	Set to TRUE to generate an https link,
 	 * 				FALSE for a http link.
 	 * @param[in] array $params	Associative array of key-value pairs of
-	 * 				parameters.
+	 * 				GET parameters.
 	 * @param[in] int $port		The port to append to the domain name.
 	 * @retval string		The generated link.
 	 */
@@ -336,13 +344,13 @@ class App extends AbstractSingleton
 	 * @brief Generates an absolute link to an internal (this website)
 	 * resource.
 	 *
-	 * @param[in] string|null $page		The page name. If null, returns
+	 * @param[in] string|null $page		The page name. If NULL, returns
 	 * 					a link to index.php.
-	 * @param[in] string|null $action	The action name. If null, no
+	 * @param[in] string|null $action	The action name. If NULL, no
 	 * 					action is specified (defaults to
 	 * 					actionIndex).
 	 * @param[in] array $params		Associative array of key-value
-	 * 					pairs of parameters.
+	 * 					pairs of GET parameters.
 	 * @retval string			The generated link.
 	 */
 	public function buildAbsoluteLink($page = null, $action = null, array $params = [])
@@ -368,6 +376,9 @@ class App extends AbstractSingleton
 // Error Handlers {{{
 	/**
 	 * @brief Generic error handler.
+	 *
+	 * This handler throws an ErrorException, triggering the exception
+	 * handler.
 	 *
 	 * @throws	ErrorException
 	 *
@@ -397,14 +408,14 @@ class App extends AbstractSingleton
 
 // }}}
 
-// Protected Methods {{{
+//Private Methods {{{
 	/**
 	 * @internal
 	 * @brief Sets up the configuration, replacing empty fields with default
 	 * 	values.
 	 * @param[in] array $config	User provided configuration.
 	 */
-	protected function _setConfig(array $config = [])
+	private function _setConfig(array $config = [])
 	{
 		$this->config = array_replace_recursive([
 			'app_name' => 'Pweb',
@@ -419,7 +430,7 @@ class App extends AbstractSingleton
 				'charset' => 'utf8'
 			],
 			'use_url_rewrite' => false,
-			'default_per_page' => 4,
+			'default_per_page' => 20,
 			'username_regex' => '/^[a-zA-Z0-9._-]{5,32}$/',
 			'min_password_length' => 8,
 			'auth_token_length' => 20,
@@ -446,38 +457,11 @@ class App extends AbstractSingleton
 			'fallback_server_name' => 'localhost',
 			'fallback_server_port' => 80,
 			'use_fallback_server_infos' => false,
-			'debug' => false
+			'debug' => false,
+			'show_all_exceptions' => false
 		], $config);
 	}
 
-	/**
-	 * @internal
-	 * @brief Creates a string of parameters that can be appended to a URL.
-	 *
-	 * @param[in] array $params		The parameter(s).
-	 * @param[in] bool $append		Set to TRUE to generate a string
-	 * 					that starts with & instead of ?.
-	 * @retval string			The generated urlencoded string.
-	 */
-	protected function _getRawParams(array $params, $append = false)
-	{
-		$rawParams = '';
-		$i = 0;
-		if (empty($params))
-			return '';
-		foreach ($params as $name => $value) {
-			if ($i == 0 && !$append)
-				$rawParams .= '?';
-			else
-				$rawParams .= '&';
-			$rawParams .= urlencode($name) . '=' . urlencode($value);
-			$i++;
-		}
-		return $rawParams;
-	}
-// }}}
-
-//Private Methods {{{
 	/**
 	 * @internal
 	 * @brief Returns the canonical IETF BCP 47 locale string.
@@ -512,7 +496,7 @@ class App extends AbstractSingleton
 	 * @brief Sets the current locale to the user selection.
 	 *
 	 * This function also sets the LANG environment variable and a cookie
-	 * to remember the selection.
+	 * to remember the user's selection.
 	 * Used by gettext for internationalization.
 	 */
 	private function _setLanguage()
@@ -566,7 +550,7 @@ class App extends AbstractSingleton
 
 	/**
 	 * @internal
-	 * @brief Sets the server name and port.
+	 * @brief Reads and caches the server name and port.
 	 */
 	private function _setServerInfos()
 	{
@@ -587,6 +571,32 @@ class App extends AbstractSingleton
 			$this->serverPort = $_SERVER['SERVER_PORT'];
 		else
 			$this->serverPort = $this->config['fallback_server_port'];
+	}
+
+	/**
+	 * @internal
+	 * @brief Creates a string of parameters that can be appended to a URL.
+	 *
+	 * @param[in] array $params		The parameter(s).
+	 * @param[in] bool $append		Set to TRUE to generate a string
+	 * 					that starts with & instead of ?.
+	 * @retval string			The generated urlencoded string.
+	 */
+	private function _getRawParams(array $params, $append = false)
+	{
+		$rawParams = '';
+		$i = 0;
+		if (empty($params))
+			return '';
+		foreach ($params as $name => $value) {
+			if ($i == 0 && !$append)
+				$rawParams .= '?';
+			else
+				$rawParams .= '&';
+			$rawParams .= urlencode($name) . '=' . urlencode($value);
+			$i++;
+		}
+		return $rawParams;
 	}
 // }}}
 

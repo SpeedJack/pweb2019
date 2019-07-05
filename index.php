@@ -16,8 +16,10 @@ require_once 'config.php';
 if (isset($config['debug']) && $config['debug'] === true) {
 	ini_set('display_errors', 1);
 	ini_set('display_startup_errors', 1);
-	ini_set('xdebug.show_error_trace', 1);
-	ini_set('xdebug.show_exception_trace', 1);
+	if (isset($config['show_all_exceptions']) && $config['show_all_exceptions'] === true) {
+		ini_set('xdebug.show_error_trace', 1);
+		ini_set('xdebug.show_exception_trace', 1);
+	}
 	error_reporting(E_ALL);
 }
 if (isset($config['error_log'])) {
