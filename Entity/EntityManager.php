@@ -156,6 +156,26 @@ class EntityManager extends \Pweb\AbstractSingleton
 		return $this->getFromDbBy($entityName, 'getAll', ...$params);
 	}
 
+	/**
+	 * @brief Fetches a page of entities of the specified type from the
+	 * database.
+	 *
+	 * @param[in] string $entityName	The name of the entity to fetch.
+	 * @param[in] string $orderBy		The column's name used for
+	 * 					sorting.
+	 * @param[in] int $page			Page number.
+	 * @param[in] bool $ascending		TRUE for ascending sorting;
+	 * 					FALSE for descending.
+	 * @param[in] int|null $perPage		The number of entries per page.
+	 * 					If NULL, it defaults to the
+	 * 					value set in the application's
+	 * 					config.
+	 * @param[in] array $params		Additional parameters to pass to
+	 * 					the entity's getAllPaged()
+	 * 					method.
+	 * @retval array|false			The entities fetched or FALSE if
+	 * 					no entity was found.
+	 */
 	public function getAllPagedFromDb($entityName, $orderBy, $page, $ascending = true, $perPage = null, ...$params)
 	{
 		return $this->getFromDbBy($entityName, 'getAllPaged', $orderBy, $page, $ascending, $perPage, ...$params);
@@ -202,6 +222,13 @@ class EntityManager extends \Pweb\AbstractSingleton
 		return count($entities) > 1 ? $entities : array_pop($entities);
 	}
 
+	/**
+	 * @brief Returns the number of entities of the specified type saved in
+	 * the database.
+	 *
+	 * @param[in] string $entityName	The name of the entity to count.
+	 * @retval int		The number of entities in the database.
+	 */
 	public function countDbEntities($entityName)
 	{
 		$entityName = $this->_getEntityFullName($entityName);

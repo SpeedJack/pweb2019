@@ -1,7 +1,6 @@
 <?php
 namespace Pweb\Entity;
 
-
 /**
  * @brief Represents an entity.
  *
@@ -49,7 +48,6 @@ abstract class AbstractEntity
 	 * Indicates if the entity has been deleted from the database.
 	 */
 	protected $_deleted = false;
-
 	/**
 	 * @internal
 	 * @var Pweb::App $_app
@@ -68,7 +66,6 @@ abstract class AbstractEntity
 	 * The database adapter.
 	 */
 	protected $_db;
-
 	/**
 	 * @internal
 	 * @var array $_getters
@@ -206,6 +203,19 @@ abstract class AbstractEntity
 		return $entities;
 	}
 
+	/**
+	 * @brief Retrives from the database an ordered page of entities of the
+	 * type of this instance.
+	 *
+	 * @param[in] string $orderBy	The column's name used for sorting.
+	 * @param[in] int $page		Page number.
+	 * @param[in] bool $ascending	TRUE for ascending sorting; FALSE
+	 * 				for descending.
+	 * @param[in] int|null $perPage	The number of entries per page. If NULL,
+	 * 				it defaults to the value set in the
+	 * 				application's config.
+	 * @retval array		The array of entities retrived.
+	 */
 	public static function getAllPaged($orderBy, $page, $ascending = true, $perPage = null)
 	{
 		$perPage = isset($perPage) ? $perPage : $this->_app->config['default_per_page'];
@@ -217,6 +227,12 @@ abstract class AbstractEntity
 		return $entities;
 	}
 
+	/**
+	 * @brief Returns the number of entities of the type of this instance
+	 * saved in the database.
+	 *
+	 * @retval int	The number of entities in the database.
+	 */
 	public static function count()
 	{
 		$db = \Pweb\App::getInstance()->getDb();

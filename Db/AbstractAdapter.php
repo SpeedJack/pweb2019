@@ -134,6 +134,7 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 	 * @retval array			An array containing the value of
 	 * 					the specified column for each
 	 * 					row of the result.
+	 * @todo currently not used.
 	 */
 	public function fetchAllColumn($query, $params = [], $column = 0)
 	{
@@ -151,6 +152,7 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 	 * @retval array		An array containing all fields returned
 	 * 				by the query, indexed with the values of
 	 * 				the column specified.
+	 * @todo currently not used.
 	 */
 	public function fetchAllKeyed($query, $key, ...$params)
 	{

@@ -9,9 +9,7 @@ namespace Pweb\Pages;
  */
 class RankingPage extends AbstractPage
 {
-	/**
-	 * @brief Show the user's leaderboard.
-	 */
+	/** @brief Shows the user's leaderboard. */
 	public function actionIndex()
 	{
 		$perPage = $this->_visitor->param('pp');

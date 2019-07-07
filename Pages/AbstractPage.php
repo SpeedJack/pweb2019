@@ -184,7 +184,6 @@ abstract class AbstractPage
 	 */
 	protected function _getCssTags()
 	{
-	// TODO: support CSS/JS load order
 		$output = '';
 		foreach ($this->_css as $cssFile)
 			$output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"$cssFile\">";
@@ -234,7 +233,6 @@ abstract class AbstractPage
 	 */
 	protected function _loadSkel()
 	{
-	// TODO: add base tag (?)
 		$lang = __('en');
 		$output = "<!DOCTYPE html>
 			<html lang=\"$lang\">
@@ -358,7 +356,6 @@ abstract class AbstractPage
 				$this->_setCharset('UTF-8');
 			if (!isset($this->_meta['viewport']))
 				$this->_setViewport('width=device-width, initial-scale=1.0');
-			// TODO: add default author, application-name (use array_merge in a setDefaultMeta function?)
 			$this->_loadSkel();
 		}
 
@@ -385,12 +382,16 @@ abstract class AbstractPage
 	 * @internal
 	 * @brief Shows a modal to the visitor.
 	 *
-	 * @param[in] string $bodyTemplate	The name of the template to load
-	 * 					in the modal.
-	 * @param[in] string|null $redirect	The url to redirect the visitor
-	 * 					when the modal is closed.
-	 * @param[in] array $params		Associative array of parameters
-	 * 					to pass to the template.
+	 * @param[in] string $bodyTemplate		The name of the template
+	 * 						to load in the modal.
+	 * @param[in] string|null $redirect		The url to redirect the
+	 * 						visitor when the modal
+	 * 						is closed.
+	 * @param[in] array $params			Associative array of
+	 * 						parameters to pass to
+	 * 						the template.
+	 * @param[in] string|null $footerTemplate	The name of the modal
+	 * 						footer template to load.
 	 */
 	protected function _showModal($bodyTemplate, $redirect = null, array $params = [], $footerTemplate = null)
 	{
@@ -400,6 +401,19 @@ abstract class AbstractPage
 		$this->_show('modal', $params, false, false, false);
 	}
 
+	/**
+	 * @internal
+	 * @brief Shows a modal with a footer to the visitor.
+	 *
+	 * @param[in] string $bodyTemplate	The name of the template to load
+	 * 					in the modal's body.
+	 * @param[in] string $footerTemplate	The name of the template to load
+	 * 					in the modal's footer.
+	 * @param[in] string|null $redirect	The url to redirect the visitor
+	 * 					when the modal is closed.
+	 * @param[in] array $params		Associative array of parameters
+	 * 					to pass to the template.
+	 */
 	protected function _showModalWithFooter($bodyTemplate, $footerTemplate, $redirect = null, array $params = [])
 	{
 		$this->_showModal($bodyTemplate, $redirect, $params, $footerTemplate);

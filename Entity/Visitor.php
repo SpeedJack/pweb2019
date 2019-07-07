@@ -110,7 +110,6 @@ class Visitor extends AbstractEntity
 		$this->unsetCookie('authToken');
 	}
 
-
 	/**
 	 * @brief Clears all GET and POST parameters.
 	 */
@@ -184,7 +183,6 @@ class Visitor extends AbstractEntity
 		$this->setAction($action);
 	}
 
-
 	/**
 	 * @brief Checks if the Visitor is visiting the specified page.
 	 *
@@ -226,6 +224,12 @@ class Visitor extends AbstractEntity
 		return isset($this->user);
 	}
 
+	/**
+	 * @brief Checks if the Visitor is logged in as admin.
+	 *
+	 * @retval bool		TRUE if the Visitor is logged in as admin.
+	 * 			FALSE otherwise.
+	 */
 	public function isAdmin()
 	{
 		return $this->isLoggedIn() && $this->user->isAdmin();

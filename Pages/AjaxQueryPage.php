@@ -9,11 +9,18 @@ namespace Pweb\Pages;
  */
 class AjaxQueryPage extends AbstractPage
 {
+	/**
+	 * @brief This page should be accessed only by Ajax. Visiting th
+	 * actionIndex redirects to the home.
+	 */
 	public function actionIndex()
 	{
 		$this->_app->redirectHome();
 	}
 
+	/**
+	 * @brief Replies with a JSON with infos about username's validity.
+	 */
 	public function actionValidateUsername()
 	{
 		$username = $this->_visitor->param('username', 'POST');
@@ -42,6 +49,9 @@ class AjaxQueryPage extends AbstractPage
 		$this->_replyJson($reply);
 	}
 
+	/**
+	 * @brief Replies with a JSON with infos about email's validity.
+	 */
 	public function actionValidateEmail()
 	{
 		$email = $this->_visitor->param('email', 'POST');

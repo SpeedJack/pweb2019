@@ -9,9 +9,7 @@ namespace Pweb\Pages;
  */
 class RegisterPage extends AbstractPage
 {
-	/**
-	 * @brief Shows the registration form.
-	 */
+	/** @brief Shows the registration form. */
 	public function actionIndex()
 	{
 		if ($this->_visitor->isLoggedIn())
@@ -75,8 +73,8 @@ class RegisterPage extends AbstractPage
 	 * @brief Sets the new user's username with the one provided. Shows the
 	 * user a message in case of failure.
 	 *
-	 * @param[in] User $user	The User entity.
-	 * @param[in] string $username	The username to set.
+	 * @param[in] Pweb::Entity::User $user	The User entity.
+	 * @param[in] string $username		The username to set.
 	 * @retval bool			TRUE if the username was set
 	 * 				successfully; FALSE otherwise.
 	 */
@@ -99,8 +97,8 @@ class RegisterPage extends AbstractPage
 	 * @brief Sets the new user's email with the one provided. Shows the
 	 * user a message in case of failure.
 	 *
-	 * @param[in] User $user	The User entity.
-	 * @param[in] string $email	The email to set.
+	 * @param[in] Pweb::Entity::User $user	The User entity.
+	 * @param[in] string $email		The email to set.
 	 * @retval bool			TRUE if the email was set successfully;
 	 * 				FALSE otherwise.
 	 */

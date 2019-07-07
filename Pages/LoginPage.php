@@ -9,9 +9,7 @@ namespace Pweb\Pages;
  */
 class LoginPage extends AbstractPage
 {
-	/**
-	 * @brief Shows the login form.
-	 */
+	/** @brief Shows the login form. */
 	public function actionIndex()
 	{
 		if ($this->_visitor->isLoggedIn())
@@ -70,9 +68,7 @@ class LoginPage extends AbstractPage
 		$this->_redirectAjax();
 	}
 
-	/**
-	 * @brief Logs out the user.
-	 */
+	/** @brief Logs out the user. */
 	public function actionLogout()
 	{
 		$this->_visitor->logout();

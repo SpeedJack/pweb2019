@@ -37,8 +37,17 @@ class User extends AbstractEntity
 	 * Array of challenges solved by the user.
 	 */
 	protected $_solvedChalls;
-
+	/**
+	 * @internal
+	 * @var bool $_isAdmin
+	 * Specifies if the user has admin rights or not.
+	 */
 	protected $_isAdmin = false;
+	/**
+	 * @internal
+	 * @var int $_points
+	 * The number of user's points collected solving challenges.
+	 */
 	protected $_points = 0;
 // }}}
 
@@ -61,6 +70,11 @@ class User extends AbstractEntity
 	 * The name of the database's table associated with the entity.
 	 */
 	const TABLE_NAME = 'users';
+	/**
+	 * @var string CHALLENGE_JOIN_TABLE
+	 * The name of the database's table used to join this entity with
+	 * challenge entities.
+	 */
 	const CHALLENGE_JOIN_TABLE = 'solvedChallenges';
 	/**
 	 * @var int INVALID
@@ -81,8 +95,21 @@ class User extends AbstractEntity
 	 */
 	const VALID = 2;
 
+	/**
+	 * @var int WRONG_FLAG
+	 * Returned by solveChallenge() if the user provided flag is wrong.
+	 */
 	const WRONG_FLAG = 0;
+	/**
+	 * @var int WRONG_FLAG
+	 * Returned by solveChallenge() if the challenge has been already
+	 * solved by the user.
+	 */
 	const ALREADY_SOLVED = 1;
+	/**
+	 * @var int WRONG_FLAG
+	 * Returned by solveChallenge() if the user provided flag is correct.
+	 */
 	const CORRECT_FLAG = 2;
 // }}}
 
@@ -117,16 +144,31 @@ class User extends AbstractEntity
 		return $this->_passwordHash;
 	}
 
+	/**
+	 * @brief Checks if the user is admin.
+	 *
+	 * @retval bool		TRUE if the user is admin; FALSE otherwise.
+	 */
 	public function isAdmin()
 	{
 		return $this->_isAdmin;
 	}
 
+	/**
+	 * @brief Returns the number of user's points.
+	 *
+	 * @retval int		The number of points collected by the user.
+	 */
 	public function getPoints()
 	{
 		return $this->_points;
 	}
 
+	/**
+	 * @brief Returns an array containing all solved challenges by the user.
+	 *
+	 * @retval array	The array of solved challenges.
+	 */
 	public function getSolvedChallenges()
 	{
 		if (!isset($this->_solvedChalls)) {
@@ -194,11 +236,28 @@ class User extends AbstractEntity
 		return true;
 	}
 
+	/** @brief Gives the user admin's rights. */
 	public function promoteAdmin()
 	{
 		$this->_set('isAdmin', true);
 	}
 
+	/** @brief Removes the user admin's rights. */
+	public function demoteAdmin()
+	{
+		$this->_set('isAdmin', false);
+	}
+
+	/**
+	 * @brief Adds a challenge to the list of solved challenges.
+	 *
+	 * This function only adds the challenge to the _solvedChalls array,
+	 * without writing it to the database.
+	 *
+	 * @param[in] Challenge|null $chall	The challenge to add. If NULL,
+	 * 					initializes the _solvedChalls as
+	 * 					empty array.
+	 */
 	public function addSolvedChallenge($chall = null)
 	{
 		if (!isset($chall)) {
@@ -245,15 +304,22 @@ class User extends AbstractEntity
 		return self::createFromData($data);
 	}
 
-	public static function getBySolvedChallenge($challid)
+	/**
+	 * @brief Retrives all users that solved a challenge.
+	 *
+	 * @param[in] Challenge|int $chall	The challenge or challenge's id.
+	 * @retval array|false	Array containing users that solved the
+	 * 			challenge.
+	 */
+	public static function getBySolvedChallenge($chall)
 	{
 		$em = EntityManager::getInstance();
-		if (!is_int($challid))
-			$challid = $challid->getId();
+		if (!is_int($chall))
+			$chall = $chall->getId();
 
 		$db = \Pweb\App::getInstance()->getDb();
 		$data = $db->fetchAll('SELECT u.* FROM `' . self::TABLE_NAME . '` AS u INNER JOIN `' . self::CHALLENGE_JOIN_TABLE . '` AS s ON u.id = s.userId WHERE s.challengeId = ?;',
-			$challid);
+			$chall);
 
 		$users = [];
 		foreach ($data as $row)
@@ -261,6 +327,16 @@ class User extends AbstractEntity
 		return $users;
 	}
 
+	/**
+	 * @brief Solves a challenge and writes it to the database.
+	 *
+	 * @param[in] Challenge|int $chall	The challenge or challenge's id.
+	 * @param[in] string $flag		The user provided flag that
+	 * 					should solve the challenge.
+	 * @retval int	If the flag is wrong, returns WRONG_FLAG; If the
+	 * 		challenge is already solved by the user, returns
+	 * 		ALREADY_SOLVED; If the flag is ok, returns CORRECT_FLAG.
+	 */
 	public function solveChallenge($chall, $flag)
 	{
 		if (is_int($chall))
@@ -284,12 +360,26 @@ class User extends AbstractEntity
 		return self::CORRECT_FLAG;
 	}
 
+	/**
+	 * @brief Reloads the array of solved challenges from the database.
+	 *
+	 * @retval array	The new array of solved challenges.
+	 */
 	public function refreshSolvedChallenges()
 	{
 		unset($this->_solvedChalls);
 		return $this->getSolvedChallenges();
 	}
 
+	/**
+	 * @brief Creates a new User from the data passed as array.
+	 *
+	 * @param[in] array $data	Associative array of key-value pairs
+	 * 				where the key is the property/column's
+	 * 				name.
+	 * @retval self|false	The entity created or FALSE if no data is
+	 * 			provided.
+	 */
 	public static function createFromData(array $data)
 	{
 		if (isset($data['isAdmin']))
@@ -391,6 +481,13 @@ class User extends AbstractEntity
 		return password_verify($password, $this->_passwordHash);
 	}
 
+	/**
+	 * @brief Checks if the user has solved the specified challenge.
+	 *
+	 * @param[in] int $chall	The challenge or challenge's id.
+	 * @retval bool		TRUE if the user has solved the challenge;
+	 * 			FALSE otherwise.
+	 */
 	public function hasSolvedChallenge($chall)
 	{
 		if (!is_int($chall))

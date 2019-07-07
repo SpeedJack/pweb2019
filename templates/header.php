@@ -34,6 +34,14 @@ $topnavMenus = [
 	]
 ];
 
+/**
+ * @brief Generates the HTML of the menus.
+ *
+ * @param[in] array $menus			An array containing all infos
+ * 						about the menus to display.
+ * @param[in] Pweb::Entity::Visitor $visitor	The Visitor's instance.
+ * @param[in] Pweb::App $application		The App's instance.
+ */
 function showMenus($menus, $visitor, $application)
 {
 	foreach ($menus as $menuName => $menuMeta):

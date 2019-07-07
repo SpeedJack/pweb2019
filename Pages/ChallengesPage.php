@@ -9,9 +9,7 @@ namespace Pweb\Pages;
  */
 class ChallengesPage extends AbstractPage
 {
-	/**
-	 * @brief Lists all challenges available.
-	 */
+	/** @brief Lists all challenges available. */
 	public function actionIndex()
 	{
 		if (!$this->_visitor->isLoggedIn())
@@ -27,6 +25,7 @@ class ChallengesPage extends AbstractPage
 		$this->_show('challenges-list', ['challenges' => $challs, 'user' => $this->_visitor->user]);
 	}
 
+	/** @brief Opens a challenge in a modal window. */
 	public function actionOpen()
 	{
 		if (!$this->_visitor->isLoggedIn()) {
@@ -61,6 +60,7 @@ class ChallengesPage extends AbstractPage
 			null, ['chall' => $chall]);
 	}
 
+	/** @brief Solves a challenge for the visitor. */
 	public function actionSolve()
 	{
 		if (!$this->_visitor->isLoggedIn()) {

@@ -6,19 +6,17 @@
  */
 
 require_once "error-functions.php";
+require_once "string-functions.php";
 
 spl_autoload_register(function ($class)
 {
 	$prefix = 'Pweb\\';
 	$baseDir = $GLOBALS['APP_ROOT'] . '/';
 
-	$prefixLen = strlen($prefix);
-	if (strncmp($prefix, $class, $prefixLen) !== 0)
+	if (!startsWith($class, $prefix))
 		return;
 
-	$classFullName = substr($class, $prefixLen);
-
-	$classFile = $baseDir . str_replace('\\', '/', $classFullName) . '.php';
+	$classFile = $baseDir . str_replace('\\', '/', trimPrefix($class, $prefix)) . '.php';
 	if (!is_file($classFile))
 		panic(404);
 
