@@ -24,6 +24,10 @@ main > * {
 	margin: 0;
 }
 
+main hr {
+	margin: 10px 0;
+}
+
 .color-red {
 	color: #FF4136 !important;
 }

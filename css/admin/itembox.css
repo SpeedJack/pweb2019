@@ -1,0 +1,46 @@
+div.itembox {
+	display: block;
+	margin: 1px auto;
+	width: 100%;
+	max-width: 600px;
+	padding: 16px 0 16px 20px;
+	background-color: #DDD;
+	border: 2px solid #CCC;
+	border-radius: 10px;
+	text-align: left;
+}
+
+div.confirmbox {
+	background-color: #FF4136;
+	font-weight: bold;
+	border-color: red;
+}
+
+div.itembox div.itembox-controls {
+	display: flex;
+	flex-wrap: nowrap;
+	float: right;
+	height: 100%;
+	min-width: 30%;
+	overflow: hidden;
+	position: relative;
+	top: -16px;
+	z-index: 1;
+}
+
+div.itembox div.itembox-text {
+	display: inline-block;
+	height: 100%;
+	width: 50%;
+	z-index: 0;
+	position: relative;
+	top: -16px;
+	padding: 16px 0 0 0;
+}
+
+div.itembox-controls a {
+	display: inline-block;
+	flex: 1 1;
+	padding: 16px 16px 16px 16px;
+	border-left: 3px solid #CCC;
+}

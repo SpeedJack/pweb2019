@@ -7,7 +7,8 @@ class UsersPage extends AbstractPage
 	{
 		$this->_setTitle(__('Admin: Edit Users'));
 		$this->_addCss('search');
-		$this->_addCss('itembox');
+		//$this->_addCss('itembox');
+		$this->_addCss('table');
 		$this->_addJs('search');
 		$this->_show('editusers');
 	}

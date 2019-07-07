@@ -1,0 +1,22 @@
+div.search-form {
+	margin: 10px auto;
+	text-align: center;
+}
+
+div.search-form input[type=text] {
+	width: 100%;
+	max-width: 300px;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #CCC;
+	box-sizing: border-box;
+}
+
+div.search-form label {
+	font-weight: bold;
+}
+
+div.search-form label.nobold {
+	font-weight: normal;
+}

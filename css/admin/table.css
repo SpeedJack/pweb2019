@@ -1,0 +1,68 @@
+main > table {
+	margin: auto;
+}
+
+table {
+	border-spacing: 0;
+	border-collapse: separate;
+	width: 100%;
+	max-width: 1000px;
+	border-radius: 20px;
+}
+
+table tr:nth-child(even) {
+	background-color: #DDD;
+}
+
+table td {
+	text-align: center;
+	overflow: hidden;
+	width: 1%;
+}
+
+table td:first-child {
+	text-align: left;
+	padding: 8px;
+	min-width: 180px;
+	padding: 10px;
+	text-overflow: ellipsis;
+	word-wrap: normal;
+	white-space: nowrap;
+	min-width: 100%;
+}
+
+table tr:not(.confirmbox) td:not(:first-child) {
+	background-color: #EEE;
+	border: 1px solid #FFF;
+}
+
+table tr:nth-child(even):not(.confirmbox) td:not(:first-child) {
+	border: 1px solid #DDD;
+}
+
+table tr td.center-text {
+	text-align: center;
+}
+
+table tr.confirmbox {
+	background-color: red;
+}
+
+table tr.confirmbox td {
+	padding: 0;
+	transition: padding 0.5s;
+}
+
+table tr.confirmbox td div {
+	max-height: 0;
+	transition: max-height 0.5s;
+}
+
+td button {
+	border: none;
+	cursor: pointer;
+	background-color: #EEE;
+	color: #0074D9;
+	width: 100%;
+	height: 100%;
+}
