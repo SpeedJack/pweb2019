@@ -154,7 +154,7 @@ nav div.dropdown button.dropdown.active {
 nav div.dropdown div.dropdown-content {
 	display: none;
 	position: absolute;
-	padding: 2px;
+	padding: 0;
 	background-color: #2A3239;
 	min-width: 160px;
 	height: auto;

@@ -69,6 +69,11 @@ function showMenus($menus, $visitor, $application)
 			);
 		if (isset($menuMeta['menus'])):
 			$classes[] = 'dropdown';
+			foreach ($menuMeta['menus'] as $submenu)
+				if ($visitor->isActivePage($submenu['page'])) {
+					$classes[] = 'active';
+					break;
+				}
 			$classStr = getClassesString($classes);
 			$classStr = empty($classStr) ? '' : " $classStr"; ?>
 			<div<?= $classStr ?>><button<?= $classStr ?>><?= $menuName ?></button>
