@@ -29,7 +29,7 @@
 		<tfoot>
 			<tr>
 				<td colspan="3">
-					<?= __('Showing <strong>%s</strong> users of <strong>%s</strong>.', min($perPage, $totalUsers), $totalUsers) ?><br><br>
+					<?= __('Showing <strong>%s</strong> users of <strong>%s</strong>.', count($users), $totalUsers) ?><br><br>
 					<div class="table-navbar">
 						<?php if ($page > 4): ?>
 						<a href="<?= $application->buildLink('__current', '__current', ['pp' => $perPage, 'p' => 1]) ?>">&laquo;</a>
