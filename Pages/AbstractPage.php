@@ -340,7 +340,7 @@ abstract class AbstractPage
 	{
 		if ($showHeader) {
 			$this->_addCss('header');
-			$this->_addJs('sticky-navbar');
+			$this->_addJs('navbar');
 		}
 		if ($showFooter)
 			$this->_addCss('footer');
