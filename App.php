@@ -434,7 +434,7 @@ class App extends AbstractSingleton
 			'username_regex' => '/^[a-zA-Z0-9._-]{5,32}$/',
 			'min_password_length' => 8,
 			'auth_token_length' => 20,
-			'auth_token_duration' => 60*60*24*30,
+			'auth_token_duration' => 60*60*24*365,
 			'session_canary_lifetime' => 60*5,
 			'form_validation' => [
 				'username_regex' => '^[a-zA-Z0-9._-]{5,32}$',
