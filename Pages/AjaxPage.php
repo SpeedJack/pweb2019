@@ -7,7 +7,7 @@ namespace Pweb\Pages;
  * @author Niccolò Scatena <speedjack95@gmail.com>
  * @copyright GNU General Public License, version 3
  */
-class AjaxQueryPage extends AbstractPage
+class AjaxPage extends AbstractPage
 {
 	/**
 	 * @brief This page should be accessed only by Ajax. Visiting th

@@ -13,7 +13,7 @@ function validateField()
 {
 	if (this.value === "")
 		return;
-	ajaxQuery("index.php?page=AjaxQuery&action=Validate" + ucfirst(this.name),
+	ajaxQuery("index.php?page=Ajax&action=Validate" + ucfirst(this.name),
 		this.name + "=" + encodeURIComponent(this.value), false,
 		handleValidationResponse);
 }
