@@ -5,6 +5,8 @@ var navbarOffsetTop;
 function stickyNavbar()
 {
 	var navbar = document.getElementsByTagName("nav")[0];
+	if (navbar === undefined)
+		return;
 	if (window.pageYOffset >= navbarOffsetTop)
 		navbar.classList.add("sticky");
 	else
@@ -13,6 +15,9 @@ function stickyNavbar()
 
 function getNavbarOffsetTop()
 {
-	navbarOffsetTop = document.getElementsByTagName("nav")[0].offsetTop;
+	var navbar = document.getElementsByTagName("nav")[0];
+	if (navbar === undefined)
+		return;
+	navbarOffsetTop = navbar.offsetTop;
 	window.addEventListener("scroll", stickyNavbar);
 }

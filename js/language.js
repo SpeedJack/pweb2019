@@ -25,7 +25,7 @@ function setLanguage()
 		url.searchParams.set("lang", lang);
 		location.replace(url.href);
 	} else {
-		setCookie("lang", lang, Date.now() + 10*365*24*60*60);
+		setCookie("lang", lang, Date.now() + 60*60*24*365*10);
 		location.reload();
 	}
 }

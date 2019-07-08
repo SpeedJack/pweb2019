@@ -8,6 +8,8 @@ menuBarsElement.addEventListener("mouseout", function () { drawMenuBars("#BFC2C4
 function drawMenuBars(barsColor)
 {
 	var menuBarsCanvas = document.getElementById("menu-bars");
+	if (menuBarsCanvas === null)
+		return;
 	var canvasContext = menuBarsCanvas.getContext("2d");
 	canvasContext.clearRect(0, 0, 25, 20);
 	canvasContext.moveTo(0, 1);
@@ -23,6 +25,8 @@ function drawMenuBars(barsColor)
 function openResponsiveMenu()
 {
 	var topnav = document.getElementsByTagName("nav")[0];
+	if (topnav === undefined)
+		return;
 	topnav.classList.toggle("open");
 	topnav.scrollIntoView();
 }
