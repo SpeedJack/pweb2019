@@ -22,7 +22,7 @@ class UsersPage extends AbstractPage
 		$this->_addCss('table');
 		$this->_addJs('search');
 		$this->_addJs('users-edit');
-		$this->_show('multitemplate', ['templates' => ['users-search', 'users-table']]);
+		$this->_show('multi', ['templates' => ['users-search', 'users-table']]);
 	}
 
 	/**
