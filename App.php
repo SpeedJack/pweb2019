@@ -420,6 +420,7 @@ class App extends AbstractSingleton
 		$this->config = array_replace_recursive([
 			'app_name' => 'Pweb',
 			'header_motd' => 'Message of the day',
+			'super_admin_ids' => [ 1 ],
 			'db' => [
 				'prefer_mysqli_over_pdo' => false,
 				'host' => 'localhost',

@@ -10,7 +10,7 @@ namespace Pweb\Pages;
 class AjaxPage extends AbstractPage
 {
 	/**
-	 * @brief This page should be accessed only by Ajax. Visiting th
+	 * @brief This page should be accessed only by Ajax. Visiting the
 	 * actionIndex redirects to the home.
 	 */
 	public function actionIndex()

@@ -151,7 +151,13 @@ class User extends AbstractEntity
 	 */
 	public function isAdmin()
 	{
-		return $this->_isAdmin;
+		return $this->_isAdmin || $this->isSuperAdmin();
+	}
+
+	public function isSuperAdmin()
+	{
+		return in_array($this->getId(),
+			$this->_app->config['super_admin_ids'], true);
 	}
 
 	/**
@@ -327,6 +333,17 @@ class User extends AbstractEntity
 		return $users;
 	}
 
+	public static function getAllByUsernameLike($username)
+	{
+		$em = EntityManager::getInstance();
+		$db = \Pweb\App::getInstance()->getdb();
+		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` WHERE username LIKE ?;', '%' . $username . '%');
+		$users = [];
+		foreach ($data as $row)
+			$users[] = self::createFromData($row);
+		return $users;
+	}
+
 	/**
 	 * @brief Solves a challenge and writes it to the database.
 	 *
@@ -433,8 +450,10 @@ class User extends AbstractEntity
 			return self::VALID;
 		$em = EntityManager::getInstance();
 		$inUse = $em->getFromDbBy('User', 'getByUsername', $username);
+		if ($inUse === false)
+			return self::VALID;
 		if (!isset($userid))
-			return empty($inUse) ? self::VALID : self::ALREADY_IN_USE;
+			return self::ALREADY_IN_USE;
 		return $inUse->getId() === $userid ? self::VALID : self::ALREADY_IN_USE;
 	}
 
@@ -463,8 +482,10 @@ class User extends AbstractEntity
 			return self::VALID;
 		$em = EntityManager::getInstance();
 		$inUse = $em->getFromDbBy('User', 'getByEmail', $email);
+		if ($inUse === false)
+			return self::VALID;
 		if (!isset($userid))
-			return empty($inUse) ? self::VALID : self::ALREADY_IN_USE;
+			return self::ALREADY_IN_USE;
 		return $inUse->getId() === $userid ? self::VALID : self::ALREADY_IN_USE;
 	}
 

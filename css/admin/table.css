@@ -7,10 +7,10 @@ table {
 	border-collapse: separate;
 	width: 100%;
 	max-width: 1000px;
-	border-radius: 20px;
+	background-color: #EEE;
 }
 
-table tr:nth-child(even) {
+table tr.data-row:nth-child(even) {
 	background-color: #DDD;
 }
 
@@ -31,15 +31,6 @@ table td:first-child {
 	min-width: 100%;
 }
 
-table tr:not(.confirmbox) td:not(:first-child) {
-	background-color: #EEE;
-	border: 1px solid #FFF;
-}
-
-table tr:nth-child(even):not(.confirmbox) td:not(:first-child) {
-	border: 1px solid #DDD;
-}
-
 table tr td.center-text {
 	text-align: center;
 }
@@ -49,20 +40,38 @@ table tr.confirmbox {
 }
 
 table tr.confirmbox td {
+	text-align: center;
 	padding: 0;
-	transition: padding 0.5s;
 }
 
 table tr.confirmbox td div {
 	max-height: 0;
-	transition: max-height 0.5s;
+	padding: 0;
+	transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
 }
 
 td button {
 	border: none;
 	cursor: pointer;
-	background-color: #EEE;
 	color: #0074D9;
+	background-color: inherit;
 	width: 100%;
 	height: 100%;
+}
+
+table tr td span.username {
+	font-size: 1.5em;
+	font-weight: bold;
+	font-style: normal;
+	color: #0074D9;
+}
+
+table tr.data-row td {
+	font-style: italic;
+	color: #999;
+}
+
+table tr.confirmbox td div span[id^=confirm-] {
+	display: none;
+	font-weight: bold;
 }

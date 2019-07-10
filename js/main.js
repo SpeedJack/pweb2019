@@ -19,6 +19,15 @@ function getCookie(name)
 	return "";
 }
 
+function sendRequest(url, data, xhttp)
+{
+	if (xhttp === undefined)
+		xhttp = new XMLHttpRequest();
+	xhttp.open("POST", url, true);
+	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhttp.send(data);
+}
+
 function ajaxQuery(url, data, allowResponseContainer, handler)
 {
 	var xhttp = new XMLHttpRequest();
@@ -28,9 +37,7 @@ function ajaxQuery(url, data, allowResponseContainer, handler)
 		if (this.readyState === 4 && this.status === 200)
 			handler(this, (allowResponseContainer === true));
 	}
-	xhttp.open("POST", url, true);
-	xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhttp.send(data);
+	sendRequest(url, data, xhttp);
 }
 
 function handleAjaxResponse(response, allowResponseContainer)
