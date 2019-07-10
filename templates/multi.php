@@ -7,12 +7,7 @@
 ?>
 
 <main>
-	<?php $first = true;
-	foreach ($templates as $template):
-		if (!$first): ?>
-			<hr>
-		<?php endif;
-		$first = false;
+	<?php foreach ($templates as $template)
 		$this->_loadTemplate($template, $params);
-	endforeach; ?>
+	?>
 </main>

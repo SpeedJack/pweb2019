@@ -5,6 +5,7 @@
  * @copyright GNU General Public License, version 3
  */
 ?>
+<hr>
 <table id="users-table">
 <tbody>
 	<tr class="no-data">
