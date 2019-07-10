@@ -188,16 +188,17 @@ abstract class AbstractEntity
 	 * @brief Retrives all entities of the type of this instance from the
 	 * database.
 	 *
-	 * @retval array	The array of entities retrived.
+	 * @param[in] string $appendQuery	SQL query part to append.
+	 * @retval array			The array of entities retrived.
 	 */
-	public static function getAll()
+	public static function getAll($appendQuery = "")
 	{
 		$db = \Pweb\App::getInstance()->getDb();
-		$data = $db->fetchAll('SELECT * FROM `' . static::TABLE_NAME . '`;');
+		$data = $db->fetchAll('SELECT * FROM `' . static::TABLE_NAME . '`' . $appendQuery . ';');
 		$entities = [];
 		foreach ($data as $row)
 			$entities[] = static::createFromData($row);
-		return $entities;
+		return count($entities) === 1 ? array_pop($entities) : $entities;
 	}
 
 	/**
@@ -216,12 +217,7 @@ abstract class AbstractEntity
 	public static function getAllPaged($orderBy, $page, $ascending = true, $perPage = null)
 	{
 		$perPage = isset($perPage) ? $perPage : $this->_app->config['default_per_page'];
-		$db = \Pweb\App::getInstance()->getDb();
-		$data = $db->fetchAll('SELECT * FROM `' . static::TABLE_NAME . "` ORDER BY $orderBy " . ($ascending ? 'ASC' : 'DESC') . " LIMIT $perPage OFFSET " . ($page - 1)*$perPage . ';');
-		$entities = [];
-		foreach ($data as $row)
-			$entities[] = static::createFromData($row);
-		return $entities;
+		return self::getAll("ORDER BY $orderBy " . ($ascending ? 'ASC' : 'DESC') . " LIMIT $perPage OFFSET " . ($page - 1)*$perPage);
 	}
 
 	/**

@@ -241,7 +241,7 @@ class Challenge extends AbstractEntity
 	public static function getAll($user = null)
 	{
 		if (!isset($user))
-			return parent::getAll();
+			return parent::getAll('ORDER BY categoryName, id');
 
 		$em = EntityManager::getInstance();
 		if (is_int($user))
