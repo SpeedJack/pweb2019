@@ -2,7 +2,6 @@
 namespace Pweb\Entity;
 
 require_once 'string-functions.php';
-require_once 'array-functions.php';
 
 /**
  * @brief The Entity Manager class.
@@ -51,22 +50,21 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * it was already created.
 	 *
 	 * @param[in] string $entityName	The entity's name to create.
-	 * @param[in] int $entityId		The entity's id.
+	 * @param[in] int $id			The entity's id.
 	 * @param[in] mixed $params		The list of parameters to pass
 	 * 					to the entity's constructor.
 	 * @retval AbstractEntity		The entity created.
 	 */
-	public function create($entityName, $entityId = 0, ...$params)
+	public function create($entityName, $id = 0, ...$params)
 	{
-		$found = $this->findCached($entityName, $entityId);
+		$found = $this->findCached($entityName, $id);
 			if ($found !== false)
 				return $found;
 		$entityName = $this->_getEntityFullName($entityName);
-		$entity = new $entityName($entityId, ...$params);
+		$entity = new $entityName($id, ...$params);
 		$entity->insert();
-		if (!isset($this->_cachedEntities[$entityName]))
-			$this->_cachedEntities[$entityName] = [];
-		$this->_cachedEntities[$entityName][$entityId] = $entity;
+		$hash = $this->_getEntityHash($entity);
+		$this->_cachedEntities[$hash] = $entity;
 		return $entity;
 	}
 
@@ -81,28 +79,23 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 */
 	public function createNew($entityName, ...$params)
 	{
-		$entityName = $this->_getEntityFullName($entityName);
-		if (!isset($this->_cachedEntities[$entityName]))
-			$entityId = 0;
-		else
-			$entityId = array_key_last($this->_cachedEntities[$entityName]) + 1;
-		return $this->create($entityName, $entityId, ...$params);
+		$id = $this->_nextEntityId($entityName);
+		return $this->create($entityName, $id, ...$params);
 	}
 
 	/**
 	 * @brief Returns a cached entity.
 	 *
 	 * @param[in] string $entityName	The name of the entity to find.
-	 * @param[in] int $entityId		The id of the entity to find.
+	 * @param[in] int $id			The id of the entity to find.
 	 * @retval AbstractEntity|false		The entity found or FALSE if no
 	 * 					entity was found.
 	 */
-	public function findCached($entityName, $entityId = 0)
+	public function findCached($entityName, $id = 0)
 	{
-		$entityName = $this->_getEntityFullName($entityName);
-		if (isset($this->_cachedEntities[$entityName])
-			&& isset($this->_cachedEntities[$entityName][$entityId]))
-			return $this->_cachedEntities[$entityName][$entityId];
+		$hash = $this->_getEntityHash($entityName);
+		if (isset($this->_cachedEntities[$hash]))
+			return $this->_cachedEntities[$hash];
 		return false;
 	}
 
@@ -110,16 +103,15 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * @brief Returns a saved entity.
 	 *
 	 * @param[in] string $entityName	The name of the entity to find.
-	 * @param[in] int $entityId		The id of the entity to find.
+	 * @param[in] int $id			The id of the entity to find.
 	 * @retval AbstractEntity|false		The entity found or FALSE if no
 	 * 					entity was found.
 	 */
-	public function findSaved($entityName, $entityId)
+	public function findSaved($entityName, $id)
 	{
-		$entityName = $this->_getEntityFullName($entityName);
-		if (isset($this->_savedEntities[$entityName])
-			&& isset($this->_savedEntities[$entityName][$entityId]))
-			return $this->_savedEntities[$entityName][$entityId];
+		$hash = $this->_getEntityHash($entityName);
+		if (isset($this->_savedEntities[$hash]))
+			return $this->_savedEntities[$hash];
 		return false;
 	}
 
@@ -127,19 +119,18 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * @brief Fetches an entity from the database.
 	 *
 	 * @param[in] string $entityName	The name of the entity to fetch.
-	 * @param[in] int $entityId		The id of the entity to fetch.
+	 * @param[in] int $id			The id of the entity to fetch.
 	 * @param[in] mixed $params		Additional parameters to pass to
 	 * 					the getById() method.
 	 * @retval AbstractEntity|false		The entity fetched or false if
 	 * 					the entity was not found.
 	 */
-	public function getFromDb($entityName, $entityId, ...$params)
+	public function getFromDb($entityName, $id, ...$params)
 	{
-		$entityName = $this->_getEntityFullName($entityName);
-		$found = $this->findSaved($entityName, $entityId);
+		$found = $this->findSaved($entityName, $id);
 		if ($found !== false)
 			return $found;
-		return $this->getFromDbBy($entityName, 'getById', $entityId, ...$params);
+		return $this->getFromDbBy($entityName, 'getById', $id, ...$params);
 	}
 
 	/**
@@ -208,13 +199,10 @@ class EntityManager extends \Pweb\AbstractSingleton
 			return false;
 		$entities = is_array($entities) ? $entities : [ $entities ];
 		foreach ($entities as $key => $entity) {
-			$entityId = $entity->getEntityId();
-			$entityName = $entity->getClassName();
-			if (!isset($this->_savedEntities[$entityName]))
-				$this->_savedEntities[$entityName] = [];
-			if (isset($this->_savedEntities[$entityName][$entityId])) {
-				$this->_savedEntities[$entityName][$entityId]->merge($entity);
-				$entities[$key] = $this->_savedEntities[$entityName][$entityId];
+			$hash = $entity->getHash();
+			if (isset($this->_savedEntities[$hash])) {
+				$this->_savedEntities[$hash]->merge($entity);
+				$entities[$key] = $this->_savedEntities[$hash];
 			} else {
 				$this->addToSaved($entity);
 			}
@@ -243,18 +231,13 @@ class EntityManager extends \Pweb\AbstractSingleton
 	public function addToSaved($entity)
 	{
 		$this->_assertValidEntity($entity);
-		$entityId = $entity->getId();
-		$entityName = $entity->getClassName();
-		if (isset($this->_savedEntities[$entityName])
-			&& isset($this->_savedEntities[$entityName][$entityId]))
+		$hash = $entity->getHash();
+		if (isset($this->_savedEntities[$hash]))
 			throw new \LogicException(
-				__('Can not add entity %s with id %d since another entity of the same type already uses this id.',
-				$entityName, $entityId)
+				__('Can not add entity with hash %s since another entity of the same type already uses this id.',
+				$hash)
 			);
-		if (!isset($this->_savedEntities[$entityName]))
-			$this->_savedEntitites[$entityName] = [];
-		$this->_savedEntities[$entityName][$entityId] = $entity;
-		$entity->setEntityId($entityId);
+		$this->_savedEntities[$hash] = $entity;
 	}
 
 	/**
@@ -265,19 +248,18 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * 				$_cachedEntities array.
 	 *
 	 * @param[in] AbstractEntity $entity	The entity.
+	 * @param[in] string $oldHash		The old hash of the entity.
 	 */
-	public function moveToSaved($entity)
+	public function moveToSaved($entity, $oldHash)
 	{
 		$this->_assertValidEntity($entity);
-		$entityId = $entity->getEntityId();
-		$entityName = $entity->getClassName();
-		if (!isset($this->_cachedEntities[$entityName])
-			|| !isset($this->_cachedEntities[$entityName][$entityId]))
+		if (!isset($this->_cachedEntities[$oldHash]))
 			throw new \LogicException(
-				__('%s\'s entity id has changed unexpectedly.')
+				__('Entity hash \'%s\' has changed unexpectedly.',
+				$oldHash)
 			);
 		$this->addToSaved($entity);
-		unset($this->_cachedEntities[$entityName][$entityId]);
+		unset($this->_cachedEntities[$oldHash]);
 		$entity->insert();
 	}
 
@@ -285,33 +267,61 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * @brief Flushes all the saved entities to the database.
 	 *
 	 * If $entityName and $entityId are specified, it saves only the
-	 * specified entity. If only $entityName is specified, it saves all
-	 * entities of the specified type.
+	 * specified entity. Otherwise, it saves all entities.
 	 *
 	 * @param[in] string|null $entityName	The name of the entity to
 	 * 					flush.
-	 * @param[in] string|null $entityId	The id of the entity to flush.
+	 * @param[in] string|null $id		The id of the entity to flush.
 	 */
-	public function flush($entityName = null, $entityId = null)
+	public function flush($entityName = null, $id = 0)
 	{
 		if (isset($entityName)) {
-			$entityName = $this->_getEntityFullName($entityName);
-			if (!isset($this->_savedEntities[$entityName]))
-				return;
-			if (!isset($entityId))
-				foreach ($this->_savedEntities[$entityName] as $entity)
-					$entity->save();
-			else if (isset($this->_savedEntities[$entityName][$entityId]))
-				$this->_savedEntities[$entityName][$entityId]->save();
+			$hash = $this->_getEntityHash($entityName, $id);
+			if (isset($this->_savedEntities[$hash]))
+				$this->_savedEntities[$hash]->save();
 			return;
 		}
-		foreach ($this->_savedEntities as $entities)
-			foreach ($entities as $entity)
-				$entity->save();
+		foreach ($this->_savedEntities as $entity)
+			$entity->save();
 	}
 // }}}
 
 // Private Methods {{{
+	/**
+	 * @internal
+	 * @brief Gets the next available id in the _cachedEntities array.
+	 *
+	 * @param[in] string $entityName	The name of the entity.
+	 * @retval int				The next available id for the
+	 * 					specified entity.
+	 */
+	private function _nextEntityId($entityName)
+	{
+		$entityName = $this->_getEntityFullName($entityName);
+		for ($id = 0; isset($this->_cachedEntities[$this->_getEntityHash($entityName, $id)]); $id++)
+			;
+		return $id;
+	}
+
+	/**
+	 * @internal
+	 * @brief Returns the entity's unique hash.
+	 *
+	 * @param[in] string|AbstractEntity $entity	The entity or entity's
+	 * 						name.
+	 * @param[in] int $id				The entity's id.
+	 * @retval string				The entity's unique
+	 * 						hash.
+	 */
+	private function _getEntityHash($entity, $id = 0)
+	{
+		if (is_string($entity)) {
+			$entity = $this->_getEntityFullName($entity);
+			return $entity::generateHash($id);
+		}
+		return $entity->getHash();
+	}
+
 	/**
 	 * @internal
 	 * @brief Asserts that the specified entity is a valid entity.

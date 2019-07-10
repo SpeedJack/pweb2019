@@ -13,15 +13,8 @@ abstract class AbstractEntity
 // Protected Properties {{{
 	/**
 	 * @internal
-	 * @var int $_entityId
-	 * The entity's id. On entities saved to the database, this field is
-	 * equal to the $_id field.
-	 */
-	protected $_entityId;
-	/**
-	 * @internal
 	 * @var int $_id
-	 * The id of the entity on the database.
+	 * The id of the entity.
 	 */
 	protected $_id;
 	/**
@@ -83,12 +76,13 @@ abstract class AbstractEntity
 	/**
 	 * @brief Creates the entity.
 	 *
-	 * @param[in] int $entityId	The id of this entity.
+	 * @param[in] int $id		The id of this entity.
 	 * @return			The entity instance.
 	 */
-	public function __construct($entityId)
+	public function __construct($id)
 	{
-		$this->setEntityId($entityId);
+		$this->_isSaved = false;
+		$this->_id = $id;
 		$this->_app = \Pweb\App::getInstance();
 		$this->_db = $this->_app->getDb();
 		$this->_em = EntityManager::getInstance();
@@ -106,16 +100,6 @@ abstract class AbstractEntity
 	}
 
 	/**
-	 * @brief Returns the entity's id.
-	 *
-	 * @retval int		The id of this entity.
-	 */
-	public function getEntityId()
-	{
-		return $this->_entityId;
-	}
-
-	/**
 	 * @brief Returns the id of this entity on the database.
 	 *
 	 * @retval int		The id of this entity on the database.
@@ -123,6 +107,27 @@ abstract class AbstractEntity
 	public function getId()
 	{
 		return $this->_id;
+	}
+
+	/**
+	 * @brief Generates the entity's unique hash.
+	 *
+	 * @param[in] int $id	The id of the entity.
+	 * @retval string	The entity's unique hash.
+	 */
+	public static function generateHash($id)
+	{
+		return static::class . '-' . $id;
+	}
+
+	/**
+	 * @brief Returns the entity's unique hash.
+	 *
+	 * @retval int		The hash of this entity.
+	 */
+	public function getHash()
+	{
+		return static::generateHash($this->getId());
 	}
 // }}}
 
@@ -152,22 +157,14 @@ abstract class AbstractEntity
 					$realName, $this->getClassName())
 			);
 
-		if (!isset($this->_changedValues[$propertyName]))
-			$this->_changedValues[$propertyName] = $this->$realName;
-		if ($this->_changedValues[$propertyName] === $value)
-			unset($this->_changedValues[$propertyName]);
+		if ($this->_isSaved) {
+			if (!isset($this->_changedValues[$propertyName]))
+				$this->_changedValues[$propertyName] = $this->$realName;
+			if ($this->_changedValues[$propertyName] === $value)
+				unset($this->_changedValues[$propertyName]);
+		}
 
 		$this->$realName = $value;
-	}
-
-	/**
-	 * @brief Sets the entity's id.
-	 *
-	 * @param[in] int $entityId	The new id of this entity.
-	 */
-	public function setEntityId($entityId)
-	{
-		$this->_entityId = $entityId;
 	}
 // }}}
 
@@ -268,6 +265,7 @@ abstract class AbstractEntity
 			return false;
 		$instance = new static(0);
 		$instance->_fillData($data);
+		$instance->_isSaved = true;
 		return $instance;
 	}
 
@@ -410,8 +408,9 @@ abstract class AbstractEntity
 		if ($this->_toInsert) {
 			$this->_preInsert();
 			$this->_insert();
+			$oldHash = $this->getHash();
 			$this->_id = $this->_db->fetchColumn('SELECT LAST_INSERT_ID();');
-			$this->_em->moveToSaved($this);
+			$this->_em->moveToSaved($this, $oldHash);
 			$this->_postInsert();
 			$this->_toInsert = false;
 		} else if ($this->_toDelete) {

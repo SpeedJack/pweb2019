@@ -54,13 +54,12 @@ class Visitor extends AbstractEntity
 	/**
 	 * @brief Creates a Visitor.
 	 *
-	 * @param[in] int $entityId	The entity's id.
-	 * @return			The Visitor instance.
+	 * @param[in] int $id	The entity's id.
+	 * @return		The Visitor instance.
 	 */
-	public function __construct($entityId)
+	public function __construct($id)
 	{
-		parent::__construct($entityId);
-		$this->_id = $entityId;
+		parent::__construct($id);
 		$this->_readParams();
 		$this->_initSession();
 		$this->_login();
@@ -233,6 +232,11 @@ class Visitor extends AbstractEntity
 	public function isAdmin()
 	{
 		return $this->isLoggedIn() && $this->user->isAdmin();
+	}
+
+	public function isSuperAdmin()
+	{
+		return $this->isLoggedIn() && $this->user->isSuperAdmin();
 	}
 
 	/**
