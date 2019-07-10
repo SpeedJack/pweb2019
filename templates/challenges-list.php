@@ -7,6 +7,9 @@
 ?>
 <main>
 	<?php
+	if (empty($challenges)): ?>
+		<p><?= __('No challenges to show.'); ?></p>
+	<?php endif;
 	$currentCat = "";
 	foreach ($challenges as $chall) {
 		$challCat = $chall->getCategoryName();

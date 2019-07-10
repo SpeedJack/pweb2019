@@ -16,6 +16,7 @@ class ChallengesPage extends AbstractPage
 			$this->_app->reroute('login');
 
 		$challs = $this->_em->getAllFromDb('Challenge', $this->_visitor->user);
+		$challs = $challs === false ? [] : (is_array($challs) ? $challs : [$challs]);
 
 		$this->_setTitle(__('Challenges'));
 		$this->_addCss('challenges');
