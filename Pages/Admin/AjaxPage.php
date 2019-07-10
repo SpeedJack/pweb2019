@@ -37,6 +37,6 @@ class AjaxPage extends AbstractPage
 			$users = $this->_em->getFromDbBy('User', 'getAllByUsernameLike', $searchText);
 		}
 		$users = $users === false ? [] : (is_array($users) ? $users : [ $users ]);
-		$this->_reply('usertabledata', ['users' => $users]);
+		$this->_reply('user-rows', ['users' => $users]);
 	}
 }
