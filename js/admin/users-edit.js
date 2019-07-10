@@ -31,12 +31,13 @@ function performUserAction()
 		return;
 	yesButton.onclick = function() { confirmUserAction(action, userid); }
 	noButton.onclick = closeConfirmBox;
+	var spans = document.querySelectorAll("table tr.confirmbox td div span[id^=confirm-]");
+	for (var i = 0; i < spans.length; i++)
+		spans[i].style.display = null;
 	span.style.display = "inline";
 	var confirmboxDivs = document.querySelectorAll("tr.confirmbox td div");
-	for (var i = 0; i < confirmboxDivs.length; i++) {
-		confirmboxDivs[i].style.padding = "20px 0";
-		confirmboxDivs[i].style.maxHeight = "40px";
-	}
+	for (var i = 0; i < confirmboxDivs.length; i++)
+		confirmboxDivs[i].classList.add("open");
 }
 
 function confirmUserAction(action, userid)
@@ -47,11 +48,6 @@ function confirmUserAction(action, userid)
 function closeConfirmBox()
 {
 	var confirmboxDivs = document.querySelectorAll("tr.confirmbox td div");
-	for (var i = 0; i < confirmboxDivs.length; i++) {
-		confirmboxDivs[i].style.maxHeight = null;
-		confirmboxDivs[i].style.padding = null;
-	}
-	var spans = document.querySelectorAll("table tr.confirmbox td div span[id^=confirm-]");
-	for (var i = 0; i < spans.length; i++)
-		spans[i].style.display = null;
+	for (var i = 0; i < confirmboxDivs.length; i++)
+		confirmboxDivs[i].classList.remove("open");
 }

@@ -36,7 +36,7 @@ table tr td.center-text {
 }
 
 table tr.confirmbox {
-	background-color: red;
+	background-color: #FF4136;
 }
 
 table tr.confirmbox td {
@@ -47,7 +47,24 @@ table tr.confirmbox td {
 table tr.confirmbox td div {
 	max-height: 0;
 	padding: 0;
-	transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+	transition: max-height 0.5s, padding 0.5s;
+}
+
+table tr.confirmbox td div.open {
+	animation: animateheight 0.5s;
+	padding: 20px 0;
+	max-height: 40px;
+}
+
+@keyframes animateheight {
+	from {
+		max-height: 0;
+		padding: 0;
+	}
+	to {
+		max-height: 40px;
+		padding: 20px 0;
+	}
 }
 
 td button {
@@ -74,4 +91,13 @@ table tr.data-row td {
 table tr.confirmbox td div span[id^=confirm-] {
 	display: none;
 	font-weight: bold;
+}
+
+td button[id^=confirmbox-] {
+	font-weight: bold;
+	color: #2A3239;
+}
+
+td button[id^=confirmbox-]:hover {
+	color: #0074D9;
 }
