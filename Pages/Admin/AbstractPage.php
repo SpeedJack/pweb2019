@@ -34,6 +34,8 @@ abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 	 */
 	protected function _loadTemplate($templateName, array $params = [])
 	{
+		if (!$this->_visitor->isAdmin())
+			throw new \Exception(__('You don\'t have the rights to view this page.'));
 		$success = parent::_loadTemplate("admin/$templateName", $params);
 		if (!$success)
 			return parent::_loadTemplate($templateName, $params);

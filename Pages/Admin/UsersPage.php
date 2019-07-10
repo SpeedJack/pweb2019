@@ -19,11 +19,10 @@ class UsersPage extends AbstractPage
 			$this->_app->redirectHome();
 		$this->_setTitle(__('Admin: Edit Users'));
 		$this->_addCss('search');
-		//$this->_addCss('itembox');
 		$this->_addCss('table');
 		$this->_addJs('search');
 		$this->_addJs('users-edit');
-		$this->_show('editusers');
+		$this->_show('multitemplate', ['templates' => ['users-search', 'users-table']]);
 	}
 
 	/**

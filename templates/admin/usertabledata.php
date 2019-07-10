@@ -5,9 +5,6 @@
  * @copyright GNU General Public License, version 3
  */
 
-if (!$visitor->isAdmin())
-	die();
-
 if (empty($users)): ?>
 <tr class="no-data">
 	<td colspan="3" class="center-text"><?= __('No users to show.') ?></td>
