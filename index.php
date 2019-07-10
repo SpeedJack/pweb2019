@@ -35,5 +35,5 @@ $app->init();
 try {
 	$app->route();
 } catch (InvalidRouteException $e) {
-	$app-rerouteHome();
+	$app->rerouteHome();
 }
