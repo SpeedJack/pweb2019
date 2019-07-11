@@ -314,7 +314,7 @@ class User extends AbstractEntity
 	 * @brief Retrives all users that solved a challenge.
 	 *
 	 * @param[in] Challenge|int $chall	The challenge or challenge's id.
-	 * @retval array|false	Array containing users that solved the
+	 * @retval array|false	Array containing all users that solved the
 	 * 			challenge.
 	 */
 	public static function getBySolvedChallenge($chall)
@@ -333,11 +333,36 @@ class User extends AbstractEntity
 		return $users;
 	}
 
+	/**
+	 * @brief Retrives all users which username contains the given pattern.
+	 *
+	 * @param[in] string $username	The username pattern.
+	 * @retval array|false		Array containing all users which
+	 * 				username contains the given pattern.
+	 */
 	public static function getAllByUsernameLike($username)
 	{
 		$em = EntityManager::getInstance();
 		$db = \Pweb\App::getInstance()->getdb();
 		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` WHERE username LIKE ?;', '%' . $username . '%');
+		$users = [];
+		foreach ($data as $row)
+			$users[] = self::createFromData($row);
+		return $users;
+	}
+
+	/**
+	 * @brief Retrives all users which email contains the given pattern.
+	 *
+	 * @param[in] string $email	The email pattern.
+	 * @retval array|false		Array containing all users which email
+	 * 				contains the given pattern.
+	 */
+	public static function getAllByEmailLike($email)
+	{
+		$em = EntityManager::getInstance();
+		$db = \Pweb\App::getInstance()->getdb();
+		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` WHERE email LIKE ?;', '%' . $email . '%');
 		$users = [];
 		foreach ($data as $row)
 			$users[] = self::createFromData($row);
