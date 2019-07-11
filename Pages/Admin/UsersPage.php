@@ -21,18 +21,19 @@ class UsersPage extends AbstractPage
 		$this->_addCss('search');
 		$this->_addCss('table');
 		$this->_addJs('search');
+		$this->_addJs('confirmbox');
 		$this->_addJs('users-edit');
 		$this->_show('multi', ['templates' => ['users-search', 'users-table']]);
 	}
 
 	/**
-	 * @brief Returns a User entity from the userid POST parameter.
+	 * @brief Returns a User entity from the id POST parameter.
 	 *
 	 * @retval Pweb::Entity::User	The User entity.
 	 */
 	private function _getUserParam()
 	{
-		$userId = $this->_visitor->param('userid', 'POST');
+		$userId = $this->_visitor->param('id', 'POST');
 		if (empty($userId))
 			return false;
 		$userId = intval($userId);

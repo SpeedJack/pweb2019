@@ -26,16 +26,11 @@ if (empty($users)): ?>
 		<td><button id="delete-user-<?= $user->getId() ?>" type="button"><?= __('Delete') ?></button></td>
 	<?php endif; ?>
 </tr>
-<?php endforeach; ?>
-<tr class="confirmbox">
-	<td>
-	<div>
-		<span id="confirm-promote-user"><?= __('Promote user.') ?></span>
-		<span id="confirm-demote-user"><?= __('Demote user.') ?></span>
-		<span id="confirm-delete-user"><?= __('Delete user.') ?></span>
-		<?= __('Are you sure?') ?>
-	</div>
-	</td>
-	<td><div><button id="confirmbox-yes" type="button"><?= __('Yes') ?></button></div></td>
-	<td><div><button id="confirmbox-no" type="button"><?= __('No') ?></button></div></td>
-</tr>
+<?php endforeach;
+$actions = [
+	'promote-user' => __('Promote user.'),
+	'demote-user' => __('Demote user.'),
+	'delete-user' => __('Delete user.')
+];
+$this->_loadTemplate('confirmbox', ['actions' => $actions]);
+?>

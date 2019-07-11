@@ -18,36 +18,9 @@ function performUserAction()
 	var rowElement = this.parentElement;
 	while (!rowElement.classList.contains("data-row"))
 		rowElement = rowElement.parentElement;
-	var confirmbox = document.querySelector("tr.confirmbox");
-	if (confirmbox === null)
-		return;
-	rowElement.after(confirmbox);
 	var span = document.getElementById("confirm-" + action + "-user");
 	if (span === null)
 		return;
-	var yesButton = document.getElementById("confirmbox-yes");
-	var noButton = document.getElementById("confirmbox-no");
-	if (yesButton === null || noButton === null)
-		return;
-	yesButton.onclick = function() { confirmUserAction(action, userid); }
-	noButton.onclick = closeConfirmBox;
-	var spans = document.querySelectorAll("table tr.confirmbox td div span[id^=confirm-]");
-	for (var i = 0; i < spans.length; i++)
-		spans[i].style.display = null;
 	span.style.display = "inline";
-	var confirmboxDivs = document.querySelectorAll("tr.confirmbox td div");
-	for (var i = 0; i < confirmboxDivs.length; i++)
-		confirmboxDivs[i].classList.add("open");
-}
-
-function confirmUserAction(action, userid)
-{
-	ajaxQuery("index.php?page=Admin_Users&action=" + action, "userid=" + userid, false, function () { location.reload() });
-}
-
-function closeConfirmBox()
-{
-	var confirmboxDivs = document.querySelectorAll("tr.confirmbox td div");
-	for (var i = 0; i < confirmboxDivs.length; i++)
-		confirmboxDivs[i].classList.remove("open");
+	openConfirmBox(rowElement, 'Admin_Users', action, userid);
 }
