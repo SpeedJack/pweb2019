@@ -1,0 +1,30 @@
+#modal-content form {
+	display: block !important;
+}
+#modal-content form input {
+	display: block;
+	float: none !important;
+	width: calc(100% - 56px);
+	margin-bottom: 18px !important;
+}
+
+#challbody {
+	width: 100%;
+	display: block;
+}
+
+#challcategory {
+	display: inline-block !important;
+	width: 65% !important;
+}
+
+#challpoints {
+	display: inline-block !important;
+	float: right !important;
+	width: 20% !important;
+}
+
+#modal-content form button {
+	min-width: calc(50% - 4px) !important;
+	margin: 10px 2px 0 2px !important;
+}

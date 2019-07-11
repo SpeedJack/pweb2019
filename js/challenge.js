@@ -6,5 +6,5 @@ for (var i = 0; i < challenges.length; i++)
 function openChallenge()
 {
 	var cid = this.id.replace("chall-", "");
-	ajaxQuery("index.php?page=challenges&action=open", "cid=" + cid)
+	ajaxQuery("index.php?page=challenges&action=open", "cid=" + cid);
 }

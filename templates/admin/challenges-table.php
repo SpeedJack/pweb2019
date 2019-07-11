@@ -5,6 +5,7 @@
  * @copyright GNU General Public License, version 3
  */
 ?>
+<main>
 <table id="challenges-table">
 <tbody>
 	<?php if (empty($challenges)): ?>
@@ -17,7 +18,7 @@
 			<td>
 				<span class="chall-category"><?= htmlspecialchars($chall->getCategoryName()) ?></span>
 				<span class="chall-name"><?= htmlspecialchars($chall->getName()) ?></span>
-				<?= $chall->getPoints() ?>&nbsp;<?php __('points'); ?>
+				<?= $chall->getPoints() ?>&nbsp;<?= __('points'); ?>
 			</td>
 			<td><button id="edit-chall-<?= $chall->getId() ?>" type="button"><?= __('Edit') ?></button></td>
 			<td><button id="delete-chall-<?= $chall->getId() ?>" type="button"><?= __('Delete') ?></button></td>
@@ -27,3 +28,4 @@
 	?>
 </tbody>
 </table>
+</main>

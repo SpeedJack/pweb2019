@@ -1,4 +1,4 @@
-window.addEventListener("load", addDeleteAction);
+window.addEventListener("load", addButtonActions);
 
 function deleteChallenge()
 {
@@ -20,9 +20,18 @@ function deleteChallenge()
 	openConfirmBox(rowElement, 'Admin_Challenges', action, challid);
 }
 
-function addDeleteAction()
+function addButtonActions()
 {
-	var buttons = document.querySelectorAll("button[id^=delete-chall]");
-	for (var i = 0; i < buttons.length; i++)
-		buttons[i].addEventListener("click", deleteChallenge);
+	var editBtns = document.querySelectorAll("button[id^=edit-chall]");
+	for (var i = 0; i < editBtns.length; i++)
+		editBtns[i].addEventListener("click", editChallenge);
+	var delBtns = document.querySelectorAll("button[id^=delete-chall]");
+	for (var i = 0; i < delBtns.length; i++)
+		delBtns[i].addEventListener("click", deleteChallenge);
+}
+
+function editChallenge()
+{
+	var cid = this.id.replace("edit-chall-", "");
+	ajaxQuery("index.php?page=Admin_Challenges&action=edit", "cid=" + cid);
 }

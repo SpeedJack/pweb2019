@@ -23,15 +23,17 @@ class ChallengesPage extends AbstractPage
 
 		$this->_setTitle(__('Admin: Edit Challenges'));
 		$this->_addCss('table');
+		$this->_addJs('form');
 		$this->_addJs('confirmbox');
 		$this->_addJs('challenges-edit');
+		$this->_addCss('challenge-edit-form');
 		$this->_show('challenges-table', ['challenges' => $challs]);
 	}
 
 	private function _getChallengeParam()
 	{
 		$challId = $this->_visitor->param('id', 'POST');
-		if (empty($challId))
+		if (!is_numeric($challId))
 			return false;
 		$challId = intval($challId);
 		if ($challId === 0)
@@ -48,5 +50,39 @@ class ChallengesPage extends AbstractPage
 			return;
 
 		$chall->delete();
+	}
+
+	public function actionEdit()
+	{
+		if (!$this->_visitor->isLoggedIn()) {
+			$this->_redirectAjax('login');
+			return;
+		}
+		if (!$this->_visitor->isAdmin()) {
+			$this->_showMEssage(__('Insufficient privileges'),
+				__('Challenges can be edited only by admins.'));
+			return;
+		}
+
+		$challid = $this->_visitor->param('cid');
+		if (!is_numeric($challid)) {
+			$this->_showMessage(__('Invalid challenge'),
+				__('The requested challenge id is not valid.'));
+			return;
+		}
+		$challid = intval($challid);
+
+		$chall = $this->_em->getFromDb('Challenge', $challid);
+
+		if ($chall === false) {
+			$this->_showMessage(__('Invalid challenge'),
+				__('The requested challenge could not be found.'));
+			return;
+		}
+
+		$this->_setTitle(__('Edit Challenge: %s', $chall->getName()));
+		$this->_showModal('challenge-edit-form',
+			null,
+			['challenge' => $chall]);
 	}
 }

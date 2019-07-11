@@ -76,7 +76,20 @@ td button {
 	height: 100%;
 }
 
-table tr td span.username {
+table tr.data-row td span.username {
+	font-size: 1.5em;
+	font-weight: bold;
+	font-style: normal;
+	color: #0074D9;
+}
+
+table tr.data-row td span.chall-category {
+	display: block;
+	color: #111;
+	font-style: normal;
+}
+
+table tr.data-row td span.chall-name {
 	font-size: 1.5em;
 	font-weight: bold;
 	font-style: normal;

@@ -34,7 +34,7 @@ class UsersPage extends AbstractPage
 	private function _getUserParam()
 	{
 		$userId = $this->_visitor->param('id', 'POST');
-		if (empty($userId))
+		if (!is_numeric($userId))
 			return false;
 		$userId = intval($userId);
 		if ($userId === 0)
