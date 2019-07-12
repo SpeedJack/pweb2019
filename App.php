@@ -172,7 +172,7 @@ class App extends AbstractSingleton
 	 * @brief Reroute the user to a new page and action.
 	 *
 	 * This method does not return.
-	 * 
+	 *
 	 * @throws InvalidRouteException	If the selected page or action
 	 * 					can not be found.
 	 *
@@ -433,6 +433,7 @@ class App extends AbstractSingleton
 			'use_url_rewrite' => false,
 			'default_per_page' => 20,
 			'username_regex' => '/^[a-zA-Z0-9._-]{5,32}$/',
+			'flag_regex' => '/^(?:f|F)(?:l|L)(?:a|A)(?:g|G)\{[ -z|~]{1,249}\}$/',
 			'min_password_length' => 8,
 			'auth_token_length' => 20,
 			'auth_token_duration' => 60*60*24*365,

@@ -27,6 +27,8 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * intended to be deleted when the application exits.
 	 */
 	protected $_cachedEntities = [];
+
+	protected $_doNotSave = [];
 // }}}
 
 	/**
@@ -263,26 +265,18 @@ class EntityManager extends \Pweb\AbstractSingleton
 		$entity->insert();
 	}
 
-	/**
-	 * @brief Flushes all the saved entities to the database.
-	 *
-	 * If $entityName and $entityId are specified, it saves only the
-	 * specified entity. Otherwise, it saves all entities.
-	 *
-	 * @param[in] string|null $entityName	The name of the entity to
-	 * 					flush.
-	 * @param[in] string|null $id		The id of the entity to flush.
-	 */
+	public function doNotSave($entity)
+	{
+		$this->_assertValidEntity($entity);
+		$this->_doNotSave[] = $entity->getHash();
+	}
+
+	/** @brief Flushes all the saved entities to the database. */
 	public function flush($entityName = null, $id = 0)
 	{
-		if (isset($entityName)) {
-			$hash = $this->_getEntityHash($entityName, $id);
-			if (isset($this->_savedEntities[$hash]))
-				$this->_savedEntities[$hash]->save();
-			return;
-		}
 		foreach ($this->_savedEntities as $entity)
-			$entity->save();
+			if (!in_array($entity->getHash(), $this->_doNotSave, true))
+				$entity->save();
 	}
 // }}}
 

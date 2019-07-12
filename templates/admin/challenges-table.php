@@ -28,4 +28,5 @@
 	?>
 </tbody>
 </table>
+<button type="button" id="create-challenge"><?= __('Create New Challenge') ?></button>
 </main>

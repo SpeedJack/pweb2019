@@ -21,7 +21,7 @@ function addModalForms()
 function sendForm()
 {
 	var data = "";
-	var elements = this.getElementsByTagName("input");
+	var elements = this.querySelectorAll("input, textarea");
 	var allowResponseContainer = false;
 	if (this.classList.contains("modal-form"))
 		allowResponseContainer = true;

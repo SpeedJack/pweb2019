@@ -164,7 +164,10 @@ class Challenge extends AbstractEntity
 	 */
 	public function setName($name)
 	{
+		if (strlen($name) > 32)
+			return false;
 		$this->_set('name', $name);
+		return true;
 	}
 
 	/**
@@ -174,7 +177,10 @@ class Challenge extends AbstractEntity
 	 */
 	public function setCategory($categoryName)
 	{
+		if (strlen($categoryName) > 32)
+			return false;
 		$this->_set('categoryName', $categoryName);
+		return true;
 	}
 
 	/**
@@ -184,7 +190,11 @@ class Challenge extends AbstractEntity
 	 */
 	public function setFlag($flag)
 	{
-		$this->_set('flag', $flag);
+		if (preg_match($this->_app->config['flag_regex'], $flag) === 1) {
+			$this->_set('flag', $flag);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -194,7 +204,10 @@ class Challenge extends AbstractEntity
 	 */
 	public function setPoints($points)
 	{
+		if (!is_int($points) || $points <= 0)
+			return false;
 		$this->_set('points', $points);
+		return true;
 	}
 
 	/**
@@ -204,7 +217,10 @@ class Challenge extends AbstractEntity
 	 */
 	public function setBody($body)
 	{
+		if (empty($body))
+			return false;
 		$this->_set('body', $body);
+		return true;
 	}
 
 	/**
@@ -306,6 +322,15 @@ class Challenge extends AbstractEntity
 			return;
 		$this->_db->query('UPDATE `' . User::TABLE_NAME . '` AS u INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON u.id = s.userId SET u.points = u.points + ? WHERE s.challengeId = ?;',
 			$this->getPoints() - $this->_changedValues['points'], $this->getId());
+	}
+// }}}
+
+// Public Methods {{{
+	public static function getAllCategories()
+	{
+		$em = EntityManager::getInstance();
+		$db = \Pweb\App::getInstance()->getDb();
+		return $db->fetchAllColumn('SELECT DISTINCT categoryName FROM `' . self::TABLE_NAME . '`;');
 	}
 // }}}
 

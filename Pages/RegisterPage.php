@@ -51,12 +51,12 @@ class RegisterPage extends AbstractPage
 
 		if (!$this->_userSetUsername($user, $username)
 			|| !$this->_userSetEmail($user, $email))
-			return;
+			goto doNotSave;
 		if (!$user->setPassword($password)) {
 			$this->_showMessage(__('Password too short'),
 				__('Password must be at least %s characters long.',
 					$this->_app->config['min_password_length']));
-			return;
+			goto doNotSave;
 		}
 
 		$user->save();
@@ -65,6 +65,10 @@ class RegisterPage extends AbstractPage
 			__('Account created. <a href="%s">Log In!</a>',
 				$this->_app->buildLink('login')),
 			$this->_app->buildAbsoluteLink('login'));
+
+		return;
+	doNotSave:
+		$this->_em->doNotSave($user);
 	}
 
 // Private Methods {{{

@@ -15,13 +15,24 @@
 
 #challcategory {
 	display: inline-block !important;
-	width: 65% !important;
+	width: calc(50% - 76px) !important;
+}
+
+#challname {
+	display: inline-block !important;
+	float: right !important;
+	width: calc(50% - 76px) !important;
+}
+
+#challflag {
+	display: inline-block !important;
+	width: calc(50% - 76px) !important;
 }
 
 #challpoints {
 	display: inline-block !important;
 	float: right !important;
-	width: 20% !important;
+	width: calc(50% - 76px) !important;
 }
 
 #modal-content form button {

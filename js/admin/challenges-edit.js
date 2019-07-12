@@ -22,6 +22,9 @@ function deleteChallenge()
 
 function addButtonActions()
 {
+	var createBtn = document.getElementById("create-challenge");
+	if (createBtn !== null)
+		createBtn.addEventListener("click", createChallenge);
 	var editBtns = document.querySelectorAll("button[id^=edit-chall]");
 	for (var i = 0; i < editBtns.length; i++)
 		editBtns[i].addEventListener("click", editChallenge);
@@ -34,4 +37,9 @@ function editChallenge()
 {
 	var cid = this.id.replace("edit-chall-", "");
 	ajaxQuery("index.php?page=Admin_Challenges&action=edit", "cid=" + cid);
+}
+
+function createChallenge()
+{
+	ajaxQuery("index.php?page=Admin_Challenges&action=create");
 }

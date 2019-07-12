@@ -80,9 +80,101 @@ class ChallengesPage extends AbstractPage
 			return;
 		}
 
+		$categories = \Pweb\Entity\Challenge::getAllCategories();
+
 		$this->_setTitle(__('Edit Challenge: %s', $chall->getName()));
-		$this->_showModal('challenge-edit-form',
-			null,
-			['challenge' => $chall]);
+		$this->_showModal('challenge-form', null,
+			['challenge' => $chall, 'categories' => $categories]);
+	}
+
+	public function actionCreate()
+	{
+		if (!$this->_visitor->isLoggedIn()) {
+			$this->_redirectAjax('login');
+			return;
+		}
+		if (!$this->_visitor->isAdmin()) {
+			$this->_showMEssage(__('Insufficient privileges'),
+				__('New challenges can be created only by admins.'));
+			return;
+		}
+
+		$categories = \Pweb\Entity\Challenge::getAllCategories();
+
+		$this->_setTitle(__('Create Challenge'));
+		$this->_showModal('challenge-form', null,
+			['challenge' => false, 'categories' => $categories]);
+	}
+
+	public function actionSave()
+	{
+		if (!$this->_visitor->isAdmin())
+			return;
+
+		$create = false;
+		$id = $this->_visitor->param('challid', 'POST');
+		$name = $this->_visitor->param('challname', 'POST');
+		$category = $this->_visitor->param('challcategory', 'POST');
+		$flag = $this->_visitor->param('challflag', 'POST');
+		$points = $this->_visitor->param('challpoints', 'POST');
+		$body = $this->_visitor->param('challbody', 'POST');
+
+		if ($id === null) {
+			$chall = $this->_em->createNew('Challenge');
+			$create = true;
+		} else if (is_numeric($id)) {
+			$id = intval($id);
+			$chall = $this->_em->getFromDb('Challenge', $id);
+		} else {
+			$this->_reply('message',
+				['message' =>__('<span class="color-red">The requested challenge id is not valid.</span>')]);
+			return;
+		}
+
+		if ($chall === false) {
+			$this->_reply('message',
+				['message' =>__('<span class="color-red">The requested challenge can not be found.</span>')]);
+			return;
+		}
+
+		if (!$chall->setName($name)) {
+			$this->_reply('message',
+				['message' => __('<span class="color-red">Challenge name is too long. The name of the challenge can be long 32 characters at most.</span>')]);
+			goto doNotSave;
+		}
+
+		if (!$chall->setCategory($category)) {
+			$this->_reply('message',
+				['message' => __('<span class="color-red">Category name is too long. The name of the category can be long 32 characters at most.</span>')]);
+			goto doNotSave;
+		}
+
+		if (!$chall->setFlag($flag)) {
+			$this->_reply('message',
+				['message' => __('<span class="color-red">Flag must match the following regex and can not be more than %s characters long: %s.</span>',
+				$this->_app->config['form_validation']['flag_maxlength'],
+				$this->_app->config['form_validation']['flag_regex'])]);
+			goto doNotSave;
+		}
+
+		$points = intval($points);
+		if (!$chall->setPoints($points)) {
+			$this->_reply('message',
+				['message' => __('<span class="color-red">Challenge\'s points must be a valid positive non-zero integer.</span>')]);
+			goto doNotSave;
+		}
+
+		if (!$chall->setBody($body)) {
+			$this->_reply('message',
+				['message' => __('<span class="color-red">Challenge\'s body text can not be empty.</span>')]);
+			goto doNotSave;
+		}
+
+		if ($create)
+			$chall->save();
+		$this->_reply('message', ['message' => __('<span class="color-green">Saved!</span>')]);
+		return;
+	doNotSave:
+		$this->_em->doNotSave($chall);
 	}
 }
