@@ -32,8 +32,6 @@ if (isset($config['error_log'])) {
 require_once 'i18n.php';
 require_once 'autoload.php';
 
-$config['db']['host'] = '127.0.0.1';
-
 $app = App::getInstance($config);
 $app->init();
 
