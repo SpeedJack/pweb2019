@@ -6,11 +6,12 @@ function openAccordions()
 	for (var i = 0; i < accordionButtons.length; i++) {
 		var name = "acc-" + accordionButtons[i].innerHTML;
 		var value = localStorage.getItem(name);
-			if (value === null)
+			if (value === null) {
 				localStorage.setItem(name, "open");
-			if (value === "open") {
-				toggleAccordion(accordionButtons[i]);
+				value = "open";
 			}
+			if (value === "open")
+				toggleAccordion(accordionButtons[i]);
 		accordionButtons[i].addEventListener("click", function () { toggleAccordion(this); });
 	}
 	window.addEventListener("resize", resizeAccordions);

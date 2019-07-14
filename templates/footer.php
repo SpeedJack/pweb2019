@@ -9,7 +9,7 @@
 <div class="container">
 	<section id="about-us" class="column">
 		<h3><?= __('About Us') ?></h3>
-		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. <a href="<?= $application->buildLink('about') ?>"><?= __('More...') ?></a></p>
+		<p><?= __('<strong>&gt; CTF</strong> is a platform for jeopardy style CTFs. Developed by <em>Niccolò Scatena</em> for the Web Development course of the University of Pisa.') ?> <a href="<?= $application->buildLink('about') ?>"><?= __('More...') ?></a></p>
 	</section>
 	<section id="social-links" class="column">
 		<h3><?= __('Follow Us') ?></h3>

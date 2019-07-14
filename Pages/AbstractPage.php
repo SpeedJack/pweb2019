@@ -4,6 +4,9 @@ namespace Pweb\Pages;
 /**
  * @brief Represents a page.
  *
+ * This class provides the methods used to show a full page (i.e. with header,
+ * footer, etc.).
+ *
  * @author Niccolò Scatena <speedjack95@gmail.com>
  * @copyright GNU General Public License, version 3
  */
@@ -12,24 +15,20 @@ abstract class AbstractPage
 
 // Protected Properties {{{
 	/**
-	 * @internal
 	 * @var Pweb::App $_app
 	 * The App instance.
 	 */
 	protected $_app;
 	/**
-	 * @internal
 	 * @var Pweb::Entity::EntityManager $_em
 	 * The Entity Manager instance.
 	 */
 	protected $_em;
 	/**
-	 * @internal
 	 * @var Pweb::Entity::Visitor $_visitor
 	 * The Visitor entity.
 	 */
 	protected $_visitor;
-
 	/**
 	 * @internal
 	 * @var string $_title
@@ -71,7 +70,6 @@ abstract class AbstractPage
 
 // Protected Methods {{{
 	/**
-	 * @internal
 	 * @brief Sets the title of the page.
 	 *
 	 * @param[in] string $title	The title.
@@ -82,7 +80,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Returns the title of this page.
 	 *
 	 * @retval string	The title of this page.
@@ -93,7 +90,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Adds a CSS to the page.
 	 *
 	 * @throws InvalidArgumentException	If the CSS file specified does
@@ -114,7 +110,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Adds a JavaScript file to the page.
 	 *
 	 * @throws InvalidArgumentException	If the JavaScript file specified
@@ -140,7 +135,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Adds a \<meta\> entry to the page.
 	 *
 	 * @param[in] string $name	The meta name.
@@ -154,7 +148,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Sets the viewport for the page.
 	 *
 	 * @param[in] string $viewport	The viewport value.
@@ -165,7 +158,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Sets the charset of the page.
 	 *
 	 * @param[in] string $charset	The charset.
@@ -176,7 +168,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Returns a string containing all HTML tags that includes
 	 * required CSS files.
 	 *
@@ -226,7 +217,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Returns a string with the base skeleton for a HTML page.
 	 *
 	 * @retval string	The HTML skeleton.
@@ -249,7 +239,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Loads a template.
 	 *
 	 * @param[in] string $templateName	The name of the template to
@@ -275,7 +264,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Loads the header template.
 	 *
 	 * @param[in] array $params	Associative array of parameters to pass
@@ -287,7 +275,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Loads the main content of a page.
 	 *
 	 * @throws InvalidArgumentException	If the template can not be
@@ -308,7 +295,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Loads the footer template.
 	 *
 	 * @param[in] array $params	Associative array of parameters to pass
@@ -320,7 +306,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Shows a full page, using a template as main content.
 	 *
 	 * @param[in] string $templateName	The name of the template to use
@@ -379,7 +364,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Shows a modal to the visitor.
 	 *
 	 * @param[in] string $bodyTemplate		The name of the template
@@ -393,7 +377,8 @@ abstract class AbstractPage
 	 * @param[in] string|null $footerTemplate	The name of the modal
 	 * 						footer template to load.
 	 */
-	protected function _showModal($bodyTemplate, $redirect = null, array $params = [], $footerTemplate = null)
+	protected function _showModal($bodyTemplate, $redirect = null,
+		array $params = [], $footerTemplate = null)
 	{
 		$params['bodyTemplate'] = $bodyTemplate;
 		$params['modalRedirect'] = $redirect;
@@ -402,7 +387,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Shows a modal with a footer to the visitor.
 	 *
 	 * @param[in] string $bodyTemplate	The name of the template to load
@@ -414,13 +398,14 @@ abstract class AbstractPage
 	 * @param[in] array $params		Associative array of parameters
 	 * 					to pass to the template.
 	 */
-	protected function _showModalWithFooter($bodyTemplate, $footerTemplate, $redirect = null, array $params = [])
+	protected function _showModalWithFooter($bodyTemplate, $footerTemplate,
+		$redirect = null, array $params = [])
 	{
-		$this->_showModal($bodyTemplate, $redirect, $params, $footerTemplate);
+		$this->_showModal($bodyTemplate, $redirect, $params,
+			$footerTemplate);
 	}
 
 	/**
-	 * @internal
 	 * @brief Shows a modal message to the visitor.
 	 *
 	 * @param[in] string $title		The message title.
@@ -437,7 +422,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Sends a simple reply to the visitor (useful for AJAX
 	 * responses).
 	 *
@@ -452,7 +436,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Redirects the user as a response of an AJAX request.
 	 *
 	 * @param[in] string $page	The page where the user should be
@@ -464,7 +447,8 @@ abstract class AbstractPage
 	 * @param[in] array $params	Associative array of key-value pairs of
 	 * 				GET parameters.
 	 */
-	protected function _redirectAjax($page = null, $action = null, array $params = [])
+	protected function _redirectAjax($page = null, $action = null,
+		array $params = [])
 	{
 		$data = [
 			'redirect' => true,
@@ -474,7 +458,6 @@ abstract class AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Sends a json encoded reply to the visitor (useful for AJAX
 	 * responses).
 	 *

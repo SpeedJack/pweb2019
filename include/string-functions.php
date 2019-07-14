@@ -14,7 +14,7 @@
  * @retval bool			TRUE if $haystack starts with $needle; FALSE
  * 				otherwise.
  */
-function startsWith($haystack, $needle)
+function starts_with($haystack, $needle)
 {
 	$len = strlen($needle);
 	return (substr($haystack, 0, $len) === $needle);
@@ -28,7 +28,7 @@ function startsWith($haystack, $needle)
  * @retval bool			TRUE if $haystack ends with $needle; FALSE
  * 				otherwise.
  */
-function endsWith($haystack, $needle)
+function ends_with($haystack, $needle)
 {
 	$len = strlen($needle);
 	return $len === 0 || (substr($haystack, -$len) === $needle);
@@ -42,10 +42,10 @@ function endsWith($haystack, $needle)
  * @param[in] string $prefix	The prefix to remove.
  * @retval string		The string without the prefix.
  */
-function trimPrefix($str, $prefix)
+function trim_prefix($str, $prefix)
 {
 	$len = strlen($prefix);
-	if (startsWith($str, $prefix))
+	if (starts_with($str, $prefix))
 		return substr($str, $len);
 	return $str;
 }
@@ -57,10 +57,10 @@ function trimPrefix($str, $prefix)
  * @param[in] string $suffix	The suffix to remove.
  * @retval string		The string without the suffix.
  */
-function trimSuffix($str, $suffix)
+function trim_suffix($str, $suffix)
 {
 	$len = strlen($suffix);
-	if (endsWith($str, $suffix))
+	if (ends_with($str, $suffix))
 		return substr($str, 0, -$len);
 	return $str;
 }

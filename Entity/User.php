@@ -1,8 +1,6 @@
 <?php
 namespace Pweb\Entity;
 
-require_once 'string-functions.php';
-
 /**
  * @brief Represents a user.
  *
@@ -14,41 +12,35 @@ class User extends AbstractEntity
 
 // Entity Properties {{{
 	/**
-	 * @internal
 	 * @var string $_username
 	 * The user's username.
 	 */
 	protected $_username;
 	/**
-	 * @internal
 	 * @var string $_email
 	 * The user's email.
 	 */
 	protected $_email;
 	/**
-	 * @internal
 	 * @var string $_passwordHash
 	 * The user's hashed password.
 	 */
 	protected $_passwordHash;
 	/**
-	 * @internal
-	 * @var array $_solvedChalls
-	 * Array of challenges solved by the user.
-	 */
-	protected $_solvedChalls;
-	/**
-	 * @internal
 	 * @var bool $_isAdmin
 	 * Specifies if the user has admin rights or not.
 	 */
 	protected $_isAdmin = false;
 	/**
-	 * @internal
 	 * @var int $_points
 	 * The number of user's points collected solving challenges.
 	 */
 	protected $_points = 0;
+	/**
+	 * @var array $_solvedChalls
+	 * Array of challenges solved by the user.
+	 */
+	protected $_solvedChalls;
 // }}}
 
 // Other Properties {{{
@@ -327,10 +319,7 @@ class User extends AbstractEntity
 		$data = $db->fetchAll('SELECT u.* FROM `' . self::TABLE_NAME . '` AS u INNER JOIN `' . self::CHALLENGE_JOIN_TABLE . '` AS s ON u.id = s.userId WHERE s.challengeId = ?;',
 			$chall);
 
-		$users = [];
-		foreach ($data as $row)
-			$users[] = self::createFromData($row);
-		return $users;
+		return parent::createFromDataArray($data);
 	}
 
 	/**
@@ -345,10 +334,7 @@ class User extends AbstractEntity
 		$em = EntityManager::getInstance();
 		$db = \Pweb\App::getInstance()->getdb();
 		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` WHERE username LIKE ?;', '%' . $username . '%');
-		$users = [];
-		foreach ($data as $row)
-			$users[] = self::createFromData($row);
-		return $users;
+		return parent::createFromDataArray($data);
 	}
 
 	/**
@@ -363,10 +349,7 @@ class User extends AbstractEntity
 		$em = EntityManager::getInstance();
 		$db = \Pweb\App::getInstance()->getdb();
 		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` WHERE email LIKE ?;', '%' . $email . '%');
-		$users = [];
-		foreach ($data as $row)
-			$users[] = self::createFromData($row);
-		return $users;
+		return parent::createFromDataArray($data);
 	}
 
 	/**
@@ -425,14 +408,13 @@ class User extends AbstractEntity
 	public static function createFromData(array $data)
 	{
 		if (isset($data['isAdmin']))
-			$data['isAdmin'] = $data['isAdmin'] ? true : false;
+			$data['isAdmin'] = ($data['isAdmin'] ? true : false);
 		return parent::createFromData($data);
 	}
 // }}}
 
 // Entity Life-cycle {{{
 	/**
-	 * @internal
 	 * @brief Deletes every auth tokens and solved challenge associated with
 	 * this user.
 	 */

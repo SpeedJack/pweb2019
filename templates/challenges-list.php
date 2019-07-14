@@ -22,9 +22,9 @@
 		<?php endif;
 		$classStr = ' ';
 		if ($this->_visitor->user->hasSolvedChallenge($chall))
-			$classStr .= getClassesString(['chall', 'solved-chall']);
+			$classStr .= get_class_attribute(['chall', 'solved-chall']);
 		else
-			$classStr .= getClassesString(['chall']);
+			$classStr .= get_class_attribute(['chall']);
 		?>
 			<div<?= $classStr ?> id="chall-<?= $chall->getId() ?>"><span><?php
 				echo $chall->getName() . '<br>' . __('(%s points)', $chall->getPoints());

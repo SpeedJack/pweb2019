@@ -6,6 +6,14 @@ require_once 'string-functions.php';
 /**
  * @brief The Entity Manager class.
  *
+ * This class maintains a cache of all entities used by the app. Entities can be
+ * saved to the database (ie. have an associated record in a database's table)
+ * or not (eg. the Visitor entity has no entry in the db). This class handles
+ * the creation and life-cycle of every entity. It also ensures that, for each
+ * entity, only a single instance exists (if the app requests the user with id
+ * 3, and it requests it again after some time, the entity manager returns the
+ * same instance).
+ *
  * @author Niccolò Scatena <speedjack95@gmail.com>
  * @copyright GNU General Public License, version 3
  */
@@ -28,11 +36,16 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 */
 	protected $_cachedEntities = [];
 
+	/**
+	 * @internal
+	 * @var array $_doNotSave
+	 * Array of hashes of entities that do not must be saved when the
+	 * application exits.
+	 */
 	protected $_doNotSave = [];
 // }}}
 
 	/**
-	 * @internal
 	 * @brief This class must be instantiated using getInstance().
 	 */
 	protected function __construct() { }
@@ -169,9 +182,11 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * @retval array|false			The entities fetched or FALSE if
 	 * 					no entity was found.
 	 */
-	public function getAllPagedFromDb($entityName, $orderBy, $page, $ascending = true, $perPage = null, ...$params)
+	public function getAllPagedFromDb($entityName, $orderBy, $page,
+		$ascending = true, $perPage = null, ...$params)
 	{
-		return $this->getFromDbBy($entityName, 'getAllPaged', $orderBy, $page, $ascending, $perPage, ...$params);
+		return $this->getFromDbBy($entityName, 'getAllPaged', $orderBy,
+			$page, $ascending, $perPage, ...$params);
 	}
 
 	/**
@@ -228,6 +243,9 @@ class EntityManager extends \Pweb\AbstractSingleton
 	/**
 	 * @brief Adds an entity to the $_savedEntities array.
 	 *
+	 * @throws LogicException	If $entity already exists in the
+	 * 				$_savedEntities array.
+	 *
 	 * @param[in] AbstractEntity $entity	The entity.
 	 */
 	public function addToSaved($entity)
@@ -265,6 +283,12 @@ class EntityManager extends \Pweb\AbstractSingleton
 		$entity->insert();
 	}
 
+	/**
+	 * @brief Marks an entity to no be saved when the application exits.
+	 *
+	 * @param[in] AbstractEntity $entity	The entity that do not must
+	 * 					be saved.
+	 */
 	public function doNotSave($entity)
 	{
 		$this->_assertValidEntity($entity);
@@ -272,7 +296,7 @@ class EntityManager extends \Pweb\AbstractSingleton
 	}
 
 	/** @brief Flushes all the saved entities to the database. */
-	public function flush($entityName = null, $id = 0)
+	public function flush()
 	{
 		foreach ($this->_savedEntities as $entity)
 			if (!in_array($entity->getHash(), $this->_doNotSave, true))
@@ -328,7 +352,7 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 */
 	private function _assertValidEntity($entity)
 	{
-		if (is_string($entity) && !startsWith($entity, __NAMESPACE__))
+		if (is_string($entity) && !starts_with($entity, __NAMESPACE__))
 			$entity = __NAMESPACE__ . "\\$entity";
 		$parentName = __NAMESPACE__ . "\\AbstractEntity";
 		if (!is_subclass_of($entity, $parentName))
@@ -350,7 +374,7 @@ class EntityManager extends \Pweb\AbstractSingleton
 		$this->_assertValidEntity($entity);
 		if (is_object($entity))
 			$entityName = $entity->getClassName();
-		else if (!startsWith($entity, __NAMESPACE__))
+		else if (!starts_with($entity, __NAMESPACE__))
 			$entityName = __NAMESPACE__ . "\\$entity";
 		else
 			$entityName = $entity;
@@ -371,7 +395,7 @@ class EntityManager extends \Pweb\AbstractSingleton
 			$entityName = $entity->getClassName();
 		else
 			$entityName = $entity;
-		return trimPrefix($entityName, __NAMESPACE__ . '\\');
+		return trim_prefix($entityName, __NAMESPACE__ . '\\');
 	}
 // }}}
 

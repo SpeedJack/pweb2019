@@ -74,7 +74,7 @@ function showMenus($menus, $visitor, $application)
 					$classes[] = 'active';
 					break;
 				}
-			$classStr = getClassesString($classes);
+			$classStr = get_class_attribute($classes);
 			$classStr = empty($classStr) ? '' : " $classStr"; ?>
 			<div<?= $classStr ?>><button<?= $classStr ?>><?= $menuName ?></button>
 			<div class="dropdown-content">
@@ -90,7 +90,7 @@ function showMenus($menus, $visitor, $application)
 			? $menuMeta['params'] : [];
 		$menuHref = 'href="' . $application->buildLink(
 			$menuMeta['page'], $menuAction, $menuParams) . '"';
-		$classStr = getClassesString($classes);
+		$classStr = get_class_attribute($classes);
 		$classStr = empty($classStr) ? '' : " $classStr";
 		?>
 		<a<?= "$classStr $menuHref" ?>>

@@ -45,7 +45,7 @@ class LoginPage extends AbstractPage
 		if ($user === false) {
 			$this->_showMessage(__('User not found'),
 				__('The user <em>%s</em> can not be found. If you wish to register, <a href="%s">click here!</a>',
-				htmlspecialchars($loginname),
+				htmlspecialchars($loginname, ENT_COMPAT | ENT_HTML5),
 				$this->_app->buildLink('register')));
 			return;
 		}

@@ -15,10 +15,7 @@ namespace Pweb\Pages\Admin;
  */
 abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 {
-
-// Protected Methods {{{
 	/**
-	 * @internal
 	 * @brief Loads a template.
 	 *
 	 * This function first searches the template file in the admin
@@ -43,7 +40,6 @@ abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Adds a CSS to the page.
 	 *
 	 * This function first searches the CSS file in the admin subdirectory.
@@ -64,7 +60,6 @@ abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 	}
 
 	/**
-	 * @internal
 	 * @brief Adds a JavaScript file to the page.
 	 *
 	 * This function first searches the JavaScript file in the admin
@@ -89,6 +84,4 @@ abstract class AbstractPage extends \Pweb\Pages\AbstractPage
 			parent::_addJs($scriptName, $defer);
 		}
 	}
-// }}}
-
 }

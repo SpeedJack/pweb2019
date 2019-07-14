@@ -13,10 +13,10 @@ spl_autoload_register(function ($class)
 	$prefix = 'Pweb\\';
 	$baseDir = $GLOBALS['APP_ROOT'] . '/';
 
-	if (!startsWith($class, $prefix))
+	if (!starts_with($class, $prefix))
 		return;
 
-	$classFile = $baseDir . str_replace('\\', '/', trimPrefix($class, $prefix)) . '.php';
+	$classFile = $baseDir . str_replace('\\', '/', trim_prefix($class, $prefix)) . '.php';
 	if (!is_file($classFile))
 		panic(404);
 

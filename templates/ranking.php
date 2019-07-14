@@ -21,8 +21,8 @@
 			foreach ($users as $user): ?>
 			<tr>
 				<td><?= $posCounter ?></td>
-				<td><?= htmlspecialchars($user->getUsername()) ?></td>
-				<td><?= htmlspecialchars($user->getPoints()) ?></td>
+				<td><?= htmlspecialchars($user->getUsername(), ENT_COMPAT | ENT_HTML5) ?></td>
+				<td><?= htmlspecialchars($user->getPoints(), ENT_COMPAT | ENT_HTML5) ?></td>
 			</tr>
 			<?php $posCounter++; endforeach; ?>
 		</tbody>

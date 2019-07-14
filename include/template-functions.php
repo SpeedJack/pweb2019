@@ -11,7 +11,7 @@
  * @param[in] array $classes	Array of class names.
  * @retval string		The generate string.
  */
-function getClassesString(array $classes)
+function get_class_attribute(array $classes)
 {
 	$classStr = '';
 	if (!empty($classes)) {

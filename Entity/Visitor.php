@@ -38,13 +38,11 @@ class Visitor extends AbstractEntity
 
 // Protected Properties {{{
 	/**
-	 * @internal
 	 * @var array $_postParams
 	 * Array of strings containing the POST parameters.
 	 */
 	protected $_postParams = [];
 	/**
-	 * @internal
 	 * @var array $_getParams
 	 * Array of strings containing the GET parameters.
 	 */
@@ -192,7 +190,7 @@ class Visitor extends AbstractEntity
 	public function isActivePage($page)
 	{
 		$page = $this->_sanitizeParam($page, true, true);
-		if (!endsWith($page, 'Page'))
+		if (!ends_with($page, 'Page'))
 			$page = "${page}Page";
 		return $this->page === $page;
 	}
@@ -207,7 +205,7 @@ class Visitor extends AbstractEntity
 	public function isActiveAction($action)
 	{
 		$action = $this->_sanitizeParam($action, true, true);
-		if (!startsWith($action, 'action'))
+		if (!starts_with($action, 'action'))
 			$action = "action$action";
 		return $this->action === $action;
 	}
@@ -342,6 +340,50 @@ class Visitor extends AbstractEntity
 // Private Methods {{{
 	/**
 	 * @internal
+	 * @brief Sanitizes GET and POST parameters.
+	 *
+	 * @param[in] string $value		The string to sanitize.
+	 * @param[in] bool $removeSlashes	TRUE to remove any slash from
+	 * 					the string (useful to avoid
+	 * 					LFI vulnerabilities).
+	 * @param[in] bool $ucwords		TRUE to make the first letter of
+	 * 					each word upper case.
+	 * @retval string			The sanitized string.
+	 */
+	private function _sanitizeParam($value, $removeSlashes = false, $ucwords = false)
+	{
+		if (empty($value))
+			return '';
+		$value = $removeSlashes ? str_replace('\\', '', $value) : $value;
+		$value = trim($value);
+		return $ucwords ? ucwords($value, " \t\r\n\f\v_-.") : $value;
+	}
+
+	/**
+	 * @brief Reads GET and POST parameters from the Visitor's request.
+	 */
+	private function _readParams()
+	{
+		if (php_sapi_name() === 'cli')
+			return;
+
+		foreach ($_GET as $key => $value) {
+			$key = strtolower($key);
+			switch ($key) {
+			case 'page':
+				$this->setPage($value);
+				break;
+			case 'action':
+				$this->setAction($value);
+				break;
+			default:
+				$this->setGetParams([$key => $value]);
+			}
+		}
+		$this->setPostParams($_POST);
+	}
+
+	/**
 	 * @brief Initializes the PHP session.
 	 */
 	private function _initSession()
@@ -359,7 +401,6 @@ class Visitor extends AbstractEntity
 	}
 
 	/**
-	 * @internal
 	 * @brief Destroys the PHP session and its cookie.
 	 */
 	private function _destroySession()
@@ -371,7 +412,6 @@ class Visitor extends AbstractEntity
 	}
 
 	/**
-	 * @internal
 	 * @brief Mantains the user logged in using the AuthToken or the PHP
 	 * session.
 	 */
@@ -411,52 +451,6 @@ class Visitor extends AbstractEntity
 		$this->authToken = $authToken ?: null;
 		if (!$this->isLoggedIn())
 			$this->logout();
-	}
-
-	/**
-	 * @internal
-	 * @brief Sanitizes GET and POST parameters.
-	 *
-	 * @param[in] string $value		The string to sanitize.
-	 * @param[in] bool $removeSlashes	TRUE to remove any slash from
-	 * 					the string (useful to avoid
-	 * 					LFI vulnerabilities).
-	 * @param[in] bool $ucwords		TRUE to make the first letter of
-	 * 					each word upper case.
-	 * @retval string			The sanitized string.
-	 */
-	private function _sanitizeParam($value, $removeSlashes = false, $ucwords = false)
-	{
-		if (empty($value))
-			return '';
-		$value = $removeSlashes ? str_replace('\\', '', $value) : $value;
-		$value = trim($value);
-		return $ucwords ? ucwords($value, " \t\r\n\f\v_-.") : $value;
-	}
-
-	/**
-	 * @internal
-	 * @brief Reads GET and POST parameters from the Visitor's request.
-	 */
-	private function _readParams()
-	{
-		if (php_sapi_name() === 'cli')
-			return;
-
-		foreach ($_GET as $key => $value) {
-			$key = strtolower($key);
-			switch ($key) {
-			case 'page':
-				$this->setPage($value);
-				break;
-			case 'action':
-				$this->setAction($value);
-				break;
-			default:
-				$this->setGetParams([$key => $value]);
-			}
-		}
-		$this->setPostParams($_POST);
 	}
 // }}}
 

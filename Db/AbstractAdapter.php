@@ -13,19 +13,16 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 
 // Protected Properties {{{
 	/**
-	 * @internal
 	 * @var object $connection
 	 * The database connection.
 	 */
 	protected $connection;
 	/**
-	 * @internal
 	 * @var string $statementClass
 	 * The name of the class representing the statement.
 	 */
 	protected $statementClass;
 	/**
-	 * @internal
 	 * @var array $config
 	 * The database configuration.
 	 */
@@ -139,29 +136,10 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 	{
 		return $this->_query($query, $params)->fetchAllColumn($column);
 	}
-
-	/**
-	 * @brief Queries the database and returns all rows of the result using
-	 * the specified column's values as keys for the array.
-	 *
-	 * @param[in] string $query	The query.
-	 * @param[in] int|string $key	The column whose values should be used
-	 * 				as keys for the returned array.
-	 * @param[in] mixed $params	The parameters to bind to the query.
-	 * @retval array		An array containing all fields returned
-	 * 				by the query, indexed with the values of
-	 * 				the column specified.
-	 * @todo currently not used.
-	 */
-	public function fetchAllKeyed($query, $key, ...$params)
-	{
-		return $this->_query($query, $params)->fetchAllKeyed($key);
-	}
 // }}}
 
 // Private Methods {{{
 	/**
-	 * @internal
 	 * @brief Sends a query to the database.
 	 *
 	 * @param[in] string $query	The query to send.
@@ -182,11 +160,14 @@ abstract class AbstractAdapter extends \Pweb\AbstractSingleton
 // }}}
 
 // Abstract Methods {{{
+	/** @brief Close the connection to the database. */
+	abstract public function closeConnection();
+
 	/** @brief Connect to the database. */
 	abstract protected function connect();
 
-	/** @brief Close the connection to the database. */
-	abstract public function closeConnection();
+	/** @brief Returns the name of the associated statement class. */
+	abstract protected function getStatementClass();
 // }}}
 
 }

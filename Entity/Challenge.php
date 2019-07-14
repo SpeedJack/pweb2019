@@ -6,53 +6,38 @@ namespace Pweb\Entity;
  *
  * @author Niccolò Scatena <speedjack95@gmail.com>
  * @copyright GNU General Public License, version 3
+ *
+ * @todo Support attachments.
  */
 class Challenge extends AbstractEntity
 {
 
 // Entity Properties {{{
 	/**
-	 * @internal
 	 * @var string $_name
 	 * The challenge's name.
 	 */
 	protected $_name;
 	/**
-	 * @internal
 	 * @var string $_categoryName
 	 * The name of the challenge's category.
 	 */
 	protected $_categoryName;
 	/**
-	 * @internal
 	 * @var string $_flag
 	 * The challenge's flag.
 	 */
 	protected $_flag;
 	/**
-	 * @internal
 	 * @var int $_points
 	 * The number of points this challenge is worth.
 	 */
 	protected $_points;
 	/**
-	 * @internal
 	 * @var string $_body
 	 * The main text of the challenge.
 	 */
 	protected $_body;
-	/**
-	 * @internal
-	 * @var string|null $_attachmentName
-	 * The attached file's name.
-	 */
-	protected $_attachmentName;
-	/**
-	 * @internal
-	 * @var string|null $_attachmentHash
-	 * The attached file's hash.
-	 */
-	protected $_attachmentHash;
 // }}}
 
 // Other Properties {{{
@@ -66,9 +51,7 @@ class Challenge extends AbstractEntity
 		'categoryName' => 'getCategoryName',
 		'flag' => 'getFlag',
 		'points' => 'getPoints',
-		'body' => 'getBody',
-		'attachmentName' => 'getAttachmentName',
-		'attachmentHash' => 'getAttachmentHash'
+		'body' => 'getBody'
 	];
 
 	/**
@@ -133,26 +116,6 @@ class Challenge extends AbstractEntity
 	public function getCategoryName()
 	{
 		return $this->_categoryName;
-	}
-
-	/**
-	 * @brief Returns the attached file's name.
-	 *
-	 * @retval string	The attached file's name.
-	 */
-	public function getAttachmentName()
-	{
-		return $this->_attachmentName;
-	}
-
-	/**
-	 * @brief Returns the attached file's hash.
-	 *
-	 * @retval string	The attached file's hash.
-	 */
-	public function getAttachmentHash()
-	{
-		return $this->_attachmentHash;
 	}
 // }}}
 
@@ -222,15 +185,6 @@ class Challenge extends AbstractEntity
 		$this->_set('body', $body);
 		return true;
 	}
-
-	/**
-	 * @brief Sets the attached file.
-	 *
-	 * @param[in] mixed $attachment		The attached file.
-	 */
-	public function setAttachment($attachment)
-	{
-	}
 // }}}
 
 // Entity Methods {{{
@@ -265,7 +219,11 @@ class Challenge extends AbstractEntity
 		$userid = $user->getId();
 
 		$db = \Pweb\App::getInstance()->getDb();
-		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` AS c LEFT OUTER JOIN (SELECT * FROM `' . self::USER_JOIN_TABLE . '` WHERE userId = ?) AS s ON c.id = s.challengeId ORDER BY c.categoryName, c.id;', $userid);
+		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME .
+			'` AS c LEFT OUTER JOIN (SELECT * FROM `' .
+			self::USER_JOIN_TABLE .
+			'` WHERE userId = ?) AS s ON c.id = s.challengeId ORDER BY c.categoryName, c.id;',
+			$userid);
 
 		$challs = [];
 		$user->addSolvedChallenge();
@@ -293,12 +251,12 @@ class Challenge extends AbstractEntity
 			$user = $user->getId();
 
 		$db = \Pweb\App::getInstance()->getDb();
-		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` AS c INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON c.id = s.challengeId WHERE s.userId = ? ORDER BY c.categoryName, c.id;', $user);
+		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME .
+			'` AS c INNER JOIN `' . self::USER_JOIN_TABLE .
+			'` AS s ON c.id = s.challengeId WHERE s.userId = ? ORDER BY c.categoryName, c.id;',
+			$user);
 
-		$challs = [];
-		foreach ($data as $row)
-			$challs[] = self::createFromData($row);
-		return $challs;
+		return parent::createFromDataArray($data);
 	}
 // }}}
 
@@ -309,9 +267,14 @@ class Challenge extends AbstractEntity
 	protected function _preDelete()
 	{
 		$challid = $this->getId();
-		$this->_db->query('UPDATE `' . User::TABLE_NAME . '` AS u INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON u.id = s.userId INNER JOIN `' . self::TABLE_NAME . '` AS c ON s.challengeId = c.id SET u.points = u.points - c.points WHERE c.id = ?;',
+		$this->_db->query('UPDATE `' . User::TABLE_NAME .
+			'` AS u INNER JOIN `' . self::USER_JOIN_TABLE .
+			'` AS s ON u.id = s.userId INNER JOIN `' .
+			self::TABLE_NAME .
+			'` AS c ON s.challengeId = c.id SET u.points = u.points - c.points WHERE c.id = ?;',
 			$challid);
-		$this->_db->query('DELETE FROM `' . self::USER_JOIN_TABLE . '` WHERE challengeId=?;',
+		$this->_db->query('DELETE FROM `' . self::USER_JOIN_TABLE .
+			'` WHERE challengeId=?;',
 			$challid);
 	}
 
@@ -320,17 +283,26 @@ class Challenge extends AbstractEntity
 	{
 		if (!isset($this->_changedValues['points']))
 			return;
-		$this->_db->query('UPDATE `' . User::TABLE_NAME . '` AS u INNER JOIN `' . self::USER_JOIN_TABLE . '` AS s ON u.id = s.userId SET u.points = u.points + ? WHERE s.challengeId = ?;',
-			$this->getPoints() - $this->_changedValues['points'], $this->getId());
+		$this->_db->query('UPDATE `' . User::TABLE_NAME .
+			'` AS u INNER JOIN `' . self::USER_JOIN_TABLE .
+			'` AS s ON u.id = s.userId SET u.points = u.points + ? WHERE s.challengeId = ?;',
+			$this->getPoints() - $this->_changedValues['points'],
+			$this->getId());
 	}
 // }}}
 
 // Public Methods {{{
+	/**
+	 * @brief Returns an array containing all categories.
+	 *
+	 * @retval array	An array of strings with all categories.
+	 */
 	public static function getAllCategories()
 	{
 		$em = EntityManager::getInstance();
 		$db = \Pweb\App::getInstance()->getDb();
-		return $db->fetchAllColumn('SELECT DISTINCT categoryName FROM `' . self::TABLE_NAME . '`;');
+		return $db->fetchAllColumn('SELECT DISTINCT categoryName FROM `' .
+			self::TABLE_NAME . '`;');
 	}
 // }}}
 

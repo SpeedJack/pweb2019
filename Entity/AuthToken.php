@@ -13,25 +13,21 @@ class AuthToken extends AbstractEntity
 
 // Entity Properties {{{
 	/**
-	 * @internal
 	 * @var int $_userId
 	 * The id of the user associated to this token.
 	 */
 	protected $_userId;
 	/**
-	 * @internal
 	 * @var string $_authToken
 	 * The hashed token, used to validate the user.
 	 */
 	protected $_authToken;
 	/**
-	 * @internal
 	 * @var int $_expireTime
 	 * The expiration unix timestamp of the token.
 	 */
 	protected $_expireTime;
 	/**
-	 * @internal
 	 * @var User $_user
 	 * The user associated to this token.
 	 */
@@ -136,9 +132,14 @@ class AuthToken extends AbstractEntity
 	{
 		$db = \Pweb\App::getInstance()->getDb();
 		$em = EntityManager::getInstance();
-		$data = $db->fetchRow('SELECT *, t.id AS tokenId FROM `' . self::TABLE_NAME . '` AS t INNER JOIN `' . User::TABLE_NAME . '` AS u ON t.userId = u.id WHERE t.id = ?;', $id);
+		$data = $db->fetchRow('SELECT *, t.id AS tokenId FROM `' .
+			self::TABLE_NAME . '` AS t INNER JOIN `' .
+			User::TABLE_NAME . '` AS u ON t.userId = u.id WHERE t.id = ?;',
+			$id);
+
 		if (empty($data))
 			return false;
+
 		$userData = [
 			'id' => $data['userId'],
 			'username' => $data['username'],
@@ -149,6 +150,7 @@ class AuthToken extends AbstractEntity
 		];
 		$user = User::createFromData($userData);
 		$em->addToSaved($user);
+
 		$authData = [
 			'id' => $data['tokenId'],
 			'userId' => $data['userId'],
@@ -175,10 +177,7 @@ class AuthToken extends AbstractEntity
 		$em = EntityManager::getInstance();
 		$data = $db->fetchAll('SELECT * FROM `' . self::TABLE_NAME . '` WHERE userId = ?;',
 			$userid);
-		$authTokens = [];
-		foreach ($data as $row)
-			$authTokens[] = self::createFromData($row);
-		return $authTokens;
+		return parent::createFromDataArray($data);
 	}
 
 	/**
@@ -197,7 +196,6 @@ class AuthToken extends AbstractEntity
 
 // Entity Life-cycle {{{
 	/**
-	 * @internal
 	 * @brief Deletes this AuthToken if it's expired.
 	 */
 	protected function _preSave()
@@ -258,6 +256,7 @@ class AuthToken extends AbstractEntity
 		if ($raw_token === false)
 			$raw_token = $this->_generateInsecureToken();
 		$token = bin2hex($raw_token);
+
 		$this->_set('authToken', password_hash($token, PASSWORD_DEFAULT));
 		$this->resetExpireTime();
 		return $token;

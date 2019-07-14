@@ -1,5 +1,4 @@
 <?php
-
 namespace Pweb\Db;
 
 /**
@@ -23,7 +22,6 @@ class MysqliAdapter extends AbstractAdapter
 
 // Protected Methods {{{
 	/**
-	 * @internal
 	 * @brief Returns the fully qualified name of the associated statement
 	 * class.
 	 *

@@ -11,11 +11,11 @@ if ($challenge === false) {
 	$points = 0;
 	$body = '';
 } else {
-	$category = htmlspecialchars($challenge->getCategoryName());
-	$name = htmlspecialchars($challenge->getName());
-	$flag = htmlspecialchars($challenge->getFlag());
+	$category = htmlspecialchars($challenge->getCategoryName(), ENT_COMPAT | ENT_HTML5);
+	$name = htmlspecialchars($challenge->getName(), ENT_COMPAT | ENT_HTML5);
+	$flag = htmlspecialchars($challenge->getFlag(), ENT_COMPAT | ENT_HTML5);
 	$points = $challenge->getPoints();
-	$body = htmlspecialchars($challenge->getBody());
+	$body = htmlspecialchars($challenge->getBody(), ENT_COMPAT | ENT_HTML5);
 }
 ?>
 <form id="challenge-edit-form" class="modal-form" autocomplete="off" data-actionurl="<?= $application->buildLink('__current', 'save') ?>" onsubmit="return false;">
@@ -31,8 +31,8 @@ if ($challenge === false) {
 			<option value="<?= $cat ?>">
 		<?php endforeach; ?>
 	</datalist>
-	<textarea type="text" placeholder="<?= __('Enter Body Text..') ?>" rows="5" cols="40" id="challbody" name="challbody" required><?= $body ?></textarea>
-	<button type="submit" onclick="if (document.getElementById(&quot;challenge-edit-form&quot;).checkValidity()) setModalRedirect(&quot;<?= $application->buildLink('__current') ?>&quot;);"><?= __('Submit') ?></button>
+	<textarea placeholder="<?= __('Enter Body Text..') ?>" rows="5" cols="40" id="challbody" name="challbody" required><?= $body ?></textarea>
+	<button type="submit" onclick="if (document.getElementById('challenge-edit-form').checkValidity()) setModalRedirect('<?= $application->buildLink('__current') ?>');"><?= __('Submit') ?></button>
 	<button type="button" class="close-modal"><?= __('Close') ?></button>
 </form>
 <div id="response-container"></div>

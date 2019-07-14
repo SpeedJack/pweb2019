@@ -54,19 +54,16 @@ class App extends AbstractSingleton
 
 // Protected Properties {{{
 	/**
-	 * @internal
 	 * @var	Entity::Visitor $_visitor
 	 * The visitor instance.
 	 */
 	protected $_visitor;
 	/**
-	 * @internal
 	 * @var Db::AbstractAdapter $_db
 	 * The database adapter.
 	 */
 	protected $_db;
 	/**
-	 * @internal
 	 * @var Entity::EntityManager $_em
 	 * The EntityManager instance.
 	 */
@@ -104,6 +101,8 @@ class App extends AbstractSingleton
 	/**
 	 * @brief Returns the database instance.
 	 *
+	 * @throws Exception	If neither PDO nor mysqli is supported.
+	 *
 	 * This function creates a new database instance if it is not already
 	 * created.
 	 *
@@ -130,7 +129,7 @@ class App extends AbstractSingleton
 
 // Routing {{{
 	/**
-	 * @brief Route the user to the selected page and action.
+	 * @brief Routes the user to the selected page and action.
 	 *
 	 * This method does not return.
 	 *
@@ -169,7 +168,7 @@ class App extends AbstractSingleton
 	}
 
 	/**
-	 * @brief Reroute the user to a new page and action.
+	 * @brief Reroutes the user to a new page and action.
 	 *
 	 * This method does not return.
 	 *
@@ -195,23 +194,8 @@ class App extends AbstractSingleton
 		$this->route($getParams, $postParams, $resetParams);
 	}
 
-	/* NOTE: Some bug reports says that Chromium/IE/Edge may not properly
-	 * set cookies if they are set with a 301/302 HTTP redirect. Need some
-	 * testing, especially on older version, to check that cookies are
-	 * properly set even on redirect. This is browser's bug: HTTP specs
-	 * allows cookies on redirect. Some browser may won't fix this bug.
-	 * Update: Firefox >=67.0 ok! properly sets cookies on redirect.
-	 * Update: according to [1], all major browsers accepts cookies on
-	 * redirects: IE >= 6; FF >= 17; Safari >= 6.0.2; Opera >= 12.11. Still
-	 * need testing on Chromium.
-	 * NOTE: according to [1], 301 redirects are aggressively cached. If
-	 * that's a problem, pages that trigger 301 redirects should always
-	 * has a new url (eg. by setting a dummy GET parameter to a random
-	 * value). (TODO)
-	 * [1] https://blog.dubbelboer.com/2012/11/25/302-cookie.html
-	 */
 	/**
-	 * @brief Redirect the user to an external resource.
+	 * @brief Redirects the user to an external resource.
 	 *
 	 * @param[in] string $link	The link to the external resource.
 	 * @param[in] bool $permanent	If TRUE, does a permanent (301)
@@ -225,7 +209,7 @@ class App extends AbstractSingleton
 	}
 
 	/**
-	 * @brief Redirect the user to the specified page and action.
+	 * @brief Redirects the user to the specified page and action.
 	 *
 	 * @param[in] string $page		The page where the user should
 	 * 					be redirected. If NULL,
@@ -247,7 +231,7 @@ class App extends AbstractSingleton
 	}
 
 	/**
-	 * @brief Redirect the user to the home page.
+	 * @brief Redirects the user to the home page.
 	 *
 	 * @param[in] array $params	Associative array of key-value pairs of
 	 * 				GET parameters.
@@ -292,13 +276,13 @@ class App extends AbstractSingleton
 			return 'index.php';
 		$rawAction = '';
 		$page = $page === '__current' ?
-			trimSuffix($this->_visitor->page, 'Page') : $page;
+			trim_suffix($this->_visitor->page, 'Page') : $page;
 		$rawPage = "?page=$page";
 		if ($this->config['use_url_rewrite'])
 			$rawPage = "/$page";
 		if (!empty($action)) {
 			$action = $action === '__current' ?
-				trimPrefix($this->_visitor->action, 'action') : $action;
+				trim_prefix($this->_visitor->action, 'action') : $action;
 			if ($this->config['use_url_rewrite'])
 				$rawAction = "/$action";
 			else
@@ -323,8 +307,8 @@ class App extends AbstractSingleton
 		$port = 80)
 	{
 		$link = trim($link);
-		$link = trimPrefix($link, 'https://');
-		$link = trimPrefix($link, 'http://');
+		$link = trim_prefix($link, 'https://');
+		$link = trim_prefix($link, 'http://');
 
 		$portStr = ":$port";
 		if ($port === 80)
@@ -418,26 +402,28 @@ class App extends AbstractSingleton
 	private function _setConfig(array $config = [])
 	{
 		$this->config = array_replace_recursive([
-			'app_name' => 'Pweb',
-			'header_motd' => 'Message of the day',
+			'app_name' => '> CTF',
+			'header_motd' => 'A platform for Jeopardy style CTFs.',
 			'super_admin_ids' => [ 1 ],
 			'db' => [
-				'prefer_mysqli_over_pdo' => false,
 				'host' => 'localhost',
+				'port' => 3306,
 				'username' => 'root',
 				'password' => '',
 				'dbname' => 'pweb',
-				'port' => 3306,
-				'charset' => 'utf8'
+				'charset' => 'utf8',
+				'prefer_mysqli_over_pdo' => false
 			],
 			'use_url_rewrite' => false,
+			'fallback_server_name' => 'localhost',
+			'fallback_server_port' => 80,
 			'default_per_page' => 20,
-			'username_regex' => '/^[a-zA-Z0-9._-]{5,32}$/',
-			'flag_regex' => '/^(?:f|F)(?:l|L)(?:a|A)(?:g|G)\{[ -z|~]{1,249}\}$/',
-			'min_password_length' => 8,
+			'session_canary_lifetime' => 60*5,
 			'auth_token_length' => 20,
 			'auth_token_duration' => 60*60*24*365,
-			'session_canary_lifetime' => 60*5,
+			'min_password_length' => 8,
+			'username_regex' => '/^[a-zA-Z0-9._-]{5,32}$/',
+			'flag_regex' => '/^(?:f|F)(?:l|L)(?:a|A)(?:g|G)\{[ -z|~]{1,249}\}$/',
 			'form_validation' => [
 				'username_regex' => '^[a-zA-Z0-9._-]{5,32}$',
 				'username_maxlength' => 32,
@@ -456,11 +442,10 @@ class App extends AbstractSingleton
 				'twitter' => '',
 				'youtube' => ''
 			],
-			'fallback_server_name' => 'localhost',
-			'fallback_server_port' => 80,
-			'use_fallback_server_infos' => false,
 			'debug' => false,
-			'show_all_exceptions' => false
+			'show_all_exceptions' => false,
+			'use_fallback_server_infos' => false,
+			'error_log' => null
 		], $config);
 	}
 

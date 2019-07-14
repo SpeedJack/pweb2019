@@ -12,30 +12,23 @@ abstract class AbstractStatement
 
 // Public Properties {{{
 	/**
-	 * @var AbstractAdapter $adapter
-	 * The database connector adapter.
-	 */
-	public $adapter;
-	/**
 	 * @var string $query
 	 * The query that this statement represents.
 	 */
 	public $query;
+// }}}
+
+// Protected Properties {{{
 	/**
-	 * @var array $params
+	 * @var AbstractAdapter $_adapter
+	 * The database connector adapter.
+	 */
+	protected $_adapter;
+	/**
+	 * @var array $_params
 	 * The parameters bound to the query.
 	 */
-	public $params;
-	/**
-	 * @var array $keys
-	 * Array of strings containing the column names of the query's result.
-	 */
-	public $keys = [];
-	/**
-	 * @var array $values
-	 * The values returned by the query.
-	 */
-	public $values = [];
+	protected $_params;
 // }}}
 
 	/**
@@ -49,27 +42,12 @@ abstract class AbstractStatement
 	 */
 	public function __construct(AbstractAdapter $adapter, $query, $params = [])
 	{
-		$this->adapter = $adapter;
+		$this->_adapter = $adapter;
 		$this->query = $query;
-		$this->params = is_array($params) ? $params : [$params];
+		$this->_params = is_array($params) ? $params : [$params];
 	}
 
 // Public Methods {{{
-	/**
-	 * @brief Fetches one row from the executed query and returns the
-	 * result.
-	 *
-	 * @retval array	The associative array containing the values with
-	 * 			the column names as keys.
-	 */
-	public function fetch()
-	{
-		$values = $this->fetchValues();
-		if (empty($values))
-			return array();
-		return array_combine($this->keys, $values);
-	}
-
 	/**
 	 * @brief Fetches the column specified from the result set.
 	 *
@@ -80,12 +58,9 @@ abstract class AbstractStatement
 	 */
 	public function fetchColumn($column = 0)
 	{
-		$values = $this->fetchValues();
+		$values = $this->fetch();
 		if (!$values)
 			return false;
-		if (is_int($column))
-			return isset($values[$column]) ? $values[$column] : null;
-		$values = array_combine($this->keys, $values);
 		return isset($values[$column]) ? $values[$column] : null;
 	}
 
@@ -121,33 +96,11 @@ abstract class AbstractStatement
 			$output[] = $v;
 		return $output;
 	}
-
-	/**
-	 * @brief Returns the result of a query, using a column to index the
-	 * resulting array.
-	 *
-	 * @param[in] int|string $key	The column index or name to use as key
-	 * 				for the resulting array.
-	 * @retval array|false		An associative array containing the
-	 * 				result of the query with the values of
-	 * 				the specified column as keys. FALSE if
-	 * 				no row is returned.
-	 */
-	public function fetchAllKeyed($key)
-	{
-		$output = [];
-		$i = 0;
-		while ($v = $this->fetch()) {
-			if (!isset($v[$key]))
-				return false;
-			$output[$v[$key]] = $v;
-		}
-		return $output;
-	}
 // }}}
 
 // Protected Methods {{{
 	/**
+	 * @internal
 	 * @brief Returns the proper exception to trigger when an error occurs.
 	 *
 	 * @param[in] string $message		The exception message.
@@ -179,18 +132,18 @@ abstract class AbstractStatement
 	abstract public function prepare();
 
 	/**
+	 * @brief Fetches the values from the executed query.
+	 *
+	 * @retval array	An array containing the values fetched.
+	 */
+	abstract public function fetch();
+
+	/**
 	 * @brief Executes the statement.
 	 *
 	 * @retval bool		TRUE if execution succeded; FALSE otherwise.
 	 */
 	abstract public function execute();
-
-	/**
-	 * @brief Fetches the values from the executed query.
-	 *
-	 * @retval array	An array containing the values fetched.
-	 */
-	abstract public function fetchValues();
 
 	/**
 	 * @brief Returns the number of rows affected by the query.

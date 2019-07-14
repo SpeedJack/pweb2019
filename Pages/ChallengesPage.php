@@ -15,15 +15,18 @@ class ChallengesPage extends AbstractPage
 		if (!$this->_visitor->isLoggedIn())
 			$this->_app->reroute('login');
 
-		$challs = $this->_em->getAllFromDb('Challenge', $this->_visitor->user);
-		$challs = $challs === false ? [] : (is_array($challs) ? $challs : [$challs]);
+		$challs = $this->_em->getAllFromDb('Challenge',
+			$this->_visitor->user);
+		$challs = $challs === false ? [] :
+			(is_array($challs) ? $challs : [$challs]);
 
 		$this->_setTitle(__('Challenges'));
 		$this->_addCss('challenges');
 		$this->_addJs('accordion');
 		$this->_addJs('challenge');
 		$this->_addJs('form');
-		$this->_show('challenges-list', ['challenges' => $challs, 'user' => $this->_visitor->user]);
+		$this->_show('challenges-list', ['challenges' => $challs,
+			'user' => $this->_visitor->user]);
 	}
 
 	/** @brief Opens a challenge in a modal window. */
@@ -88,13 +91,16 @@ class ChallengesPage extends AbstractPage
 
 		switch ($this->_visitor->user->solveChallenge($challid, $challflag)) {
 		case \Pweb\Entity\User::WRONG_FLAG:
-			$this->_reply('message', ['message' => __('<span class="color-red">Wrong flag!</span>')]);
+			$this->_reply('message',
+				['message' => __('<span class="color-red">Wrong flag!</span>')]);
 			return;
 		case \Pweb\Entity\User::ALREADY_SOLVED:
-			$this->_reply('message', ['message' => __('<span class="color-green">You have already solved this challenge.</span>')]);
+			$this->_reply('message',
+				['message' => __('<span class="color-green">You have already solved this challenge.</span>')]);
 			return;
 		}
 
-		$this->_reply('message', ['message' => __('<span class="color-green">Correct flag. You solved this challenge!</span>')]);
+		$this->_reply('message',
+			['message' => __('<span class="color-green">Correct flag. You solved this challenge!</span>')]);
 	}
 }

@@ -27,6 +27,7 @@ class UsersPage extends AbstractPage
 	}
 
 	/**
+	 * @internal
 	 * @brief Returns a User entity from the id POST parameter.
 	 *
 	 * @retval Pweb::Entity::User	The User entity.
@@ -48,7 +49,7 @@ class UsersPage extends AbstractPage
 		if (!$this->_visitor->isAdmin())
 			return;
 		$user = $this->_getUserParam();
-		if ($user === false)
+		if ($user === false || $this->_visitor->getId() === $user->getId())
 			return;
 		/* only super admins can delete other admins; super admins
 		 * are protected from deletion */
@@ -67,7 +68,7 @@ class UsersPage extends AbstractPage
 		if (!$this->_visitor->isAdmin())
 			return;
 		$user = $this->_getUserParam();
-		if ($user === false)
+		if ($user === false || $this->_visitor->getId() === $user->getId())
 			return;
 		if ($user->isAdmin()) {
 			/* super admins are protected from demotion; only

@@ -4,6 +4,19 @@ namespace Pweb\Entity;
 /**
  * @brief Represents an entity.
  *
+ * Entities are handled by the EntityManager. Static entity's methods provides
+ * a way to get entities from the database.
+ * Every entity has a life-cycle. When the function save() is called on an
+ * entity, the following methods are called in order:
+ * In case of first insertion on the database:
+ * 	_preSave() -> _preInsert() -> _insert() -> _postInsert() -> _postSave()
+ * In case of update (called only if the entity was modified):
+ * 	_preSave() -> _preUpdate() -> _update() -> _postUpdate() -> _postSave()
+ * In case of deletion from the database:
+ * 	_preSave() -> _preDelete() -> _delete() -> _postDelete() -> _postSave()
+ * You can override any of the above method to alter the behavior of the
+ * entity's saving process.
+ *
  * @author Niccolò Scatena <speedjack95@gmail.com>
  * @copyright GNU General Public License, version 3
  */
@@ -12,7 +25,6 @@ abstract class AbstractEntity
 
 // Protected Properties {{{
 	/**
-	 * @internal
 	 * @var int $_id
 	 * The id of the entity.
 	 */
@@ -42,19 +54,16 @@ abstract class AbstractEntity
 	 */
 	protected $_deleted = false;
 	/**
-	 * @internal
 	 * @var Pweb::App $_app
 	 * The application instance.
 	 */
 	protected $_app;
 	/**
-	 * @internal
 	 * @var EntityManager $_em
 	 * The Entity Manager instance.
 	 */
 	protected $_em;
 	/**
-	 * @internal
 	 * @var Pweb::Db::AbstractAdapter $_db
 	 * The database adapter.
 	 */
@@ -81,7 +90,6 @@ abstract class AbstractEntity
 	 */
 	public function __construct($id)
 	{
-		$this->_isSaved = false;
 		$this->_id = $id;
 		$this->_app = \Pweb\App::getInstance();
 		$this->_db = $this->_app->getDb();
@@ -133,7 +141,6 @@ abstract class AbstractEntity
 
 // Setters {{{
 	/**
-	 * @internal
 	 * @brief Sets a property which corresponds to a column in the database.
 	 *
 	 * @throws LogicException	If the property specified does not
@@ -157,12 +164,10 @@ abstract class AbstractEntity
 					$realName, $this->getClassName())
 			);
 
-		if ($this->_isSaved) {
-			if (!isset($this->_changedValues[$propertyName]))
-				$this->_changedValues[$propertyName] = $this->$realName;
-			if ($this->_changedValues[$propertyName] === $value)
-				unset($this->_changedValues[$propertyName]);
-		}
+		if (!isset($this->_changedValues[$propertyName]))
+			$this->_changedValues[$propertyName] = $this->$realName;
+		if ($this->_changedValues[$propertyName] === $value)
+			unset($this->_changedValues[$propertyName]);
 
 		$this->$realName = $value;
 	}
@@ -195,10 +200,7 @@ abstract class AbstractEntity
 	{
 		$db = \Pweb\App::getInstance()->getDb();
 		$data = $db->fetchAll('SELECT * FROM `' . static::TABLE_NAME . '`' . $appendQuery . ';');
-		$entities = [];
-		foreach ($data as $row)
-			$entities[] = static::createFromData($row);
-		return count($entities) === 1 ? array_pop($entities) : $entities;
+		return static::createFromDataArray($data);
 	}
 
 	/**
@@ -261,8 +263,26 @@ abstract class AbstractEntity
 			return false;
 		$instance = new static(0);
 		$instance->_fillData($data);
-		$instance->_isSaved = true;
 		return $instance;
+	}
+
+	/**
+	 * @brief Creates multiple entities from the data passed as array.
+	 *
+	 * @param[in] array $data	Array of associative arrays of key-value
+	 * 				pairs where the key is the
+	 * 				property/column's name.
+	 * @retval array		The entities created or FALSE if no data
+	 * 				is provided.
+	 */
+	public static function createFromDataArray(array $data)
+	{
+		if (!is_array($data))
+			return false;
+		$entities = [];
+		foreach ($data as $row)
+			$entities[] = static::createFromData($row);
+		return count($entities) === 1 ? array_pop($entities) : $entities;
 	}
 
 	/**
@@ -284,16 +304,12 @@ abstract class AbstractEntity
 
 // Entity Life-cycle {{{
 	/**
-	 * @internal
 	 * @brief This function is executed before the entity is inserted on the
 	 * database.
 	 */
 	protected function _preInsert() {}
 
-	/**
-	 * @internal
-	 * @brief Inserts the entity on the database.
-	 */
+	/** @brief Inserts the entity on the database. */
 	protected function _insert()
 	{
 		$query = 'INSERT INTO `' . static::TABLE_NAME . '`(';
@@ -304,8 +320,8 @@ abstract class AbstractEntity
 			$placeholders .= '?, ';
 			$values[] = $this->$getter();
 		}
-		$placeholders = trimSuffix($placeholders, ', ');
-		$query = trimSuffix($query, ', ') . ") VALUES($placeholders);";
+		$placeholders = trim_suffix($placeholders, ', ');
+		$query = trim_suffix($query, ', ') . ") VALUES($placeholders);";
 		try {
 			$this->_db->query($query, ...$values);
 		} catch (\Pweb\Db\DuplicateKeyException $e) {
@@ -319,23 +335,18 @@ abstract class AbstractEntity
 	}
 
 	/**
-	 * @internal
 	 * @brief This function is executed after the entity is inserted on the
 	 * database.
 	 */
 	protected function _postInsert() {}
 
 	/**
-	 * @internal
 	 * @brief This function is executed before the entity is deleted from
 	 * the database.
 	 */
 	protected function _preDelete() {}
 
-	/**
-	 * @internal
-	 * @brief Deletes the entity from the database.
-	 */
+	/** @brief Deletes the entity from the database. */
 	protected function _delete()
 	{
 		$this->_db->query('DELETE FROM `' . static::TABLE_NAME . '` WHERE id=?;',
@@ -344,23 +355,18 @@ abstract class AbstractEntity
 	}
 
 	/**
-	 * @internal
 	 * @brief This function is executed after the entity is deleted from the
 	 * database.
 	 */
 	protected function _postDelete() {}
 
 	/**
-	 * @internal
 	 * @brief This function is executed before the entity is updated on the
 	 * database.
 	 */
 	protected function _preUpdate() {}
 
-	/**
-	 * @internal
-	 * @brief Updates the entity on the database.
-	 */
+	/** @brief Updates the entity on the database. */
 	protected function _update()
 	{
 		$query = 'UPDATE `' . static::TABLE_NAME . '` SET ';
@@ -370,28 +376,25 @@ abstract class AbstractEntity
 			$values[] = $this->$realName;
 			$query .= "$name = ?, ";
 		}
-		$query = trimSuffix($query, ', ') . ' WHERE id=?;';
+		$query = trim_suffix($query, ', ') . ' WHERE id=?;';
 		$values[] = $this->_id;
 		$rowsAffected = $this->_db->query($query, ...$values);
 
 	}
 
 	/**
-	 * @internal
 	 * @brief This function is executed after the entity is updated on the
 	 * database.
 	 */
 	protected function _postUpdate() {}
 
 	/**
-	 * @internal
 	 * @brief This function is executed before the entity is saved (i.e.
 	 * inserted, updated or deleted) on the database.
 	 */
 	protected function _preSave() {}
 
 	/**
-	 * @internal
 	 * @brief Saves (i.e. inserts, deletes or updates) the entity on the
 	 * database.
 	 */
@@ -426,7 +429,6 @@ abstract class AbstractEntity
 	}
 
 	/**
-	 * @internal
 	 * @brief This function is executed after the entity is saved (i.e.
 	 * inserted, updated or deleted) on the database.
 	 */

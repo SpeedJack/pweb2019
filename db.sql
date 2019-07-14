@@ -35,8 +35,6 @@ CREATE TABLE challenges (
 	flag VARCHAR(255) NOT NULL,
 	points INT UNSIGNED NOT NULL DEFAULT 1,
 	body TEXT NOT NULL,
-	attachmentName VARCHAR(255),
-	attachmentHash VARCHAR(255),
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 

@@ -19,7 +19,8 @@ class ChallengesPage extends AbstractPage
 			$this->_app->redirectHome();
 
 		$challs = $this->_em->getAllFromDb('Challenge');
-		$challs = $challs === false ? [] : (is_array($challs) ? $challs : [$challs]);
+		$challs = $challs === false ? [] :
+			(is_array($challs) ? $challs : [$challs]);
 
 		$this->_setTitle(__('Admin: Edit Challenges'));
 		$this->_addCss('table');
@@ -30,6 +31,12 @@ class ChallengesPage extends AbstractPage
 		$this->_show('challenges-table', ['challenges' => $challs]);
 	}
 
+	/**
+	 * @internal
+	 * @brief Returns a Challenge entity from the id POST parameter.
+	 *
+	 * @retval Pweb::Entity::Challenge	The Challenge entity
+	 */
 	private function _getChallengeParam()
 	{
 		$challId = $this->_visitor->param('id', 'POST');
@@ -41,6 +48,7 @@ class ChallengesPage extends AbstractPage
 		return $this->_em->getFromDb('Challenge', $challId);
 	}
 
+	/** @brief Deletes a challenge. */
 	public function actionDelete()
 	{
 		if (!$this->_visitor->isAdmin())
@@ -52,6 +60,7 @@ class ChallengesPage extends AbstractPage
 		$chall->delete();
 	}
 
+	/** @brief Shows the challenge edit form. */
 	public function actionEdit()
 	{
 		if (!$this->_visitor->isLoggedIn()) {
@@ -87,6 +96,7 @@ class ChallengesPage extends AbstractPage
 			['challenge' => $chall, 'categories' => $categories]);
 	}
 
+	/** @brief Shows the challenge create form. */
 	public function actionCreate()
 	{
 		if (!$this->_visitor->isLoggedIn()) {
@@ -106,6 +116,7 @@ class ChallengesPage extends AbstractPage
 			['challenge' => false, 'categories' => $categories]);
 	}
 
+	/** @brief Saves an edited/create challenge. */
 	public function actionSave()
 	{
 		if (!$this->_visitor->isAdmin())
