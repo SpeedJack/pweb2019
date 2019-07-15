@@ -1,3 +1,4 @@
+/* set a cookie */
 function setCookie(name, value, expire)
 {
 	var exp = new Date();
@@ -5,6 +6,7 @@ function setCookie(name, value, expire)
 	document.cookie = name + "=" + value + ";expires=" + exp.toUTCString() + ";path=/";
 }
 
+/* get the value of a cookie */
 function getCookie(name)
 {
 	var cookies = decodeURIComponent(document.cookie).split(";");
@@ -19,6 +21,7 @@ function getCookie(name)
 	return "";
 }
 
+/* send an asyncronous XMLHttpRequest */
 function sendRequest(url, data, xhttp)
 {
 	if (xhttp === undefined)
@@ -28,6 +31,15 @@ function sendRequest(url, data, xhttp)
 	xhttp.send(data);
 }
 
+/* send an ajax request
+ * 
+ * url: the url where to send the request
+ * data: the url-encoded string of POST parameters
+ * allowResponseContainer: passed to the response handler; if true and a modal
+ * is already open, the handler should append the response to the element with
+ * id response-container instead of replace the content of the modal
+ * handler: the handler function (default: handleAjaxResponse)
+ */
 function ajaxQuery(url, data, allowResponseContainer, handler)
 {
 	var xhttp = new XMLHttpRequest();
@@ -40,6 +52,11 @@ function ajaxQuery(url, data, allowResponseContainer, handler)
 	sendRequest(url, data, xhttp);
 }
 
+/* handle an Ajax response, opening the modal container or, if already open and
+ * allowResponseContainer=true, appending the response to the element with id
+ * response-container
+ * If a JSON response is received, performs a redirect
+ */
 function handleAjaxResponse(response, allowResponseContainer)
 {
 	var data;
@@ -79,6 +96,9 @@ function handleAjaxResponse(response, allowResponseContainer)
 	}
 }
 
+/* when the response-container animation (highlighting) ends, remove the
+ * animate class
+ */
 function removeAnimateClass()
 {
 	this.classList.remove("animate");

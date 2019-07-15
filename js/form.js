@@ -4,6 +4,7 @@ for (var i = 0; i < document.forms.length; i++)
 
 document.getElementById("modal").addEventListener("modalopen", addModalForms);
 
+/* called when a new modal opens, add the submit event to all forms inside */
 function addModalForms()
 {
 	var forms = document.getElementsByClassName("modal-form");
@@ -18,6 +19,7 @@ function addModalForms()
 	}
 }
 
+/* sends an Ajax request with all form data */
 function sendForm()
 {
 	var data = "";

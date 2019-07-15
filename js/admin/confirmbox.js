@@ -1,3 +1,9 @@
+/* open a confirm box (question with yes/no)
+ * row: the table's row that triggered this function
+ * page: the page to send the request if the user presses yes
+ * action: the action to send the request if the user presses yes
+ * id: the id of the entity to work on
+ */
 function openConfirmBox(row, page, action, id)
 {
 	var confirmbox = document.querySelector("tr.confirmbox");
@@ -18,11 +24,13 @@ function openConfirmBox(row, page, action, id)
 		confirmboxDivs[i].classList.add("open");
 }
 
+/* send ajax request to the specified page and action passing the specified id */
 function confirmUserAction(page, action, id)
 {
 	ajaxQuery("index.php?page=" + page + "&action=" + action, "id=" + id, false, function () { location.reload() });
 }
 
+/* close a confirm box */
 function closeConfirmBox()
 {
 	var confirmboxDivs = document.querySelectorAll("tr.confirmbox td div");

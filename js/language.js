@@ -4,6 +4,7 @@ for (var i = 0; i < svgFlags.length; i++)
 	if (svgFlags[i].id.startsWith("flag-"))
 		svgFlags[i].addEventListener("click", setLanguage);
 
+/* highlight the flag of the current language selection */
 function selectActiveFlag()
 {
 	var lang = getCookie("lang");
@@ -16,6 +17,7 @@ function selectActiveFlag()
 	flag.classList.add("active");
 }
 
+/* set a new language and reloads the page */
 function setLanguage()
 {
 	var lang = this.id.replace("flag-", "");
@@ -25,6 +27,7 @@ function setLanguage()
 		url.searchParams.set("lang", lang);
 		location.replace(url.href);
 	} else {
+		/* if searchParams is not supported by the browser */
 		setCookie("lang", lang, Date.now() + 60*60*24*365*10);
 		location.reload();
 	}

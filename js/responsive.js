@@ -5,6 +5,7 @@ menuBarsElement.addEventListener("mouseover", function () { drawMenuBars("#FFFFF
 menuBarsElement.addEventListener("mouseout", function () { drawMenuBars("#BFC2C4"); });
 
 
+/* draw the three bars symbol used to open menus */
 function drawMenuBars(barsColor)
 {
 	var menuBarsCanvas = document.getElementById("menu-bars");
@@ -22,6 +23,7 @@ function drawMenuBars(barsColor)
 	canvasContext.stroke();
 }
 
+/* open the menu */
 function openResponsiveMenu()
 {
 	var topnav = document.getElementsByTagName("nav")[0];

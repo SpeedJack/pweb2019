@@ -3,6 +3,7 @@ for (var i = 0; i < challenges.length; i++)
 	if (!challenges[i].classList.contains("solved-chall"))
 		challenges[i].addEventListener("click", openChallenge);
 
+/* open a challenge */
 function openChallenge()
 {
 	var cid = this.id.replace("chall-", "");

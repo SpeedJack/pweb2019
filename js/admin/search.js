@@ -2,6 +2,7 @@ document.getElementById("search-text").addEventListener("keyup", performSearch);
 
 var previousSearchValue = "";
 
+/* perform a user search, by username or email */
 function performSearch()
 {
 	if (this.value.length < 3 || this.value === previousSearchValue)
@@ -17,6 +18,9 @@ function performSearch()
 	ajaxQuery("index.php?page=Admin_Ajax&action=SearchUsers", data, false, handleSearchResponse);
 }
 
+/* handle the search response (ajax). allowResponseContainer is ignored (modal
+ * not used)
+ */
 function handleSearchResponse(response, allowResponseContainer)
 {
 	var table = document.querySelector("#users-table tbody");

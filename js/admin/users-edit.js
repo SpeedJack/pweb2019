@@ -1,3 +1,6 @@
+/* add click event listener to all buttons (called whenever a new user search is
+ * performed)
+ */
 function refreshUsersButtons()
 {
 	var buttons = document.querySelectorAll("#users-table tbody tr.data-row button");
@@ -5,6 +8,7 @@ function refreshUsersButtons()
 		buttons[i].addEventListener("click", performUserAction);
 }
 
+/* execute an action (promote/demote/delete) on a user */
 function performUserAction()
 {
 	var splittedId = this.id.split("-");

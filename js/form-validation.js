@@ -4,11 +4,13 @@ document.getElementById("password").addEventListener("change", validatePassword)
 document.getElementById("password").addEventListener("keyup", validatePasswordMatch);
 document.getElementById("password-again").addEventListener("keyup", validatePasswordMatch);
 
+/* make the first letter of a string upercase */
 const ucfirst = (str) => {
 	if (typeof str !== "string") return "";
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/* check if a field is valid using Ajax */
 function validateField()
 {
 	if (this.value === "")
@@ -18,6 +20,12 @@ function validateField()
 		handleValidationResponse);
 }
 
+/* handle the validation response from Ajax, showing a message with the error
+ * (if any)
+ *
+ * response: contains the Ajax response
+ * allowResponseContainer: ignored (used with modal containers)
+ */
 function handleValidationResponse(response, allowResponseContainer)
 {
 	var data;
@@ -40,6 +48,7 @@ function handleValidationResponse(response, allowResponseContainer)
 	validator.style.display = "block";
 }
 
+/* show an error if the password does not match valid criteria */
 function validatePassword()
 {
 	var validator = document.getElementById("validatorfor-password");
@@ -51,6 +60,7 @@ function validatePassword()
 		validator.style.display = "none";
 }
 
+/* show an error if the two passwords do not match */
 function validatePasswordMatch()
 {
 	var passField = document.getElementById("password");

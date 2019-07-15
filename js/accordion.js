@@ -1,5 +1,6 @@
 window.addEventListener("load", openAccordions);
 
+/* open all accordions that the user has already opened; leave closed the others */
 function openAccordions()
 {
 	var accordionButtons = document.getElementsByClassName("accordion");
@@ -14,9 +15,11 @@ function openAccordions()
 				toggleAccordion(accordionButtons[i]);
 		accordionButtons[i].addEventListener("click", function () { toggleAccordion(this); });
 	}
+	/* fix some problems when window is resized */
 	window.addEventListener("resize", resizeAccordions);
 }
 
+/* open/close accordion */
 function toggleAccordion(accordion)
 {
 	var panel = accordion.nextElementSibling;
@@ -35,6 +38,7 @@ function toggleAccordion(accordion)
 	}
 }
 
+/* close and reopen all accordions */
 function resizeAccordions()
 {
 	var panels = document.getElementsByClassName("chall-container");

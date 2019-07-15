@@ -1,5 +1,6 @@
 window.addEventListener("click", closeModal);
 
+/* show a modal with an error message (english only) */
 function showErrorModal(message)
 {
 	var modal = document.getElementById("modal");
@@ -17,6 +18,9 @@ function showErrorModal(message)
 	modal.style.display = "block";
 }
 
+/* close a modal if the X button is pressed. If data-closeredirect attribute is
+ * defined, performs a redirect after the modal is closed
+ */
 function closeModal(event)
 {
 	var content;
@@ -46,6 +50,7 @@ function closeModal(event)
 		location.assign(redirecturl);
 }
 
+/* set the data-closeredirect attribute */
 function setModalRedirect(url)
 {
 	document.getElementById("modal-content").setAttribute("data-closeredirect", url);

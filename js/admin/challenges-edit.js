@@ -1,5 +1,6 @@
 window.addEventListener("load", addButtonActions);
 
+/* open a confirm box for challenge deletion */
 function deleteChallenge()
 {
 	var splittedId = this.id.split('-');
@@ -20,6 +21,7 @@ function deleteChallenge()
 	openConfirmBox(rowElement, 'Admin_Challenges', action, challid);
 }
 
+/* add event listener to all buttons */
 function addButtonActions()
 {
 	var createBtn = document.getElementById("create-challenge");
@@ -33,12 +35,14 @@ function addButtonActions()
 		delBtns[i].addEventListener("click", deleteChallenge);
 }
 
+/* open a modal with the form to edit a challenge */
 function editChallenge()
 {
 	var cid = this.id.replace("edit-chall-", "");
 	ajaxQuery("index.php?page=Admin_Challenges&action=edit", "cid=" + cid);
 }
 
+/* open a modal with the form to create a challenge */
 function createChallenge()
 {
 	ajaxQuery("index.php?page=Admin_Challenges&action=create");
