@@ -1,31 +1,45 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Pweb\n"
-"POT-Creation-Date: 2019-05-08 00:49+0200\n"
-"PO-Revision-Date: 2019-05-08 00:53+0200\n"
-"Last-Translator: \n"
-"Language-Team: Niccolò Scatena <speedjack95@gmail.com>\n"
-"Language: it\n"
+"Project-Id-Version: pweb_ctf\n"
+"POT-Creation-Date: 2019-07-15 20:40+0200\n"
+"PO-Revision-Date: 2019-07-15 21:29+0200\n"
+"Language-Team: Niccolò Scatena\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: ;__:1\n"
+"X-Poedit-KeywordsList: __\n"
+"Last-Translator: \n"
+"Language: it\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: Doc\n"
+"X-Poedit-SearchPathExcluded-1: docker\n"
+"X-Poedit-SearchPathExcluded-2: css\n"
+"X-Poedit-SearchPathExcluded-3: js\n"
+"X-Poedit-SearchPathExcluded-4: Locale\n"
+"X-Poedit-SearchPathExcluded-5: Doxyfile\n"
+"X-Poedit-SearchPathExcluded-6: LICENSE\n"
+"X-Poedit-SearchPathExcluded-7: README.md\n"
+"X-Poedit-SearchPathExcluded-8: db.old.sql\n"
+"X-Poedit-SearchPathExcluded-9: favicon.ico\n"
+"X-Poedit-SearchPathExcluded-10: pweb_ctf.sql\n"
+"X-Poedit-SearchPathExcluded-11: requirements.txt\n"
 
-#: App.php:147
+#: App.php:123
 msgid "No database extension loaded: PDO or MySQLi is required."
-msgstr "Il sito ha bisogno di PDO o MySQLi installati per funzionare."
+msgstr ""
+"Nessuna estensione PHP per la connessione al database caricata: È necessario "
+"PDO o MySQLi."
 
-#: App.php:161
+#: App.php:388
 #, php-format
 msgid "Unhandled Exception: %s\n"
-msgstr "Eccezione non Gestita: %s\n"
+msgstr "Eccezione Non Gestita: %s\n"
 
-#: Db/Exception.php:14
+#: Db/Exception.php:42 Pages/Db/Exception.php:42
 #, php-format
 msgid ""
 "\n"
@@ -36,56 +50,378 @@ msgstr ""
 "Codice di Stato SQL: %s\n"
 "Query: %s"
 
-#: Entity/EntityManager.php:14
+#: Entity/AbstractEntity.php:160 Pages/Entity/AbstractEntity.php:160
+#, php-format
+msgid "Trying to set property %s in deleted entity %s."
+msgstr "Tentativo di impostare la proprietà %s nell'entità eliminata %s."
+
+#: Entity/AbstractEntity.php:165 Pages/Entity/AbstractEntity.php:165
+#, php-format
+msgid "Trying to set an non-existent property %s for entity %s."
+msgstr "Tentativo di impostare una proprietà non esistente %s per l'entità %s."
+
+#: Entity/AuthToken.php:295 Pages/Entity/AuthToken.php:295
+msgid ""
+"Generating insecure auth token. You should update PHP to a newer version or "
+"install random_compat/OpenSSL extension."
+msgstr ""
+"Generazione di un auth token non sicuro. Dovresti aggiornare PHP a una "
+"versione più recente oppure installare l'estensione random_compat/OpenSSL."
+
+#: Entity/EntityManager.php:210 Pages/Entity/EntityManager.php:210
+#, php-format
+msgid "The method %s::%s does not exists."
+msgstr "Il metodo %s::%s non esiste."
+
+#: Entity/EntityManager.php:256 Pages/Entity/EntityManager.php:256
+#, php-format
+msgid ""
+"Can not add entity with hash %s since another entity of the same type "
+"already uses this id."
+msgstr ""
+"Non è stato possibile aggiungere l'entità con hash %s dato che un'altra "
+"entità dello stesso tipo utilizza già questo id."
+
+#: Entity/EntityManager.php:277 Pages/Entity/EntityManager.php:277
+#, php-format
+msgid "Entity hash '%s' has changed unexpectedly."
+msgstr "L'hash dell'entità '%s' è cambiato inaspettatamente."
+
+#: Entity/EntityManager.php:359 Pages/Entity/EntityManager.php:359
 #, php-format
 msgid "Invalid Entity %s."
-msgstr "%s non è un'entità valida."
+msgstr "Entità Non Valida %s."
 
-#: InvalidRouteException.php:13
+#: Entity/User.php:452 Pages/Entity/User.php:452
+#, php-format
+msgid "Error parsing regular expression: '%s'."
+msgstr "Errore durante il parsing dell'espressione regolare: '%s'."
+
+#: InvalidRouteException.php:42
 #, php-format
 msgid "Invalid route: the action '%s'::'%s' does not exists."
-msgstr "L'azione '%s'::'%s' non esiste."
+msgstr "Route non valida: l'azione '%s'::'%s' non esiste."
 
-#: Pages/AbstractPage.php:31
-msgid "Header template not found."
-msgstr "Template dell'header non trovato."
+#: Pages/AboutPage.php:17
+msgid "About Page"
+msgstr "Pagina Informazioni"
 
-#: Pages/AbstractPage.php:39
+#: Pages/AbstractPage.php:106
 #, php-format
-msgid "The template %s does not exists."
-msgstr "Il template %s non esiste."
+msgid "The CSS file '%s' does not exists."
+msgstr "Il file CSS '%s' non esiste."
 
-#: Pages/AbstractPage.php:47
-msgid "Footer template not found."
-msgstr "Template del footer non trovato."
+#: Pages/AbstractPage.php:131
+#, php-format
+msgid "The JavaScript file '%s' does not exists."
+msgstr "Il file JavaScript '%s' non esiste."
 
-#: error-pages/400.php:8
+#: Pages/AbstractPage.php:226
+msgid "en"
+msgstr "it"
+
+#: Pages/AbstractPage.php:292
+#, php-format
+msgid "The template '%s' does not exists."
+msgstr "Il template '%s' non esiste."
+
+#: Pages/Admin/AbstractPage.php:35
+msgid "You don't have the rights to view this page."
+msgstr "Non hai i permessi per vedere questa pagina."
+
+#: Pages/Admin/ChallengesPage.php:25
+msgid "Admin: Edit Challenges"
+msgstr "Admin: Modifica Challenge"
+
+#: Pages/Admin/ChallengesPage.php:71 Pages/Admin/ChallengesPage.php:107
+msgid "Insufficient privileges"
+msgstr "Privilegi insufficienti"
+
+#: Pages/Admin/ChallengesPage.php:72
+msgid "Challenges can be edited only by admins."
+msgstr "Le challenge possono essere modificate solo dagli admin."
+
+#: Pages/Admin/ChallengesPage.php:78 Pages/Admin/ChallengesPage.php:87
+#: Pages/ChallengesPage.php:50 Pages/ChallengesPage.php:59
+msgid "Invalid challenge"
+msgstr "Challenge non valida"
+
+#: Pages/Admin/ChallengesPage.php:79 Pages/ChallengesPage.php:51
+msgid "The requested challenge id is not valid."
+msgstr "L'id della challenge richiesta non è valido."
+
+#: Pages/Admin/ChallengesPage.php:88 Pages/ChallengesPage.php:60
+msgid "The requested challenge could not be found."
+msgstr "La challenge richiesta non è stata trovata."
+
+#: Pages/Admin/ChallengesPage.php:94
+#, php-format
+msgid "Edit Challenge: %s"
+msgstr "Modifica Challenge: %s"
+
+#: Pages/Admin/ChallengesPage.php:108
+msgid "New challenges can be created only by admins."
+msgstr "Nuove challenge possono essere create solo dagli admin."
+
+#: Pages/Admin/ChallengesPage.php:114
+msgid "Create Challenge"
+msgstr "Crea Challenge"
+
+#: Pages/Admin/ChallengesPage.php:141
+msgid ""
+"<span class=\"color-red\">The requested challenge id is not valid.</span>"
+msgstr ""
+"<span class=\"color-red\">L'id della challenge richiesta non è valido.</span>"
+
+#: Pages/Admin/ChallengesPage.php:147
+msgid ""
+"<span class=\"color-red\">The requested challenge can not be found.</span>"
+msgstr ""
+"<span class=\"color-red\">La challenge richiesta non è stata trovata.</span>"
+
+#: Pages/Admin/ChallengesPage.php:153
+msgid ""
+"<span class=\"color-red\">Challenge name is too long. The name of the "
+"challenge can be long 32 characters at most.</span>"
+msgstr ""
+"<span class=\"color-red\">Il nome della challenge è troppo lungo. Il nome "
+"della challenge può essere lungo 32 caratteri al massimo.</span>"
+
+#: Pages/Admin/ChallengesPage.php:159
+msgid ""
+"<span class=\"color-red\">Category name is too long. The name of the "
+"category can be long 32 characters at most.</span>"
+msgstr ""
+"<span class=\"color-red\">Il nome della categoria è troppo lungo. Il nome "
+"della categoria può essere lungo 32 caratteri al massimo.</span>"
+
+#: Pages/Admin/ChallengesPage.php:165
+#, php-format
+msgid ""
+"<span class=\"color-red\">Flag must match the following regex and can not be "
+"more than %s characters long: %s.</span>"
+msgstr ""
+"<span class=\"color-red\">La flag deve rispettare la seguente espressione "
+"regolare e non può essere lunga più di %s caratteri: %s.</span>"
+
+#: Pages/Admin/ChallengesPage.php:174
+msgid ""
+"<span class=\"color-red\">Challenge's points must be a valid positive non-"
+"zero integer.</span>"
+msgstr ""
+"<span class=\"color-red\">Il punteggio della challenge deve essere un valido "
+"numero intero positivo diverso da zero.</span>"
+
+#: Pages/Admin/ChallengesPage.php:180
+msgid ""
+"<span class=\"color-red\">Challenge's body text can not be empty.</span>"
+msgstr ""
+"<span class=\"color-red\">Il testo della challenge non può essere vuoto.</"
+"span>"
+
+#: Pages/Admin/ChallengesPage.php:186
+msgid "<span class=\"color-green\">Saved!</span>"
+msgstr "<span class=\"color-green\">Salvato!</span>"
+
+#: Pages/Admin/UsersPage.php:20
+msgid "Admin: Edit Users"
+msgstr "Admin: Modifica Utenti"
+
+#: Pages/AjaxPage.php:33
+msgid "Username can not be empty"
+msgstr "L'username non può essere vuoto"
+
+#: Pages/AjaxPage.php:40 Pages/RegisterPage.php:89
+#: templates/register-form.php:11
+msgid ""
+"Username must contains at least 5 characters and no more than 32. It can "
+"contains only letters (lowercase and uppercase), numbers and . (dot), _ "
+"(underscore), - (minus)."
+msgstr ""
+"L'username deve contenere almeno 5 caratteri e non più di 32. Può contenere "
+"solo lettere (minuscole e maiuscole), numeri e . (punto), _ (underscore), - "
+"(minus)."
+
+#: Pages/AjaxPage.php:43 Pages/RegisterPage.php:93
+msgid "This username is already in use. Please choose another username."
+msgstr "Questo username è già in uso. Per favore, scegli un altro username."
+
+#: Pages/AjaxPage.php:64
+msgid "Email can not be empty"
+msgstr "L'indirizzo email non può essere vuoto."
+
+#: Pages/AjaxPage.php:71 Pages/RegisterPage.php:113
+msgid "Invalid email address. Please insert a valid email address."
+msgstr ""
+"Indirizzo email non valido. Per favore, inserisci un indirizzo email valido."
+
+#: Pages/AjaxPage.php:74 Pages/RegisterPage.php:117
+#, php-format
+msgid ""
+"This email is already in use. If you wish to log in, <a href=\"%s\">click "
+"here!</a>"
+msgstr ""
+"Questo indirizzo email è già in uso. Se vuoi loggarti, <a href=\"%s\">clicca "
+"qui!</a>"
+
+#: Pages/ChallengesPage.php:31 templates/header.php:9
+msgid "Challenges"
+msgstr "Lista Challenge"
+
+#: Pages/ChallengesPage.php:65
+msgid "Challenge solved"
+msgstr "Challenge risolta"
+
+#: Pages/ChallengesPage.php:66
+msgid "You have already solved this challenge. Please choose another one."
+msgstr "Hai già risolto questa challenge. Per favore, scegline un'altra."
+
+#: Pages/ChallengesPage.php:70
+#, php-format
+msgid "Challenge: %s"
+msgstr "Challenge: %s"
+
+#: Pages/ChallengesPage.php:88
+msgid ""
+"<span class=\"color-blue\">Invalid challenge. Please reload the page e try "
+"again.</span>"
+msgstr ""
+"<span class=\"color-blue\">Challenge non valida. Per favore, ricarica la "
+"pagina e prova ancora.</span>"
+
+#: Pages/ChallengesPage.php:96
+msgid ""
+"<span class=\"color-blue\">The requested challenge could not be found. "
+"Please reload the page and try again.</span>"
+msgstr ""
+"<span class=\"color-blue\">La challenge richiesta non è stata trovata. Per "
+"favore, ricarica la pagina e prova ancora.</span>"
+
+#: Pages/ChallengesPage.php:103
+msgid "<span class=\"color-red\">Wrong flag!</span>"
+msgstr "<span class=\"color-red\">Flag errata!</span>"
+
+#: Pages/ChallengesPage.php:107
+msgid ""
+"<span class=\"color-green\">You have already solved this challenge.</span>"
+msgstr "<span class=\"color-green\">Hai già risolto questa challenge.</span>"
+
+#: Pages/ChallengesPage.php:112
+msgid ""
+"<span class=\"color-green\">Correct flag. You solved this challenge!</span>"
+msgstr ""
+"<span class=\"color-green\">Flag corretta. Hai risolto la challenge!</span>"
+
+#: Pages/LoginPage.php:17
+msgid "Login Page"
+msgstr "Pagina di Login"
+
+#: Pages/LoginPage.php:36 Pages/RegisterPage.php:40
+msgid "Error"
+msgstr "Errore"
+
+#: Pages/LoginPage.php:37 Pages/RegisterPage.php:41
+msgid "Please, fill out all fields."
+msgstr "Per favore, riempi tutti i campi."
+
+#: Pages/LoginPage.php:46
+msgid "User not found"
+msgstr "Utente non trovato"
+
+#: Pages/LoginPage.php:47
+#, php-format
+msgid ""
+"The user <em>%s</em> can not be found. If you wish to register, <a href=\"%s"
+"\">click here!</a>"
+msgstr ""
+"L'utente <em>%s</em> non è stato trovato. Se vuoi registrarti, <a href=\"%s"
+"\">clicca qui!</a>"
+
+#: Pages/LoginPage.php:54 Pages/RegisterPage.php:45
+msgid "Wrong password"
+msgstr "Password errata"
+
+#: Pages/LoginPage.php:55
+msgid "Wrong password."
+msgstr "Password errata."
+
+#: Pages/RankingPage.php:36 templates/header.php:10
+msgid "Ranking"
+msgstr "Classifica"
+
+#: Pages/RankingPage.php:38 templates/admin/user-rows.php:10
+#: templates/admin/users-table.php:12
+msgid "No users to show."
+msgstr "Nessun utente da mostrare."
+
+#: Pages/RegisterPage.php:17
+msgid "Register an account"
+msgstr "Registra un account"
+
+#: Pages/RegisterPage.php:46 templates/register-form.php:21
+msgid "Passwords do not match."
+msgstr "Le password non coincidono."
+
+#: Pages/RegisterPage.php:56
+msgid "Password too short"
+msgstr "La password è troppo corta"
+
+#: Pages/RegisterPage.php:57 templates/register-form.php:18
+#, php-format
+msgid "Password must be at least %s characters long."
+msgstr "La password deve essere lunga almeno %s caratteri."
+
+#: Pages/RegisterPage.php:64
+msgid "Account Created!"
+msgstr "Account Creato!"
+
+#: Pages/RegisterPage.php:65
+#, php-format
+msgid "Account created. <a href=\"%s\">Log In!</a>"
+msgstr "Account creato. <a href=\"%s\">Logga!</a>"
+
+#: Pages/RegisterPage.php:88
+msgid "Invalid username"
+msgstr "Username non valido"
+
+#: Pages/RegisterPage.php:92
+msgid "Username already in use"
+msgstr "Username già in uso"
+
+#: Pages/RegisterPage.php:112
+msgid "Invalid email"
+msgstr "Indirizzo email non valido"
+
+#: Pages/RegisterPage.php:116
+msgid "Email already in use"
+msgstr "Indirizzo email già in uso"
+
+#: error-pages/400.php:15
 msgid "Invalid page."
 msgstr "Pagina non valida."
 
-#: error-pages/404.php:8
+#: error-pages/404.php:15
 msgid "The requested page could not be found."
 msgstr "La pagina richiesta non è stata trovata."
 
-#: error-pages/500.php:8
+#: error-pages/500.php:15
 msgid ""
 "The server encountered an internal error and was unable to process the "
 "request."
 msgstr ""
-"Si è verificato un errore interno del server che non è in grado di "
+"Si è verificato un errore interno nel server che non è stato in grado di "
 "processare la richiesta."
 
-#: error-pages/500.php:10
+#: error-pages/500.php:17
 #, php-format
 msgid "Error Message: %s"
 msgstr "Messaggio di Errore: %s"
 
-#: error-pages/501.php:8
+#: error-pages/501.php:15
 msgid "The requested page exists but it's not fully implemented."
-msgstr ""
-"La pagina richiesta esiste ma non è stata completamente implementata."
+msgstr "La pagina richiesta esiste ma non è completamente implementata."
 
-#: include/error-functions.php:8
+#: include/error-functions.php:21
 #, php-format
 msgid ""
 "Panic!!!\n"
@@ -99,3 +435,269 @@ msgstr ""
 "Messaggio di Errore: %s\n"
 "Backtrace:\n"
 "%s"
+
+#: templates/admin/challenge-form.php:25
+msgid "Enter Challenge Category.."
+msgstr "Inserisci la Categoria della Challenge.."
+
+#: templates/admin/challenge-form.php:26
+msgid "Enter Challenge Title.."
+msgstr "Inserisci il Titolo della Challenge.."
+
+#: templates/admin/challenge-form.php:27 templates/challenge-form.php:10
+msgid "Enter Flag: flag{.....}"
+msgstr "Inserisci la Flag: flag{.....}"
+
+#: templates/admin/challenge-form.php:27 templates/challenge-form.php:10
+msgid "Flag must have this format: flag{some text}."
+msgstr "La flag deve aver questo formato: flag{testo}."
+
+#: templates/admin/challenge-form.php:34
+msgid "Enter Body Text.."
+msgstr "Inserisci Corpo.."
+
+#: templates/admin/challenge-form.php:35 templates/challenge-form.php:11
+msgid "Submit"
+msgstr "Invia"
+
+#: templates/admin/challenge-form.php:36 templates/challenge-form.php:12
+#: templates/modal.php:10
+msgid "Close"
+msgstr "Chiudi"
+
+#: templates/admin/challenges-table.php:9
+msgid "Create New Challenge"
+msgstr "Crea Nuova Challenge"
+
+#: templates/admin/challenges-table.php:14 templates/challenges-list.php:11
+msgid "No challenges to show."
+msgstr "Nessuna challenge da mostrare."
+
+#: templates/admin/challenges-table.php:22
+msgid "points"
+msgstr "punti"
+
+#: templates/admin/challenges-table.php:24
+msgid "Edit"
+msgstr "Modifica"
+
+#: templates/admin/challenges-table.php:25 templates/admin/user-rows.php:27
+msgid "Delete"
+msgstr "Elimina"
+
+#: templates/admin/challenges-table.php:28
+msgid "Delete challenge."
+msgstr "Elimina challenge."
+
+#: templates/admin/confirmbox.php:14
+msgid "Are you sure?"
+msgstr "Sei sicuro?"
+
+#: templates/admin/confirmbox.php:17
+msgid "Yes"
+msgstr "Sì"
+
+#: templates/admin/confirmbox.php:18
+msgid "No"
+msgstr "No"
+
+#: templates/admin/user-rows.php:22
+msgid "(super-admin)"
+msgstr "(super-admin)"
+
+#: templates/admin/user-rows.php:22
+msgid "(admin)"
+msgstr "(admin)"
+
+#: templates/admin/user-rows.php:24
+msgid "Demote"
+msgstr "Degrada"
+
+#: templates/admin/user-rows.php:24
+msgid "Promote"
+msgstr "Promuovi"
+
+#: templates/admin/user-rows.php:32
+msgid "Promote user."
+msgstr "Promuovi utente."
+
+#: templates/admin/user-rows.php:33
+msgid "Demote user."
+msgstr "Degrada utente."
+
+#: templates/admin/user-rows.php:34
+msgid "Delete user."
+msgstr "Elimina utente."
+
+#: templates/admin/users-search.php:9
+msgid "Search.."
+msgstr "Cerca.."
+
+#: templates/admin/users-search.php:10
+msgid "Search By:"
+msgstr "Cerca Per:"
+
+#: templates/admin/users-search.php:11 templates/ranking.php:14
+#: templates/register-form.php:10
+msgid "Username"
+msgstr "Username"
+
+#: templates/admin/users-search.php:12 templates/register-form.php:13
+msgid "Email"
+msgstr "Email"
+
+#: templates/challenges-list.php:25
+#, php-format
+msgid "(%s points)"
+msgstr "(%s punti)"
+
+#: templates/footer.php:11
+msgid "About Us"
+msgstr "Su Di Noi"
+
+#: templates/footer.php:12
+msgid ""
+"<strong>&gt; CTF</strong> is a platform for jeopardy style CTFs. Developed "
+"by <em>Niccolò Scatena</em> for the Web Development course of the University "
+"of Pisa."
+msgstr ""
+"<strong>&gt; CTF</strong> è una piattaforma per competizioni CTF in stile "
+"jeopardy. Sviluppato da <em>Niccolò Scatena</em> per il corso di "
+"Progettazione Web dell'Università di Pisa."
+
+#: templates/footer.php:12
+msgid "More..."
+msgstr "Altro..."
+
+#: templates/footer.php:15
+msgid "Follow Us"
+msgstr "Seguici"
+
+#: templates/footer.php:26
+msgid "Language"
+msgstr "Lingua"
+
+#: templates/footer.php:34
+msgid ""
+"&copy; Copyright 2019 - Niccolò Scatena (University of Pisa) - All Rights "
+"Reserved."
+msgstr ""
+"&copy; Copyright 2019 - Niccolò Scatena (Università di Pisa) - Tutti i "
+"Diritti Riservati."
+
+#: templates/header.php:11
+msgid "Admin"
+msgstr "Admin"
+
+#: templates/header.php:14
+msgid "Edit Challenges"
+msgstr "Modifica Challenge"
+
+#: templates/header.php:15
+msgid "Edit Users"
+msgstr "Modifica Utenti"
+
+#: templates/header.php:18
+msgid "About"
+msgstr "Info"
+
+#: templates/header.php:19
+msgid "Sign Up"
+msgstr "Registrati"
+
+#: templates/header.php:24 templates/login-form.php:17
+msgid "Login"
+msgstr "Entra"
+
+#: templates/header.php:29
+msgid "Logout"
+msgstr "Esci"
+
+#: templates/header.php:110
+#, php-format
+msgid "Logged in as <span class=\"username\">%s</span>."
+msgstr "Loggato come <span class=\"username\">%s</span>."
+
+#: templates/login-form.php:10
+msgid "Username or Email"
+msgstr "Username o Email"
+
+#: templates/login-form.php:11
+msgid "Enter Username or Email"
+msgstr "Inserisci Username o Email"
+
+#: templates/login-form.php:12 templates/register-form.php:16
+msgid "Password"
+msgstr "Password"
+
+#: templates/login-form.php:13
+msgid "Enter Password"
+msgstr "Inserisci Password"
+
+#: templates/login-form.php:15
+msgid "Remember Me"
+msgstr "Ricordami"
+
+#: templates/login-form.php:20
+#, php-format
+msgid "Don't have an account? <a href=\"%s\">Register Now!</a>"
+msgstr "Non hai un account? <a href=\"%s\">Registrati Ora!</a>"
+
+#: templates/ranking.php:10
+msgid "Top Users"
+msgstr "Migliori Utenti"
+
+#: templates/ranking.php:13
+msgid "Pos"
+msgstr "Pos"
+
+#: templates/ranking.php:15
+msgid "Points"
+msgstr "Punti"
+
+#: templates/ranking.php:32
+#, php-format
+msgid "Showing <strong>%s</strong> users of <strong>%s</strong>."
+msgstr "Sono mostrati <strong>%s</strong> utenti su <strong>%s</strong>."
+
+#: templates/register-form.php:11
+msgid "Choose a Username"
+msgstr "Scegli un Username"
+
+#: templates/register-form.php:14
+msgid "Enter your Email Address"
+msgstr "Inserisci il tuo Indirizzo Email"
+
+#: templates/register-form.php:14
+msgid "Insert a valid email address."
+msgstr "Inserisci un indirizzo email valido."
+
+#: templates/register-form.php:17
+msgid "Choose a Password"
+msgstr "Scegli una Password"
+
+#: templates/register-form.php:17
+#, php-format
+msgid "Enter a password of at least %s characters long."
+msgstr "Inserisci una password di almeno %s caratteri."
+
+#: templates/register-form.php:19
+msgid "Repeat Password"
+msgstr "Ripeti Password"
+
+#: templates/register-form.php:20
+msgid "Retype your Password"
+msgstr "Riscrivi la tua Password"
+
+#: templates/register-form.php:20
+msgid "Retype your password, as above."
+msgstr "Riscrivi la tua password, come sopra."
+
+#: templates/register-form.php:22
+msgid "Register"
+msgstr "Registrati"
+
+#: templates/register-form.php:25
+#, php-format
+msgid "Already have an account? <a href=\"%s\">Log In!</a>"
+msgstr "Hai già un account? <a href=\"%s\">Logga!</a>"
