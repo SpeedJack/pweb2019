@@ -1,10 +1,10 @@
-header {
+body header {
 	background-color: #F1F1F1;
 	padding: 30px;
 	text-align: center;
 }
 
-header h1 {
+body header h1 {
 	display: block;
 	font-size: 2.5em;
 	font-weight: bold;
@@ -12,30 +12,30 @@ header h1 {
 	margin-bottom: 0.5em;
 }
 
-header p {
+body header p {
 	display: block;
 	margin-top: 0.5em;
 	margin-bottom: 2.3em;
 }
 
-nav {
+body nav {
 	background-color: #2A3239;
 	overflow: hidden;
 	height: 48px;
 }
 
-nav.sticky {
+body nav.sticky {
 	position: fixed;
 	top: 0;
 	width: 100%;
 	z-index: 1;
 }
 
-nav.sticky + main {
+body nav.sticky + main {
 	margin-top: 60px;
 }
 
-nav * {
+body nav * {
 	margin: 0;
 	padding: 14px 16px;
 	height: 48px;
@@ -48,38 +48,38 @@ nav * {
 }
 
 @media screen and (max-width: 650px) {
-	nav a:not(.active), nav div.dropdown:not(.active), nav p {
+	body nav a:not(.active), body nav div.dropdown:not(.active), body nav p {
 		display: none;
 	}
 	#menu-bars {
 		display: block;
 		float: right;
 	}
-	nav.open {
+	body nav.open {
 		position: relative;
 		height: auto;
 	}
-	nav.open.sticky {
+	body nav.open.sticky {
 		position: fixed;
 	}
-	nav.open #menu-bars {
+	body nav.open #menu-bars {
 		position: absolute;
 		right: 0;
 		top: 0;
 	}
-	nav.open a, nav.open p {
+	body nav.open a, body nav.open p {
 		float: none;
 		display: block;
 		text-align: left;
 		height: 1em;
 	}
-	nav.open div.dropdown {
+	body nav.open div.dropdown {
 		float: none;
 		display: block;
 		text-align: left;
 		height: auto;
 	}
-	nav.open div.dropdown div.dropdown-content {
+	body nav.open div.dropdown div.dropdown-content {
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -88,7 +88,7 @@ nav * {
 	}
 }
 
-nav a {
+body nav a {
 	float: left;
 	display: block;
 	color: #BFC2C4;
@@ -99,38 +99,38 @@ nav a {
 	transition: color 0.3s ease-out;
 }
 
-nav a:hover {
+body nav a:hover {
 	color: white;
 }
 
-nav a.active {
+body nav a.active {
 	background-color: #0074D9;
 	color: white;
 }
 
-nav .right {
+body nav .right {
 	float: right;
 }
 
-nav p {
+body nav p {
 	color: #F2F2F2;
 	font-size: 17px;
 	font-style: italic;
 }
 
-nav span.username {
+body nav span.username {
 	font-weight: bold;
 	color: #0074D9;
 	padding: 0;
 }
 
-nav div.dropdown {
+body nav div.dropdown {
 	float: left;
 	display: block;
 	padding: 0;
 }
 
-nav div.dropdown button.dropdown {
+body nav div.dropdown button.dropdown {
 	background-color: inherit;
 	color: #BFC2C4;
 	font: inherit;
@@ -142,16 +142,16 @@ nav div.dropdown button.dropdown {
 	transition: color 0.3s ease-out;
 }
 
-nav div.dropdown button.dropdown:hover {
+body nav div.dropdown button.dropdown:hover {
 	color: white;
 }
 
-nav div.dropdown button.dropdown.active {
+body nav div.dropdown button.dropdown.active {
 	background-color: #0074D9;
 	color: white;
 }
 
-nav div.dropdown div.dropdown-content {
+body nav div.dropdown div.dropdown-content {
 	display: none;
 	position: absolute;
 	padding: 0;
@@ -162,12 +162,12 @@ nav div.dropdown div.dropdown-content {
 	z-index: 2;
 }
 
-nav div.dropdown:hover div.dropdown-content {
+body nav div.dropdown:hover div.dropdown-content {
 	display: flex;
 	flex-direction: column;
 }
 
-nav div.dropdown div.dropdown-content a {
+body nav div.dropdown div.dropdown-content a {
 	float: none;
 	flex: 1;
 	padding: 7px 16px;

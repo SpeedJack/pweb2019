@@ -27,7 +27,7 @@ class ChallengesPage extends AbstractPage
 		$this->_addJs('form');
 		$this->_addJs('confirmbox');
 		$this->_addJs('challenges-edit');
-		$this->_addCss('challenge-edit-form');
+		$this->_addCss('challenge-form');
 		$this->_show('challenges-table', ['challenges' => $challs]);
 	}
 

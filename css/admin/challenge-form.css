@@ -1,0 +1,38 @@
+#modal-content #challenge-edit-form {
+	display: block;
+}
+
+#modal-content #challenge-edit-form button {
+	margin: 18px 2px 0 0;
+	min-width: calc(50% - 13px);
+}
+
+#modal-content #challenge-edit-form button.close-modal {
+	margin-right: 18px;
+}
+
+#challenge-edit-form #challcategory, #challenge-edit-form #challname,
+#challenge-edit-form #challflag, #challenge-edit-form #challpoints {
+	display: inline-block;
+	width: calc(50% - 76px);
+	margin-bottom: 18px;
+}
+
+#challenge-edit-form #challname, #challenge-edit-form #challpoints {
+	float: right;
+}
+
+#challenge-edit-form #challbody {
+	width: calc(100% - 60px);
+	display: block;
+}
+
+@media screen and (max-width: 650px) {
+	#challenge-edit-form #challcategory, #challenge-edit-form #challname,
+	#challenge-edit-form #challflag, #challenge-edit-form #challpoints {
+		display: block;
+		width: calc(100% - 76px);
+		float: none;
+		margin-bottom: 18px;
+	}
+}

@@ -1,26 +1,15 @@
-main > table {
-	margin: auto;
-}
-
-table {
-	border-spacing: 0;
+main table {
 	border-collapse: separate;
-	width: 100%;
 	max-width: 1000px;
 	background-color: #EEE;
 }
 
-table tr.data-row:nth-child(even) {
-	background-color: #DDD;
-}
-
-table td {
-	text-align: center;
+main table tr td {
 	overflow: hidden;
 	width: 1%;
 }
 
-table td:first-child {
+main table td:first-child {
 	text-align: left;
 	padding: 8px;
 	min-width: 180px;
@@ -31,26 +20,26 @@ table td:first-child {
 	min-width: 100%;
 }
 
-table tr td.center-text {
+main table tr td.center-text {
 	text-align: center;
 }
 
-table tr.confirmbox {
+main table tr.confirmbox {
 	background-color: #FF4136;
 }
 
-table tr.confirmbox td {
+main table tr.confirmbox td {
 	text-align: center;
 	padding: 0;
 }
 
-table tr.confirmbox td div {
+main table tr.confirmbox td div {
 	max-height: 0;
 	padding: 0;
 	transition: max-height 0.5s, padding 0.5s;
 }
 
-table tr.confirmbox td div.open {
+main table tr.confirmbox td div.open {
 	animation: animateheight 0.5s;
 	padding: 20px 0;
 	max-height: 40px;
@@ -67,7 +56,7 @@ table tr.confirmbox td div.open {
 	}
 }
 
-td button {
+main table tr td button {
 	border: none;
 	cursor: pointer;
 	color: #0074D9;
@@ -76,41 +65,41 @@ td button {
 	height: 100%;
 }
 
-table tr.data-row td span.username {
+main table tr.data-row td span.username {
 	font-size: 1.5em;
 	font-weight: bold;
 	font-style: normal;
 	color: #0074D9;
 }
 
-table tr.data-row td span.chall-category {
+main table tr.data-row td span.chall-category {
 	display: block;
 	color: #111;
 	font-style: normal;
 }
 
-table tr.data-row td span.chall-name {
+main table tr.data-row td span.chall-name {
 	font-size: 1.5em;
 	font-weight: bold;
 	font-style: normal;
 	color: #0074D9;
 }
 
-table tr.data-row td {
+main table tr.data-row td {
 	font-style: italic;
 	color: #999;
 }
 
-table tr.confirmbox td div span[id^=confirm-] {
+main table tr.confirmbox td div span[id^=confirm-] {
 	display: none;
 	font-weight: bold;
 }
 
-td button[id^=confirmbox-] {
+main table tr td button[id^=confirmbox-] {
 	font-weight: bold;
 	color: #2A3239;
 }
 
-td button[id^=confirmbox-]:hover {
+main table tr td button[id^=confirmbox-]:hover {
 	color: #0074D9;
 }

@@ -1,4 +1,4 @@
-footer {
+body footer {
 	clear: both;
 	position: relative;
 	box-shadow: 0 50vh 0 50vh #2A3239;
@@ -11,23 +11,22 @@ footer {
 	text-align: center;
 }
 
-footer a {
+body footer a {
 	text-decoration: none;
-	color: #0074D9;
 }
 
-footer a:hover {
+body footer a:hover {
 	color: #40A4F1;
 }
 
-footer div.container {
+body footer div.container {
 	display: flex;
 	width: 100%;
 	margin: auto;
 	overflow: hidden;
 }
 
-footer section.column {
+body footer section.column {
 	flex: 1;
 	width: 90%;
 	margin: 0 auto;
@@ -76,11 +75,11 @@ footer section.column {
 }
 
 @media only screen and (max-width: 650px) {
-	footer div.container {
+	body footer div.container {
 		display: block;
 		padding-top: 1em;
 	}
-	footer section.column {
+	body footer section.column {
 		display: block;
 		flex: 0 1 auto;
 	}

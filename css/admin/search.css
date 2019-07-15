@@ -1,9 +1,9 @@
-div.search-form {
+body main div.search-form {
 	margin: 10px auto;
 	text-align: center;
 }
 
-div.search-form input[type=text] {
+body main div.search-form input[type=text] {
 	width: 100%;
 	max-width: 300px;
 	padding: 12px 20px;
@@ -11,12 +11,4 @@ div.search-form input[type=text] {
 	display: inline-block;
 	border: 1px solid #CCC;
 	box-sizing: border-box;
-}
-
-div.search-form label {
-	font-weight: bold;
-}
-
-div.search-form label.nobold {
-	font-weight: normal;
 }
