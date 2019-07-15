@@ -162,6 +162,12 @@ body nav div.dropdown div.dropdown-content {
 	z-index: 2;
 }
 
+@media screen and (min-width: 651px) {
+	body nav.sticky div.dropdown div.dropdown-content {
+		position: fixed;
+	}
+}
+
 body nav div.dropdown:hover div.dropdown-content {
 	display: flex;
 	flex-direction: column;
