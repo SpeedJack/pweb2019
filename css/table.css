@@ -38,6 +38,7 @@ main table tfoot tr:last-child td:last-child {
 
 main table tr td div.table-navbar a {
 	display: inline-block;
+	font-style: normal;
 	color: black;
 	padding: 8px 16px;
 	text-decoration: none;
