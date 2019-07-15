@@ -11,7 +11,7 @@ if (php_sapi_name() != 'cli')
 	die('This script must be run via the cli.');
 
 $APP_ROOT = __DIR__;
-set_include_path(get_include_path() . PATH_SEPARATOR . $APP_ROOT . '/include');
+set_include_path("$APP_ROOT/include");
 
 require_once 'config.php';
 
