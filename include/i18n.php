@@ -35,5 +35,5 @@ if (extension_loaded('gettext')) {
  */
 function __($message, ...$params)
 {
-	return sprintf(gettext($message), ...$params);
+	return stripslashes(sprintf(gettext($message), ...$params));
 }
