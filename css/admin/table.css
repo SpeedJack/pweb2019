@@ -12,12 +12,13 @@ main table tr td {
 main table td:first-child {
 	text-align: left;
 	padding: 8px;
-	min-width: 180px;
 	padding: 10px;
 	text-overflow: ellipsis;
 	word-wrap: normal;
 	white-space: nowrap;
-	min-width: 100%;
+	min-width: 180px;
+	width: 100%;
+	max-width: 70vw;
 }
 
 main table tr td.center-text {
@@ -25,7 +26,7 @@ main table tr td.center-text {
 }
 
 main table tr.confirmbox {
-	background-color: #FF4136;
+	background-color: #FF4136 !important;
 }
 
 main table tr.confirmbox td {
