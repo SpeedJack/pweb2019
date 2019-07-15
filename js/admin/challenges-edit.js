@@ -17,8 +17,8 @@ function deleteChallenge()
 	var span = document.getElementById("confirm-" + action + "-chall");
 	if (span === null)
 		return;
-	span.style.display = "inline";
 	openConfirmBox(rowElement, 'Admin_Challenges', action, challid);
+	span.style.display = "inline";
 }
 
 /* add event listener to all buttons */

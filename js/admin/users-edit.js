@@ -25,6 +25,6 @@ function performUserAction()
 	var span = document.getElementById("confirm-" + action + "-user");
 	if (span === null)
 		return;
-	span.style.display = "inline";
 	openConfirmBox(rowElement, 'Admin_Users', action, userid);
+	span.style.display = "inline";
 }
