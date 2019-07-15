@@ -1,6 +1,8 @@
 <?php
 namespace Pweb\Entity;
 
+require_once 'string-functions.php';
+
 /**
  * @brief Represents an entity.
  *
@@ -207,19 +209,23 @@ abstract class AbstractEntity
 	 * @brief Retrives from the database an ordered page of entities of the
 	 * type of this instance.
 	 *
-	 * @param[in] string $orderBy	The column's name used for sorting.
+	 * @param[in] array $orderBy	Array that for each element has a
+	 * 				'column' with the column name and
+	 * 				'ascending'.
 	 * @param[in] int $page		Page number.
-	 * @param[in] bool $ascending	TRUE for ascending sorting; FALSE
-	 * 				for descending.
 	 * @param[in] int|null $perPage	The number of entries per page. If NULL,
 	 * 				it defaults to the value set in the
 	 * 				application's config.
 	 * @retval array		The array of entities retrived.
 	 */
-	public static function getAllPaged($orderBy, $page, $ascending = true, $perPage = null)
+	public static function getAllPaged($orderBy, $page, $perPage = null)
 	{
+		$query = 'ORDER BY ';
+		foreach ($orderBy as $ob)
+			$query .= $ob['column'] . ' ' . ($ob['ascending'] ? 'ASC' : 'DESC') . ',';
+		$query = trim_suffix($query, ',');
 		$perPage = isset($perPage) ? $perPage : $this->_app->config['default_per_page'];
-		return self::getAll("ORDER BY $orderBy " . ($ascending ? 'ASC' : 'DESC') . " LIMIT $perPage OFFSET " . ($page - 1)*$perPage);
+		return self::getAll($query . " LIMIT $perPage OFFSET " . ($page - 1)*$perPage);
 	}
 
 	/**

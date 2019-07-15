@@ -28,7 +28,11 @@ class RankingPage extends AbstractPage
 			$page = 1;
 		$page = $page > 0 ? $page : 1;
 
-		$users = $this->_em->getAllPagedFromDb('User', 'points', $page, false, $perPage);
+		$orderBy = [
+			['column' => 'points', 'ascending' => false],
+			['column' => 'username', 'ascending' => true]
+		];
+		$users = $this->_em->getAllPagedFromDb('User', $orderBy, $page, $perPage);
 		$this->_setTitle(__('Ranking'));
 		if ($users === false) {
 			$this->_show('message', ['message' => __('No users to show.')]);

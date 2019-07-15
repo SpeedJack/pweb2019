@@ -167,11 +167,10 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * database.
 	 *
 	 * @param[in] string $entityName	The name of the entity to fetch.
-	 * @param[in] string $orderBy		The column's name used for
-	 * 					sorting.
+	 * @param[in] array $orderBy		Array that for each element has
+	 * 					a 'column' with the column name
+	 * 					and 'ascending'.
 	 * @param[in] int $page			Page number.
-	 * @param[in] bool $ascending		TRUE for ascending sorting;
-	 * 					FALSE for descending.
 	 * @param[in] int|null $perPage		The number of entries per page.
 	 * 					If NULL, it defaults to the
 	 * 					value set in the application's
@@ -183,10 +182,10 @@ class EntityManager extends \Pweb\AbstractSingleton
 	 * 					no entity was found.
 	 */
 	public function getAllPagedFromDb($entityName, $orderBy, $page,
-		$ascending = true, $perPage = null, ...$params)
+		$perPage = null, ...$params)
 	{
 		return $this->getFromDbBy($entityName, 'getAllPaged', $orderBy,
-			$page, $ascending, $perPage, ...$params);
+			$page, $perPage, ...$params);
 	}
 
 	/**
