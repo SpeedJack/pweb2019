@@ -20,12 +20,20 @@ class ChallengesPage extends AbstractPage
 		$challs = $challs === false ? [] :
 			(is_array($challs) ? $challs : [$challs]);
 
+		$categories = [];
+		foreach ($challs as $chall) {
+			$category = $chall->getCategoryName();
+			if (!isset($categories[$category]))
+				$categories[$category] = [];
+			$categories[$category][] = $chall;
+		}
+
 		$this->_setTitle(__('Challenges'));
 		$this->_addCss('challenges');
 		$this->_addJs('accordion');
 		$this->_addJs('challenge');
 		$this->_addJs('form');
-		$this->_show('challenges-list', ['challenges' => $challs,
+		$this->_show('challenges-list', ['categories' => $categories,
 			'user' => $this->_visitor->user]);
 	}
 

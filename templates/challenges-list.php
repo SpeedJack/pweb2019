@@ -7,32 +7,25 @@
 ?>
 <main>
 	<?php
-	if (empty($challenges)): ?>
+	if (empty($categories)): ?>
 		<p><?= __('No challenges to show.'); ?></p>
 	<?php endif;
-	$currentCat = "";
-	foreach ($challenges as $chall) {
-		$challCat = $chall->getCategoryName();
-		if ($currentCat !== $challCat):
-			if (!empty($currentCat)): ?>
-				</div>
-			<?php endif; ?>
-			<button class="accordion"><?= $challCat ?></button>
-			<div class="chall-container">
-		<?php endif;
-		$classStr = ' ';
-		if ($this->_visitor->user->hasSolvedChallenge($chall))
-			$classStr .= get_class_attribute(['chall', 'solved-chall']);
-		else
-			$classStr .= get_class_attribute(['chall']);
-		?>
-			<div<?= $classStr ?> id="chall-<?= $chall->getId() ?>"><span><?php
-				echo $chall->getName() . '<br>' . __('(%s points)', $chall->getPoints());
-				?></span></div>
-		<?php
-		$currentCat = $challCat;
-	}
-	if (!empty($challenges)): ?>
+	foreach ($categories as $categoryName => $challenges): ?>
+		<button class="accordion"><?= $categoryName ?></button>
+		<div class="chall-container">
+		<?php foreach ($challenges as $chall):
+			if ($this->_visitor->user->hasSolvedChallenge($chall))
+				$classStr = get_class_attribute(['chall', 'solved-chall']);
+			else
+				$classStr = get_class_attribute(['chall']);
+			?>
+			<div <?= $classStr ?> id="chall-<?= $chall->getId() ?>">
+				<span>
+					<?= $chall->getName() ?><br>
+					<?= __('(%s points)', $chall->getPoints()) ?>
+				</span>
+			</div>
+		<?php endforeach; ?>
 		</div>
-	<?php endif; ?>
+	<?php endforeach; ?>
 </main>
