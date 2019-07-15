@@ -15,7 +15,7 @@ $config['db']['host'] = 'localhost';
 $config['db']['port'] = 3306;
 $config['db']['username'] = 'root';
 $config['db']['password'] = '';
-$config['db']['dbname'] = 'pweb';
+$config['db']['dbname'] = 'pweb_ctf';
 // Uncomment if PDO does not work
 // $config['db']['prefer_mysqli_over_pdo'] = true;
 
@@ -45,22 +45,22 @@ $config['locales'] = [
  * DATABASE CONFIG *
  *******************/
 
-/* Database hostname. Default: localhost */
+/* Database hostname. Default: 'localhost' */
 // $config['db']['host'] = 'localhost';
 
 /* Database port. Default: 3306 */
 // $config['db']['port'] = 3306;
 
-/* Database username. Default: root */
+/* Database username. Default: 'root' */
 // $config['db']['username'] = 'root';
 
 /* Database password. Default: empty/no password */
 // $config['db']['password'] = '';
 
-/* Database name. Default: pweb */
-// $config['db']['dbname'] = 'pweb';
+/* Database name. Default: 'pweb_ctf' */
+// $config['db']['dbname'] = 'pweb_ctf';
 
-/* Database character set. Default: utf8 */
+/* Database character set. Default: 'utf8' */
 // $config['db']['charset'] => 'utf8';
 
 /* If TRUE, mysqli will be used even when PDO is available. Default: false */
@@ -96,8 +96,8 @@ $config['locales'] = [
 // $config['fallback_server_name'] = 'localhost';
 // $config['fallback_server_port'] = 80;
 
-/* Default number of users to show in the ranking page. */
-// $config['default_per_page'] = 20;
+/* Default number of users to show in the ranking page. Default: 15 */
+// $config['default_per_page'] = 15;
 
 
 /***********************
