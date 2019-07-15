@@ -1,3 +1,7 @@
+main {
+	text-align: center;
+}
+
 main table {
 	border-collapse: separate;
 	max-width: 1000px;
@@ -103,4 +107,18 @@ main table tr td button[id^=confirmbox-] {
 
 main table tr td button[id^=confirmbox-]:hover {
 	color: #0074D9;
+}
+
+main button#create-challenge {
+	background-color: #0074D9;
+	color: white;
+	padding: 14px 20px;
+	border: none;
+	display: inline-block;
+	cursor: pointer;
+	margin: 0 auto 18px auto;
+}
+
+main button#create-challenge:hover {
+	opacity: 0.8;
 }
