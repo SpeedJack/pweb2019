@@ -8,7 +8,7 @@ main table {
 main table caption {
 	font-size: 2em;
 	line-height: 2em;
-	font-style: bold;
+	font-weight: bold;
 	color: white;
 	background-color: #0074D9;
 	border-radius: 20px 20px 0 0;
