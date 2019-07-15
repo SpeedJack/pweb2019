@@ -81,6 +81,13 @@ $config['locales'] = [
 // $config['header_motd'] = 'A platform for Jeopardy style CTFs.';
 
 /*
+ * Subfolder under which this website is uploaded. If it is in the root
+ * directory, leave this field commented out. Otherwise, insert the path without
+ * the trailing slash (eg. '/subfolder/subsubfolder'). Default: ''
+ */
+// $config['website_subfolder'] = '';
+
+/*
  * If TRUE, all URLs are rewritten in the form: site.tld/page/action/?param=val
  * Requires a rewrite rule in your .htaccess (not provided). Default: false
  */

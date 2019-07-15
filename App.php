@@ -339,7 +339,9 @@ class App extends AbstractSingleton
 	 */
 	public function buildAbsoluteLink($page = null, $action = null, array $params = [])
 	{
-		$link = $this->serverName;
+		$link = $this->serverName .
+			(isset($this->config['website_subfolder']) ?
+			$this->config['website_subfolder'] : '');
 		if ($this->config['use_url_rewrite']) {
 			if (isset($page))
 				$link .= "/$page" . (isset($action) ? "/$action" : '');
@@ -404,6 +406,7 @@ class App extends AbstractSingleton
 		$this->config = array_replace_recursive([
 			'app_name' => '> CTF',
 			'header_motd' => 'A platform for Jeopardy style CTFs.',
+			'website_subfolder' => '',
 			'super_admin_ids' => [ 1 ],
 			'db' => [
 				'host' => 'localhost',
