@@ -6,7 +6,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<title>500 - Internal Server Error</title>
 	</head>
