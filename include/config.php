@@ -19,6 +19,10 @@ $config['db']['dbname'] = 'pweb_ctf';
 // Uncomment if PDO does not work
 // $config['db']['prefer_mysqli_over_pdo'] = true;
 
+// Uncomment and set to the appropriate value if project is uploaded in a
+// subdirectory. See line 91 for more info.
+// $config['website_subfolder'] = '/518402_scatena';
+
 
 // Show all social buttons in footer.
 // Social config (to show links)
