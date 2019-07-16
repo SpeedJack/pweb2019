@@ -9,7 +9,7 @@
 <table id="users-table">
 <tbody>
 	<tr class="no-data">
-		<td colspan="3" class="center-text"><?= __('No users to show.') ?></td>
+		<td class="center-text"><?= __('No users to show.') ?></td>
 	</tr>
 </tbody>
 </table>

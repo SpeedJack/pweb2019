@@ -11,7 +11,7 @@
 <tbody>
 	<?php if (empty($challenges)): ?>
 		<tr class="no-data">
-			<td class="center-text"><?= __('No challenges to show.') ?></td>
+			<td colspan="3" class="center-text"><?= __('No challenges to show.') ?></td>
 		</tr>
 	<?php endif;
 	foreach ($challenges as $chall): ?>

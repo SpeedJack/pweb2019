@@ -7,7 +7,7 @@
 
 if (empty($users)): ?>
 <tr class="no-data">
-	<td class="center-text"><?= __('No users to show.') ?></td>
+	<td colspan="3" class="center-text"><?= __('No users to show.') ?></td>
 </tr>
 <?php endif; foreach ($users as $user):
 	$sameUser = $user->getId() === $visitor->getId();
