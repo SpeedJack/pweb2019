@@ -22,7 +22,6 @@ function setLanguage()
 {
 	var lang = this.id.replace("flag-", "");
 	var url = new URL(location.href);
-	console.log(typeof url.searchParams);
 	if (url.searchParams !== undefined && typeof url.searchParams === "object") {
 		url.searchParams.set("lang", lang);
 		location.replace(url.href);
