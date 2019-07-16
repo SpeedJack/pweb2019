@@ -1,16 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="author" content="Niccolò Scatena" />
-		<meta name="description" content="" />
+		<meta name="description" content="A platform for Jeopardy style CTFs." />
 		<meta name="generator" content="vim" />
-		<title>About: CTF | PWEB 2019</title>
+		<title>About: &gt; CTF | PWEB 2019</title>
 	</head>
 	<body>
 		<article>
-			<h1>CTF - Progetto PWEB 2019 | UNIPI</h1>
-			<p>blah blah</p>
+			<h1>&gt; CTF - Progetto PWEB 2019 | UNIPI</h1>
+			<p>
+				Per poter accedere alla lista delle challenge è necessario essere registrati e loggati.<br>
+				Per registrarsi serve compilare il form con username, email e password nella pagina <a href="index.php?page=register" target="_top">Registrati</a>. Se l'operazione andrà a buon fine, verrà mostrato un messaggio che chiede di proseguire con il login.<br>
+				Per loggarsi serve inserire l'username (o l'email) e la password nella pagina <a href="index.php?page=login" target="_top">Entra</a>. Se l'operazione andrà a buon fine, si verrà automaticamente redirezionati alla lista delle challenge.<br><br>
+				Dalla lista delle challenge un utente può aprire una qualunque challenge non ancora risolta (di colore rosso) e, una volta individuata la flag corretta, inserirla nell'apposito campo e premere 'Invia'. Se la flag è corretta, verrà mostrato un messaggio di avvenuta risoluzione della challenge.<br>
+				Le challenge sono raggruppate per categoria. Le categorie possono essere aperte o chiuse cliccano sul tasto (+) e (-) rispettivamente.<br>
+				Ogni challenge ha un punteggio associato: risolvendo le challenge si ottengono punti che permettono di scalare la classifica.<br>
+				Nella pagina <a href="index.php?page=ranking" target="_top">Classifica</a> è possibile vedere la classifica degli utenti. Con i controlli in fondo è possibile muoversi tra le varie pagine della classifica.<br><br>
+				Gli utenti admin possono accedere al pannello admin portando il cursore su 'Admin' nel menu in alto. Una pagina consente di <a href="index.php?page=admin_challenges" target="_top">modificare le challenge</a> e l'altra di <a href="index.php?page=admin_users" target="_top">modificare gli utenti</a>.<br><br>
+				Le challenge possono essere create dalla pagina <a href="index.php?page=admin_challenges" target="_top">Modifica Challenge</a> cliccando sul tasto 'Crea Nuova Challenge'. Si aprirà un form da compilare con tutti i dati richiesti per la challenge (categoria, nome, flag, punti, testo). Un form analogo si apre cliccando sul tasto 'Modifica' di una challenge già esistente. Una volta compilato il form, è sufficiente premere il tasto 'Invia'.<br>
+				Le challenge possono essere eliminate nella stessa pagina cliccando sul tasto 'Elimina' e quindi, alla richiesta di conferma, premendo su 'Sì'.<br><br>
+				Gli utenti possono essere promossi a admin, degradati a utenti standard (se sono admin) o eliminati dalla pagina <a href="index.php?page=admin_users" target="_top">Modifica Utenti</a>. In questa pagina è necessario prima di tutto cercare gli utenti per username o per email, inserendo almeno 3 caratteri nel campo 'Cerca..'. La lista degli utenti inizierà a riempirsi automaticamente.<br>
+				Per tutte e tre le operazioni sugli utenti la procedura è la stessa: cliccare sul tasto Promuovi/Degrada/Elimina di un utente, quindi, alla richiesta di comferma, premere su 'Sì'.<br>
+				Alcuni admin sono dei super-admin. I super-admin non possono essere degradati/eliminati.<br><br>
+				In fondo alla pagina è possibile scegliere la lingua cliccando sulla bandierina della lingua che si vuole selezionare <small>(per il supporto alla lingua deve essere installato gettext e i language pack per il sistema operativo in esecuzione sul server)</small>.<br><br>
+				Il design è <em>responsive</em>: se stai visitando questo sito da un dispositivo con schermo piccolo, il menu viene compresso. Puoi aprirlo cliccando sull'icona con le tre barre orizzontali in alto a destra.
+			</p>
+			<hr>
+			<h4>INFORMAZIONI PER I TEST</h4>
+			<p>
+				Nell'applicazione sono già presenti numerosi utenti e challenge di esempio. In particolare, per provare l'applicazione, oltre a registrare un nuovo utente, è possibile loggare con l'username <strong>userX</strong> (dove <strong>X</strong> è un numero tra 1 e 9) e password <strong>userXpass</strong> (dove <strong>X</strong> è lo stesso numero dell'username).<br>
+				È anche possibile accedere come utente super-admin utilizzando come username <strong>admin</strong> e password <strong>adminadmin</strong>. Oppure come utente admin (non super) utilizzando come username <strong>adminX</strong> (dove <strong>X</strong> è un numero tra 2 e 4) e password <strong>adminadmin</strong> (per tutti gli admin).<br><br>
+				File di configurazione: <code>include/config.php</code>.
+			</p>
 		</article>
 		<a href="index.php" target="_top">Torna alla Home</a>
 	</body>
