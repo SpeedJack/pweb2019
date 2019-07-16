@@ -12,7 +12,7 @@
  * @param[in] string $errorMsg		The error message.
  * @param[in] Throwable $exception	The exception that caused the error.
  */
-function panic($code = 500, $errorMsg = '', Throwable $exception = null)
+function panic($code = 500, $errorMsg = '', $exception = null)
 {
 	include 'config.php';
 	if (!$exception)

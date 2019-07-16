@@ -385,7 +385,7 @@ class App extends AbstractSingleton
 	 *
 	 * @param[in] Throwable $e	The exception thrown.
 	 */
-	public function exception_handler(\Throwable $e)
+	public function exception_handler($e)
 	{
 		panic(500, __("Unhandled Exception: %s\n",
 			addslashes($e->getMessage())), $e);
