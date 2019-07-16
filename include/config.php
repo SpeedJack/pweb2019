@@ -35,8 +35,8 @@ $config['social_names'] = [
 
 // For Windows (comment out for Unix):
 $config['locales'] = [
-	'/^en/i' => 'english',
-	'/^it/i' => 'italian'
+	'/^en/i' => 'en',
+	'/^it/i' => 'it'
 ];
 
 // Show all errors/warnings:

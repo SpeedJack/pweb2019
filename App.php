@@ -526,10 +526,21 @@ class App extends AbstractSingleton
 
 		$lang = $this->_getCanonicalLocale($lang) ?: $lang;
 
+		/* NOTE: on Windows may not work. Seems a PHP bug. Works when
+		 * run from cmd.exe with:
+		 * > set LANG=en
+		 * > xampp-control.exe
+		 */
 		@putenv("LANG=$lang");
+		@putenv("LANGUAGE=$lang");
+		@putenv("LC_MESSAGES=$lang");
+		@putenv("LC_ALL=$lang");
 		if (@setlocale(LC_ALL, $lang) === false) {
 			$lang = $this->_getCanonicalLocale($this->config['default_locale']);
 			@putenv("LANG=$lang");
+			@putenv("LANGUAGE=$lang");
+			@putenv("LC_MESSAGES=$lang");
+			@putenv("LC_ALL=$lang");
 			@setlocale(LC_ALL, $lang);
 		}
 
